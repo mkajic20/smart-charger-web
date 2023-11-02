@@ -3,7 +3,7 @@ export const fonts = {
 };
 
 export const colors = {
-  bgPrimary: "#0481A9",
-  bgSecondary: "#00141B",
+  bgPrimary: "#00141B",
+  bgSecondary: "#0481A9",
   textPrimary: "#FFFFFF",
 };
