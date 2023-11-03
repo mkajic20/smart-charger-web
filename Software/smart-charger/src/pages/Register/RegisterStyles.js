@@ -42,7 +42,7 @@ export const ButtonWrapper = styled.div`
   margin: 20px auto 0;
 `;
 
-export const RegisterFormText = styled.p`
+export const RegisterFormText = styled.div`
   margin-top: 10px;
 `;
 

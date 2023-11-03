@@ -5,7 +5,6 @@
   --color-bg-primary: #00141b;
 }
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -13,7 +12,6 @@
 body {
   background-color: var(--color-bg-primary);
   font-family: var(--font-primary);
-  height: 100%;
 }
 
 a {

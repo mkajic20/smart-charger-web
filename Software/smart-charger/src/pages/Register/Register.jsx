@@ -13,8 +13,10 @@ import {
 } from "./RegisterStyles";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
+import { useNavigate } from "react-router";
 
 export const Register = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const [firstName, setFirstName] = useState("");
@@ -152,7 +154,13 @@ export const Register = () => {
           </ButtonWrapper>
           <RegisterFormText>
             Already have an account? &nbsp;
-            <RegisterFormLink>-&gt; LOGIN</RegisterFormLink>
+            <RegisterFormLink
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              -&gt; LOGIN
+            </RegisterFormLink>
           </RegisterFormText>
         </RegisterForm>
       </Section>

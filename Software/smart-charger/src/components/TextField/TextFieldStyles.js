@@ -15,6 +15,7 @@ export const TextFieldInput = styled.input`
   height: 100%;
   background-color: rgba(0, 0, 0, 0);
   border: 0;
+  font-size: 14px;
   &:focus {
     outline: none;
   }
