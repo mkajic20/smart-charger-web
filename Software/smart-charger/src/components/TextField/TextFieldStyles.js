@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { colors } from "../../utils/styles/theme";
 
 export const TextFieldWrapper = styled.div`
-  width: 70%;
+  width: 100%;
   height: 30px;
   background-color: ${colors.formPrimary};
+  border: 1px solid ${colors.formPrimary};
   padding: 5px;
   display: flex;
 `;

@@ -7,7 +7,7 @@ import {
 } from "./TextFieldStyles";
 import icon from "../../assets/show-pass-icon.png";
 
-const TextField = ({ placeholder, isPassword, changeValue }) => {
+const TextField = ({ placeholder, isPassword, changeValue, validateInput }) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -18,6 +18,7 @@ const TextField = ({ placeholder, isPassword, changeValue }) => {
         onChange={() => {
           changeValue(event.target.value);
         }}
+        onBlur={validateInput}
       />
       {isPassword && (
         <TextFieldIcon
@@ -35,6 +36,7 @@ TextField.propTypes = {
   placeholder: PropTypes.string,
   isPassword: PropTypes.bool,
   changeValue: PropTypes.func,
+  validateInput: PropTypes.func,
 };
 
 export default TextField;
