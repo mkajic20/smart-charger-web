@@ -76,7 +76,7 @@ export const Register = () => {
   };
 
   const validateFirstName = () => {
-    if (firstName.length === 0) {
+    if (firstName.trim().length === 0) {
       setFirstNameError("First name can't be empty!");
       return false;
     } else {
@@ -86,7 +86,7 @@ export const Register = () => {
   };
 
   const validateLastName = () => {
-    if (lastName.length === 0) {
+    if (lastName.trim().length === 0) {
       setLastNameError("Last name can't be empty!");
       return false;
     } else {
@@ -108,7 +108,7 @@ export const Register = () => {
   };
 
   const validatePassword = () => {
-    if (password.length < 6) {
+    if (password.trim().length < 6) {
       setPasswordError("Password must be at least 6 characters long!");
       return false;
     } else {
