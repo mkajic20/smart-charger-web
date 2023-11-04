@@ -19,11 +19,12 @@ import {
   registerUser as register,
 } from "../../utils/api/users";
 import { AuthContext } from "../../context/AuthContext";
+import { decodeToken } from "react-jwt";
 
 export const Register = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn, setRole } = useContext(AuthContext);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -66,6 +67,8 @@ export const Register = () => {
     const res = await login(user);
     if (res.success) {
       localStorage.setItem("jwt", res.token);
+      const jwtData = decodeToken(res.token);
+      setRole(jwtData.roleId);
       setIsLoggedIn(true);
     } else {
       setError(res.message);
