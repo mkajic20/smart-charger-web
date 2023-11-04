@@ -65,7 +65,7 @@ export const Register = () => {
   const loginUser = async (user) => {
     const res = await login(user);
     if (res.success) {
-      localStorage.setItem("jwt", data.token);
+      localStorage.setItem("jwt", res.token);
       setIsLoggedIn(true);
     } else {
       setError(res.message);

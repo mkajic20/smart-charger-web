@@ -3,6 +3,8 @@ import Header from "./components/Header/Header";
 import { Register } from "./pages/Register/Register";
 import { Footer } from "./components/Footer/Footer";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoutes/ProtectedRoute";
+import ProtectedRouteLogin from "./components/ProtectedRoutes/ProtectedRouteLogin";
 
 function App() {
   return (
@@ -11,7 +13,16 @@ function App() {
         <Header />
         <main>
           <Routes>
-            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<ProtectedRoute></ProtectedRoute>} />
+
+            <Route
+              path="/register"
+              element={
+                <ProtectedRouteLogin>
+                  <Register />
+                </ProtectedRouteLogin>
+              }
+            />
           </Routes>
         </main>
 
