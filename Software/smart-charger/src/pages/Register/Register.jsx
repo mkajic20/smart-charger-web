@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Section from "../../components/Section/Section";
 import {
   ButtonWrapper,
@@ -14,10 +14,16 @@ import {
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router";
+import {
+  loginUser as login,
+  registerUser as register,
+} from "../../utils/api/users";
+import { AuthContext } from "../../context/AuthContext";
 
 export const Register = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -31,7 +37,40 @@ export const Register = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-  const registerUser = () => {};
+  const registerUser = async () => {
+    if (
+      validateFirstName() &&
+      validateLastName() &&
+      validateEmail() &&
+      validatePassword() &&
+      validateConfirmPassword()
+    ) {
+      let res = await register({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      });
+      if (!res.success) {
+        setError(res.message);
+      } else {
+        await loginUser({
+          email: email,
+          password: password,
+        });
+      }
+    }
+  };
+
+  const loginUser = async (user) => {
+    const res = await login(user);
+    if (res.success) {
+      localStorage.setItem("jwt", data.token);
+      setIsLoggedIn(true);
+    } else {
+      setError(res.message);
+    }
+  };
 
   const validateFirstName = () => {
     if (firstName.length === 0) {
@@ -54,7 +93,8 @@ export const Register = () => {
   };
 
   const validateEmail = () => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/i;
     if (!emailRegex.test(email)) {
       setEmailError("Email is invalid!");
       return false;
@@ -65,8 +105,8 @@ export const Register = () => {
   };
 
   const validatePassword = () => {
-    if (password.length < 8) {
-      setPasswordError("Password must be at least 8 characters long!");
+    if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters long!");
       return false;
     } else {
       setPasswordError("");
