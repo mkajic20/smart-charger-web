@@ -26,15 +26,11 @@ export const Login = () => {
   const [password, setPassword] = useState("");
 
   const loginUser = async () => {
-    console.log("I am here -----------------", {
-      email: email,
-      password: password,
-    });
     const res = await login({ email: email, password: password });
     if (res.success) {
-      console.log("Oh no now i am here----------");
       localStorage.setItem("jwt", res.token);
       const jwtData = decodeToken(res.token);
+      console.log("Dekodiran jwt", jwtData);
       setRole(jwtData.roleId);
       setIsLoggedIn(true);
     } else {
