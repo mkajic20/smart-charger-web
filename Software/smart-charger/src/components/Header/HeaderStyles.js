@@ -3,6 +3,8 @@ import { colors } from "../../utils/styles/theme";
 
 export const Header = styled.header`
   background-color: ${colors.bgSecondary};
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const HeaderInner = styled.div`
@@ -18,4 +20,13 @@ export const HeaderLogo = styled.img`
 
 export const HeaderTitle = styled.h2`
   color: ${colors.textPrimary};
+`;
+
+export const HeaderButtonWrapper = styled.div`
+  margin-right: 1%;
+  min-width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
 `;

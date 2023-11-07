@@ -6,6 +6,7 @@ import {
   HeaderLogo,
   HeaderTitle,
   Header as HeaderWrapper,
+  HeaderButtonWrapper,
 } from "./HeaderStyles";
 import Logo from "../../assets/logo.png";
 import Button from "../../components/Button/Button";
@@ -26,7 +27,13 @@ const Header = () => {
           <HeaderLogo src={Logo} />
           <HeaderTitle>Smart Charger</HeaderTitle>
         </HeaderInner>
-        {isLoggedIn ? <Button buttonText="LOG OUT" onClick={logOut} /> : <></>}
+        <HeaderButtonWrapper>
+          {isLoggedIn ? (
+            <Button buttonText="LOG OUT" onClick={logOut} />
+          ) : (
+            <></>
+          )}
+        </HeaderButtonWrapper>
       </HeaderWrapper>
     </>
   );

@@ -30,7 +30,6 @@ export const Login = () => {
     if (res.success) {
       localStorage.setItem("jwt", res.token);
       const jwtData = decodeToken(res.token);
-      console.log("Dekodiran jwt", jwtData);
       setRole(jwtData.roleId);
       setIsLoggedIn(true);
     } else {
