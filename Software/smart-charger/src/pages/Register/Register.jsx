@@ -53,7 +53,7 @@ export const Register = () => {
         password: password,
       });
       if (!res.success) {
-        setError(res.message);
+        setError(res.error);
       } else {
         await loginUser({
           email: email,
@@ -71,7 +71,7 @@ export const Register = () => {
       setRole(jwtData.roleId);
       setIsLoggedIn(true);
     } else {
-      setError(res.message);
+      setError(res.error);
     }
   };
 
