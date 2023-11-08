@@ -8,6 +8,9 @@ export const colors = {
   textPrimary: "#FFFFFF",
   formPrimary: "#D9D9D9",
   hover: "#0f556e",
+  tableHeader: "#B5B5B5",
+  tableBackgroundPrimary: "#375F6B",
+  tableBackgroundSecondary: "#5F7F89",
 };
 
 export const breakpoints = {
