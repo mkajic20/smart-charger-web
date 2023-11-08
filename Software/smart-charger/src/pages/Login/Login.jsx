@@ -33,7 +33,7 @@ export const Login = () => {
       setRole(jwtData.roleId);
       setIsLoggedIn(true);
     } else {
-      setError(res.message);
+      setError(res.error);
     }
   };
 
