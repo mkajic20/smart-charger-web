@@ -11,12 +11,16 @@ import {
   UserTableCellButton,
   UserTableRole,
   UserTableRoleOption,
+  PopupButtonWrapper,
 } from "./UserManagementStyles";
 import {
+  changeUserActivation,
   changeUserRole,
   getAllRoles,
   getAllUsers,
 } from "../../utils/api/users";
+import PopupWindow from "../../components/PopupWindow/PopupWindow";
+import Button from "../../components/Button/Button";
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -38,6 +42,15 @@ export const UserManagement = () => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === userId ? { ...user, roleId: newRoleId } : user
+      )
+    );
+  };
+
+  const changeActivation = async (userId) => {
+    await changeUserActivation(userId);
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, active: !user.active } : user
       )
     );
   };
@@ -77,13 +90,22 @@ export const UserManagement = () => {
                   ))}
                 </UserTableRole>
               </UserTableCell>
-              <UserTableCellButton>
+              <UserTableCellButton onClick={() => {}}>
                 {user.active ? "Deactivate" : "Activate"}
               </UserTableCellButton>
             </UserTableRow>
           ))}
         </UserTableBody>
       </UserTable>
+      <PopupWindow
+        title="Are you sure"
+        text="Are you sure you want to activate user"
+      >
+        <PopupButtonWrapper>
+          <Button buttonText="Yes" />
+          <Button buttonText="No" />
+        </PopupButtonWrapper>
+      </PopupWindow>
     </>
   );
 };

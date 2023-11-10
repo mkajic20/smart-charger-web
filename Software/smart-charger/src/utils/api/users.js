@@ -103,3 +103,5 @@ export const getAllRoles = async () => {
 };
 
 export const changeUserRole = async (userId, newRoleId) => {};
+
+export const changeUserActivation = async (userId) => {};
