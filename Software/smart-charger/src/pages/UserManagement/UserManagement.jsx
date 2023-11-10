@@ -25,6 +25,7 @@ import Button from "../../components/Button/Button";
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [changedUser, setChangedUser] = useState(null);
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -90,22 +91,52 @@ export const UserManagement = () => {
                   ))}
                 </UserTableRole>
               </UserTableCell>
-              <UserTableCellButton onClick={() => {}}>
+              <UserTableCellButton
+                onClick={() => {
+                  setChangedUser(user.id);
+                }}
+              >
                 {user.active ? "Deactivate" : "Activate"}
               </UserTableCellButton>
             </UserTableRow>
           ))}
         </UserTableBody>
       </UserTable>
-      <PopupWindow
-        title="Are you sure"
-        text="Are you sure you want to activate user"
-      >
-        <PopupButtonWrapper>
-          <Button buttonText="Yes" />
-          <Button buttonText="No" />
-        </PopupButtonWrapper>
-      </PopupWindow>
+      {changedUser !== null && (
+        <PopupWindow
+          title={
+            users.find((user) => user.id === changedUser).active
+              ? "Deactivate User"
+              : "Activate User"
+          }
+          text={`Are you sure you want to ${
+            users.find((user) => user.id === changedUser).active
+              ? "deactivate"
+              : "activate"
+          } user ${users.find((user) => user.id === changedUser).firstName} ${
+            users.find((user) => user.id === changedUser).lastName
+          }?`}
+          onClose={() => {
+            setChangedUser(null);
+          }}
+        >
+          <PopupButtonWrapper>
+            <Button
+              buttonText="Yes"
+              onClick={async () => {
+                await changeActivation(changedUser);
+                setChangedUser(null);
+              }}
+            />
+            <Button
+              buttonText="No"
+              onClick={() => {
+                setChangedUser(null);
+              }}
+            />
+          </PopupButtonWrapper>
+        </PopupWindow>
+      )}
     </>
   );
 };
