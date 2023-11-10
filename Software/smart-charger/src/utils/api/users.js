@@ -59,4 +59,15 @@ export const changeUserRole = async (userId, newRoleId) => {
   // console.log(res);
 };
 
-export const changeUserActivation = async (userId) => {};
+export const changeUserActivation = async (userId) => {
+  const jwt = localStorage.getItem("jwt");
+  const res = await fetch(`${apiPath}/api/admin/users/${userId}/activate`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+
+  // console.log(res);
+};
