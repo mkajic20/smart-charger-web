@@ -39,7 +39,7 @@ export const UserManagement = () => {
   }, []);
 
   const handleRoleChange = async (userId, newRoleId) => {
-    await changeUserRole();
+    await changeUserRole(userId, newRoleId);
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === userId ? { ...user, roleId: newRoleId } : user

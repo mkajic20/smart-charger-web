@@ -35,9 +35,6 @@ export const getAllUsers = async () => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-
-  console.log(res);
-
   const data = await res.json();
   return data.users;
 };
@@ -49,6 +46,17 @@ export const getAllRoles = async () => {
   ];
 };
 
-export const changeUserRole = async (userId, newRoleId) => {};
+export const changeUserRole = async (userId, newRoleId) => {
+  const jwt = localStorage.getItem("jwt");
+  const res = await fetch(`${apiPath}/api/admin/users/${userId}/role`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+
+  // console.log(res);
+};
 
 export const changeUserActivation = async (userId) => {};
