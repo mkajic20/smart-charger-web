@@ -24,6 +24,7 @@ export const UserTableBody = styled.tbody``;
 export const UserTableHeader = styled.th`
   padding: 5px;
   background-color: ${colors.tableHeader};
+  font-size: 18px;
 `;
 
 export const UserTableRow = styled.tr`
