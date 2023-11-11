@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import {
   FooterLogoImage,
   FooterLogo,
@@ -9,8 +9,37 @@ import {
 import Logo from "../../assets/logo.png";
 
 export const Footer = () => {
+  const [isFooterFixed, setIsFooterFixed] = useState(false);
+
+  const handleResize = () => {
+    requestAnimationFrame(() => {
+      const contentHeight = document.body.scrollHeight;
+      const screenHeight = window.innerHeight;
+
+      setIsFooterFixed(contentHeight <= screenHeight);
+    });
+  };
+
+  const handleContentChange = () => {
+    handleResize();
+  };
+
+  useLayoutEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    const observer = new MutationObserver(handleContentChange);
+    observer.observe(document.body, { subtree: true, childList: true });
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <FooterWrapper>
+    <FooterWrapper isfixed={isFooterFixed ? "true" : "false"}>
       <FooterLogo>
         <FooterLogoImage src={Logo} />
         Smart Charger

@@ -5,8 +5,6 @@ export const Footer = styled.footer`
   width: 100%;
   min-height: 30px;
   background-color: ${colors.bgSecondary};
-  position: fixed;
-  bottom: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -14,6 +12,9 @@ export const Footer = styled.footer`
   align-items: center;
   gap: 10px;
   padding: 15px 0;
+  position: ${(props) => (props.isfixed === "true" ? "fixed" : "relative")};
+  bottom: 0;
+  margin-top: 100px;
 `;
 
 export const FooterLogo = styled.div`
