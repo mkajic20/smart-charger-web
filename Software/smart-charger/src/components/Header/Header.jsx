@@ -7,12 +7,16 @@ import {
   HeaderTitle,
   Header as HeaderWrapper,
   HeaderButtonWrapper,
+  HeaderNav,
+  HeaderLink,
 } from "./HeaderStyles";
 import Logo from "../../assets/logo.png";
 import Button from "../../components/Button/Button";
+import { useNavigate } from "react-router";
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, setRole } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const logOut = async () => {
     setIsLoggedIn(!isLoggedIn);
@@ -26,6 +30,22 @@ const Header = () => {
         <HeaderInner>
           <HeaderLogo src={Logo} />
           <HeaderTitle>Smart Charger</HeaderTitle>
+          <HeaderNav>
+            <HeaderLink
+              onClick={() => {
+                navigate("/user-management");
+              }}
+            >
+              Users
+            </HeaderLink>
+            <HeaderLink
+              onClick={() => {
+                navigate("/card-management");
+              }}
+            >
+              RFID cards
+            </HeaderLink>
+          </HeaderNav>
         </HeaderInner>
         <HeaderButtonWrapper>
           {isLoggedIn ? (
