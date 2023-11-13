@@ -9,7 +9,7 @@ import ProtectedRouteLogin from "./components/ProtectedRoutes/ProtectedRouteLogi
 import ProtectedRouteAdmin from "./components/ProtectedRoutes/ProtectedRouteAdmin";
 import ProtectedRouteUser from "./components/ProtectedRoutes/ProtectedRouteUser";
 import { UserManagement } from "./pages/UserManagement/UserManagement";
-import { CardManagementAdmin } from "./pages/CardManagementAdmin/CardManagement";
+import { CardManagementAdmin } from "./pages/CardManagementAdmin/CardManagementAdmin";
 
 function App() {
   return (

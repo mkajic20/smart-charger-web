@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  UserManagementTitleWrapper,
   UserManagementTitle,
   UserTable,
   UserTableRow,
@@ -58,9 +57,7 @@ export const UserManagement = () => {
 
   return (
     <>
-      <UserManagementTitleWrapper>
-        <UserManagementTitle>User Management</UserManagementTitle>
-      </UserManagementTitleWrapper>
+      <UserManagementTitle>User Management</UserManagementTitle>
       <UserTable>
         <UserTableHead>
           <UserTableRow>
