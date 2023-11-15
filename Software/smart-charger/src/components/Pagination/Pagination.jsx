@@ -30,6 +30,7 @@ const Pagination = ({
         <PaginationButton onClick={lastCall}>&gt;&gt;&gt;</PaginationButton>
         {withSelect && (
           <PaginationSelect onChange={onSelectChange}>
+            <PaginationSelectOption>10</PaginationSelectOption>
             <PaginationSelectOption>25</PaginationSelectOption>
             <PaginationSelectOption>50</PaginationSelectOption>
             <PaginationSelectOption>75</PaginationSelectOption>

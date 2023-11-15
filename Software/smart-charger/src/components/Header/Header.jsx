@@ -15,7 +15,7 @@ import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router";
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn, setRole } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, role, setRole } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const logOut = async () => {
@@ -31,20 +31,30 @@ const Header = () => {
           <HeaderLogo src={Logo} />
           <HeaderTitle>Smart Charger</HeaderTitle>
           <HeaderNav>
-            <HeaderLink
-              onClick={() => {
-                navigate("/user-management");
-              }}
-            >
-              Users
-            </HeaderLink>
-            <HeaderLink
-              onClick={() => {
-                navigate("/card-management");
-              }}
-            >
-              RFID cards
-            </HeaderLink>
+            {role == 1 && (
+              //ADMIN NAVIGATION
+              <>
+                <HeaderLink
+                  onClick={() => {
+                    navigate("/user-management");
+                  }}
+                >
+                  Users
+                </HeaderLink>
+                <HeaderLink
+                  onClick={() => {
+                    navigate("/card-management");
+                  }}
+                >
+                  RFID cards
+                </HeaderLink>
+              </>
+            )}
+
+            {role == 2 && (
+              //USER NAVIGATION
+              <></>
+            )}
           </HeaderNav>
         </HeaderInner>
         <HeaderButtonWrapper>

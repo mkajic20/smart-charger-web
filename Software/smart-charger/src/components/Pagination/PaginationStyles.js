@@ -12,7 +12,12 @@ export const PaginationButton = styled.button`
   color: white;
   background-color: ${colors.bgSecondary};
   border: 0;
-  min-width: 3vw;
+  min-width: 2vw;
+  padding: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${colors.tableBackgroundPrimary};
+  }
 `;
 
 export const PaginationPage = styled.p`
