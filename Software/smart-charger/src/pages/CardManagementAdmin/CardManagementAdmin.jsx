@@ -14,7 +14,11 @@ import {
   CardTableRow,
   PopupButtonWrapper,
 } from "./CardManagementAdminStyles";
-import { changeCardActivation, getCardData } from "../../utils/api/cards";
+import {
+  changeCardActivation,
+  deleteCard,
+  getCardData,
+} from "../../utils/api/cards";
 import Icon from "../../assets/trash-icon.png";
 import Pagination from "../../components/Pagination/Pagination";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
@@ -27,6 +31,7 @@ export const CardManagementAdmin = () => {
   const [pageSize, setPageSize] = useState(10);
 
   const [changedCard, setChangedCard] = useState(null);
+  const [deletedCard, setDeletedCard] = useState(null);
 
   const fetchCardData = async () => {
     const cardData = await getCardData(currentPage, pageSize);
@@ -49,6 +54,11 @@ export const CardManagementAdmin = () => {
         card.id === cardId ? { ...card, active: !card.active } : card
       )
     );
+  };
+
+  const cardDelete = async (cardId) => {
+    await deleteCard(cardId);
+    setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
   };
   return (
     <>
@@ -106,12 +116,18 @@ export const CardManagementAdmin = () => {
                 {card.active ? "Deactivate" : "Activate"}
               </CardTableCellButton>
               <CardTableCellDelete>
-                <CardTableCellDeleteIcon src={Icon} />
+                <CardTableCellDeleteIcon
+                  src={Icon}
+                  onClick={() => {
+                    setDeletedCard(card);
+                  }}
+                />
               </CardTableCellDelete>
             </CardTableRow>
           ))}
         </CardTableBody>
       </CardTable>
+
       {changedCard !== null && (
         <PopupWindow
           title={changedCard.active ? "Deactivate Card?" : "Activate Card?"}
@@ -134,6 +150,32 @@ export const CardManagementAdmin = () => {
               buttonText="No"
               onClick={() => {
                 setChangedCard(null);
+              }}
+            />
+          </PopupButtonWrapper>
+        </PopupWindow>
+      )}
+
+      {deletedCard !== null && (
+        <PopupWindow
+          title={"Delete Card?"}
+          text={`Are you sure you want to delete card ${deletedCard.name}?`}
+          onClose={() => {
+            setDeletedCard(null);
+          }}
+        >
+          <PopupButtonWrapper>
+            <Button
+              buttonText="Yes"
+              onClick={async () => {
+                await cardDelete(deletedCard.id);
+                setDeletedCard(null);
+              }}
+            />
+            <Button
+              buttonText="No"
+              onClick={() => {
+                setDeletedCard(null);
               }}
             />
           </PopupButtonWrapper>

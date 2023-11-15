@@ -32,3 +32,5 @@ export const getCardData = async (page, size) => {
 };
 
 export const changeCardActivation = async (cardId) => {};
+
+export const deleteCard = async (cardId) => {};
