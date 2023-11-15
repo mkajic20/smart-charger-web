@@ -103,8 +103,8 @@ export const UserManagement = () => {
         <PopupWindow
           title={
             users.find((user) => user.id === changedUser).active
-              ? "Deactivate User"
-              : "Activate User"
+              ? "Deactivate User?"
+              : "Activate User?"
           }
           text={`Are you sure you want to ${
             users.find((user) => user.id === changedUser).active

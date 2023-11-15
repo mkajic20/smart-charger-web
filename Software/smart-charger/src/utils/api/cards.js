@@ -30,3 +30,5 @@ export const getCardData = async (page, size) => {
   // const data = await res.json();
   // return data.users;
 };
+
+export const changeCardActivation = async (cardId) => {};

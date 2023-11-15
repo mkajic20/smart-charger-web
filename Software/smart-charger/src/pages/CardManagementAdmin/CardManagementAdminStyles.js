@@ -73,3 +73,8 @@ export const CardTableCellDeleteIcon = styled.img`
     cursor: pointer;
   }
 `;
+
+export const PopupButtonWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+`;

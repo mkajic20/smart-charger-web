@@ -12,16 +12,21 @@ import {
   CardTableHead,
   CardTableHeader,
   CardTableRow,
+  PopupButtonWrapper,
 } from "./CardManagementAdminStyles";
-import { getCardData } from "../../utils/api/cards";
+import { changeCardActivation, getCardData } from "../../utils/api/cards";
 import Icon from "../../assets/trash-icon.png";
 import Pagination from "../../components/Pagination/Pagination";
+import PopupWindow from "../../components/PopupWindow/PopupWindow";
+import Button from "../../components/Button/Button";
 
 export const CardManagementAdmin = () => {
   const [cards, setCards] = useState([]);
   const [pages, setPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+
+  const [changedCard, setChangedCard] = useState(null);
 
   const fetchCardData = async () => {
     const cardData = await getCardData(currentPage, pageSize);
@@ -36,6 +41,15 @@ export const CardManagementAdmin = () => {
 
     asyncCall();
   }, []);
+
+  const changeActivation = async (cardId) => {
+    await changeCardActivation(cardId);
+    setCards((prevCards) =>
+      prevCards.map((card) =>
+        card.id === cardId ? { ...card, active: !card.active } : card
+      )
+    );
+  };
   return (
     <>
       <CardManagementTitle>RFID card management</CardManagementTitle>
@@ -84,7 +98,11 @@ export const CardManagementAdmin = () => {
             <CardTableRow key={index}>
               <CardTableCell>{card.owner}</CardTableCell>
               <CardTableCell>{card.name}</CardTableCell>
-              <CardTableCellButton onClick={() => {}}>
+              <CardTableCellButton
+                onClick={() => {
+                  setChangedCard(card);
+                }}
+              >
                 {card.active ? "Deactivate" : "Activate"}
               </CardTableCellButton>
               <CardTableCellDelete>
@@ -94,6 +112,33 @@ export const CardManagementAdmin = () => {
           ))}
         </CardTableBody>
       </CardTable>
+      {changedCard !== null && (
+        <PopupWindow
+          title={changedCard.active ? "Deactivate Card?" : "Activate Card?"}
+          text={`Are you sure you want to ${
+            changedCard.active ? "deactivate" : "activate"
+          } card ${changedCard.name}?`}
+          onClose={() => {
+            setChangedCard(null);
+          }}
+        >
+          <PopupButtonWrapper>
+            <Button
+              buttonText="Yes"
+              onClick={async () => {
+                await changeActivation(changedCard.id);
+                setChangedCard(null);
+              }}
+            />
+            <Button
+              buttonText="No"
+              onClick={() => {
+                setChangedCard(null);
+              }}
+            />
+          </PopupButtonWrapper>
+        </PopupWindow>
+      )}
     </>
   );
 };
