@@ -8,20 +8,21 @@ import {
 import SearchIcon from "../../assets/search-icon.png";
 import SearchCancelIcon from "../../assets/search-cancel.png";
 
-const Search = ({ onChange, placeholder, search, showCancel }) => {
+const Search = ({ placeholder, search, showCancel, onCancel }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
-    onChange && onChange(newValue);
+    setInputValue(e.target.value);
   };
 
   const handleSearch = () => {
-    search && search(inputValue);
+    if (inputValue.trim().length > 0) {
+      search(inputValue.trim());
+    }
   };
 
   const handleCancel = () => {
+    onCancel();
     setInputValue("");
   };
 
@@ -45,9 +46,10 @@ const Search = ({ onChange, placeholder, search, showCancel }) => {
 };
 
 Search.propTypes = {
-  onChange: PropTypes.func,
   placeholder: PropTypes.string,
   search: PropTypes.func,
+  showCancel: PropTypes.bool,
+  onCancel: PropTypes.func,
 };
 
 export default Search;

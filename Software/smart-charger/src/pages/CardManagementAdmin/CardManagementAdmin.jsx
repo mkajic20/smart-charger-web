@@ -23,29 +23,28 @@ import Icon from "../../assets/trash-icon.png";
 import Pagination from "../../components/Pagination/Pagination";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
+import Search from "../../components/Search/Search";
 
 export const CardManagementAdmin = () => {
   const [cards, setCards] = useState([]);
   const [pages, setPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [changedCard, setChangedCard] = useState(null);
   const [deletedCard, setDeletedCard] = useState(null);
 
-  const fetchCardData = async () => {
-    const cardData = await getCardData(currentPage, pageSize);
+  const fetchCardDataAndSetState = async () => {
+    const cardData = await getCardData(currentPage, pageSize, searchTerm);
+    console.log(cardData);
     setCards(cardData.cards);
     setPages(cardData.pages);
   };
 
   useEffect(() => {
-    const asyncCall = async () => {
-      await fetchCardData();
-    };
-
-    asyncCall();
-  }, []);
+    fetchCardDataAndSetState();
+  }, [currentPage, pageSize, searchTerm]);
 
   const changeActivation = async (cardId) => {
     await changeCardActivation(cardId);
@@ -60,6 +59,7 @@ export const CardManagementAdmin = () => {
     await deleteCard(cardId);
     setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
   };
+
   return (
     <>
       <CardManagementTitle>RFID card management</CardManagementTitle>
@@ -72,26 +72,37 @@ export const CardManagementAdmin = () => {
             prevCall={async () => {
               if (currentPage > 1) {
                 setCurrentPage(currentPage - 1);
-                fetchCardData();
+                await fetchCardDataAndSetState();
               }
             }}
             firstCall={async () => {
               setCurrentPage(1);
-              fetchCardData();
+              await fetchCardDataAndSetState();
             }}
             nextCall={async () => {
               if (currentPage < pages) {
                 setCurrentPage(currentPage + 1);
-                fetchCardData();
+                await fetchCardDataAndSetState();
               }
             }}
             lastCall={async () => {
               setCurrentPage(pages);
-              fetchCardData();
+              await fetchCardDataAndSetState();
             }}
           ></Pagination>
         </CardManagementControl>
-        <CardManagementControl></CardManagementControl>
+        <CardManagementControl>
+          <Search
+            placeholder="Search"
+            onCancel={() => {
+              setSearchTerm("");
+            }}
+            search={async (term) => {
+              setSearchTerm(term);
+            }}
+            showCancel={searchTerm.trim().length > 0}
+          />
+        </CardManagementControl>
       </CardManagementController>
 
       <CardTable>

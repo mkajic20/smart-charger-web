@@ -12,7 +12,7 @@ export const CardManagementTitle = styled.h1`
 export const CardManagementController = styled.div`
   width: 62vw;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
   margin: 0 auto;
   padding-top: 20px;
 `;
