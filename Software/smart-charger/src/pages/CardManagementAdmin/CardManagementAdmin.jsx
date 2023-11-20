@@ -39,7 +39,7 @@ export const CardManagementAdmin = () => {
     const cardData = await getCardData(currentPage, pageSize, searchTerm);
     console.log(cardData);
     setCards(cardData.cards);
-    setPages(cardData.pages);
+    setPages(cardData.totalPages);
   };
 
   useEffect(() => {
@@ -117,7 +117,9 @@ export const CardManagementAdmin = () => {
         <CardTableBody>
           {cards.map((card, index) => (
             <CardTableRow key={index}>
-              <CardTableCell>{card.owner}</CardTableCell>
+              <CardTableCell>
+                {card.user.firstName} {card.user.lastName}
+              </CardTableCell>
               <CardTableCell>{card.name}</CardTableCell>
               <CardTableCellButton
                 onClick={() => {
