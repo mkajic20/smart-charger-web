@@ -35,15 +35,22 @@ export const CardManagementAdmin = () => {
   const [changedCard, setChangedCard] = useState(null);
   const [deletedCard, setDeletedCard] = useState(null);
 
-  const fetchCardDataAndSetState = async () => {
+  const [error, setError] = useState("");
+
+  const fetchCardData = async () => {
     const cardData = await getCardData(currentPage, pageSize, searchTerm);
-    console.log(cardData);
-    setCards(cardData.cards);
-    setPages(cardData.totalPages);
+    console.log("data", cardData);
+    if (cardData.success) {
+      setCards(cardData.cards);
+      setPages(cardData.totalPages);
+    } else {
+      setError(cardData.message);
+      console.log(cardData.message);
+    }
   };
 
   useEffect(() => {
-    fetchCardDataAndSetState();
+    fetchCardData();
   }, [currentPage, pageSize, searchTerm]);
 
   const changeActivation = async (cardId) => {
@@ -72,22 +79,22 @@ export const CardManagementAdmin = () => {
             prevCall={async () => {
               if (currentPage > 1) {
                 setCurrentPage(currentPage - 1);
-                await fetchCardDataAndSetState();
+                await fetchCardData();
               }
             }}
             firstCall={async () => {
               setCurrentPage(1);
-              await fetchCardDataAndSetState();
+              await fetchCardData();
             }}
             nextCall={async () => {
               if (currentPage < pages) {
                 setCurrentPage(currentPage + 1);
-                await fetchCardDataAndSetState();
+                await fetchCardData();
               }
             }}
             lastCall={async () => {
               setCurrentPage(pages);
-              await fetchCardDataAndSetState();
+              await fetchCardData();
             }}
           ></Pagination>
         </CardManagementControl>
@@ -192,6 +199,27 @@ export const CardManagementAdmin = () => {
               }}
             />
           </PopupButtonWrapper>
+        </PopupWindow>
+      )}
+
+      {error.length > 0 && (
+        <PopupWindow
+          title={"There was an error"}
+          text={error}
+          onClose={async () => {
+            setSearchTerm("");
+            await fetchCardData();
+            setError("");
+          }}
+        >
+          <Button
+            buttonText="Close"
+            onClick={async () => {
+              setSearchTerm("");
+              await fetchCardData();
+              setError("");
+            }}
+          />
         </PopupWindow>
       )}
     </>
