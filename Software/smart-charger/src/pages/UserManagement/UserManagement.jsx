@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  UserManagementTitleWrapper,
   UserManagementTitle,
   UserTable,
   UserTableRow,
@@ -58,9 +57,7 @@ export const UserManagement = () => {
 
   return (
     <>
-      <UserManagementTitleWrapper>
-        <UserManagementTitle>User Management</UserManagementTitle>
-      </UserManagementTitleWrapper>
+      <UserManagementTitle>User Management</UserManagementTitle>
       <UserTable>
         <UserTableHead>
           <UserTableRow>
@@ -106,8 +103,8 @@ export const UserManagement = () => {
         <PopupWindow
           title={
             users.find((user) => user.id === changedUser).active
-              ? "Deactivate User"
-              : "Activate User"
+              ? "Deactivate User?"
+              : "Activate User?"
           }
           text={`Are you sure you want to ${
             users.find((user) => user.id === changedUser).active

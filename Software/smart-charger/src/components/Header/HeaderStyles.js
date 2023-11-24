@@ -30,3 +30,17 @@ export const HeaderButtonWrapper = styled.div`
   justify-content: flex-end;
   flex: 1;
 `;
+
+export const HeaderNav = styled.nav`
+  margin: 0 100px;
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+`;
+
+export const HeaderLink = styled.a`
+  color: white;
+  &:hover {
+    cursor: pointer;
+  }
+`;

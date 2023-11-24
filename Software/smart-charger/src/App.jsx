@@ -9,6 +9,7 @@ import ProtectedRouteLogin from "./components/ProtectedRoutes/ProtectedRouteLogi
 import ProtectedRouteAdmin from "./components/ProtectedRoutes/ProtectedRouteAdmin";
 import ProtectedRouteUser from "./components/ProtectedRoutes/ProtectedRouteUser";
 import { UserManagement } from "./pages/UserManagement/UserManagement";
+import { CardManagementAdmin } from "./pages/CardManagementAdmin/CardManagementAdmin";
 
 function App() {
   return (
@@ -41,7 +42,16 @@ function App() {
               path="/user-management"
               element={
                 <ProtectedRouteAdmin>
-                  <UserManagement></UserManagement>
+                  <UserManagement />
+                </ProtectedRouteAdmin>
+              }
+            />
+
+            <Route
+              path="/card-management"
+              element={
+                <ProtectedRouteAdmin>
+                  <CardManagementAdmin />
                 </ProtectedRouteAdmin>
               }
             />

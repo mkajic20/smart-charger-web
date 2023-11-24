@@ -55,8 +55,6 @@ export const changeUserRole = async (userId, newRoleId) => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-
-  // console.log(res);
 };
 
 export const changeUserActivation = async (userId) => {
@@ -68,6 +66,4 @@ export const changeUserActivation = async (userId) => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-
-  // console.log(res);
 };

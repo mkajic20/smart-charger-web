@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import { colors } from "../../utils/styles/theme";
 
-export const UserManagementTitleWrapper = styled.div`
+export const UserManagementTitle = styled.h1`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 30px;
-`;
-
-export const UserManagementTitle = styled.h1`
   color: white;
 `;
 
