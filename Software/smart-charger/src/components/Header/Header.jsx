@@ -48,6 +48,13 @@ const Header = () => {
                 >
                   RFID cards
                 </HeaderLink>
+                <HeaderLink
+                  onClick={() => {
+                    navigate("/charger-management");
+                  }}
+                >
+                  Chargers
+                </HeaderLink>
               </>
             )}
 
