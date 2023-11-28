@@ -11,6 +11,7 @@ export const PopupWindowWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
 `;
 
 export const PopupWindowBackground = styled.a`
@@ -19,20 +20,21 @@ export const PopupWindowBackground = styled.a`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9998;
+  z-index: 101;
 `;
 
 export const PopupWindowContent = styled.div`
   background-color: ${colors.bgSecondary};
   padding: 20px;
   border-radius: 10px;
-  z-index: 9999;
+  z-index: 102;
   color: white;
   display: flex;
   flex-direction: column;
   gap: 20px;
   text-align: center;
   padding: 30px;
+  border: 1px solid black;
 `;
 
 export const PopupWindowTitle = styled.h3``;

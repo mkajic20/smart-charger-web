@@ -67,3 +67,8 @@ export const PopupButtonWrapper = styled.div`
   display: flex;
   gap: 20px;
 `;
+
+export const TextFieldLabel = styled.label`
+  width: 100%;
+  text-align: left;
+`;

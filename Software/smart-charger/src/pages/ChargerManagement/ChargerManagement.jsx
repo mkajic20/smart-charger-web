@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ChargerManagementController,
   ChargerManagementControl,
@@ -12,6 +12,7 @@ import {
   ChargerTableHeader,
   ChargerTableRow,
   PopupButtonWrapper,
+  TextFieldLabel,
 } from "./ChargerManagementStyles";
 import {
   createCharger,
@@ -23,6 +24,8 @@ import Pagination from "../../components/Pagination/Pagination";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
 import Search from "../../components/Search/Search";
+import MapComponent from "../../components/MapComponent/MapComponent";
+import TextField from "../../components/TextField/TextField";
 
 export const ChargerManagement = () => {
   const [chargers, setChargers] = useState([]);
@@ -32,8 +35,12 @@ export const ChargerManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [deletedCharger, setDeletedCharger] = useState(null);
+  const [creatingCharger, setCreatingCharger] = useState(false);
 
   const [error, setError] = useState("");
+
+  const [chargerName, setChargerName] = useState("");
+  const [chargerLocation, setChargerLocation] = useState(null);
 
   const fetchChargerData = async () => {
     const chargerData = await getChargerData(currentPage, pageSize, searchTerm);
@@ -73,7 +80,15 @@ export const ChargerManagement = () => {
     <>
       <ChargerManagementTitle>Charger management</ChargerManagementTitle>
       <ChargerManagementController>
-        <ChargerManagementControl></ChargerManagementControl>
+        <ChargerManagementControl>
+          <Button
+            buttonText="Create charger"
+            isSecondary
+            onClick={() => {
+              setCreatingCharger(true);
+            }}
+          />
+        </ChargerManagementControl>
         <ChargerManagementControl>
           <Pagination
             pages={pages}
@@ -196,6 +211,42 @@ export const ChargerManagement = () => {
               setError("");
             }}
           />
+        </PopupWindow>
+      )}
+
+      {creatingCharger && (
+        <PopupWindow
+          title={"Create charger"}
+          text=""
+          onClose={() => {
+            setCreatingCharger(false);
+          }}
+        >
+          <TextFieldLabel>Charger name:</TextFieldLabel>
+          <TextField
+            placeholder="Charger name..."
+            changeValue={() => {}}
+            validateInput={() => {}}
+          />
+          <MapComponent
+            setMarkerLocation={(marker) => {
+              console.log(marker);
+            }}
+          />
+          <PopupButtonWrapper>
+            <Button
+              buttonText="Create"
+              onClick={() => {
+                setCreatingCharger(false);
+              }}
+            />
+            <Button
+              buttonText="Cancel"
+              onClick={() => {
+                setCreatingCharger(false);
+              }}
+            />
+          </PopupButtonWrapper>
         </PopupWindow>
       )}
     </>

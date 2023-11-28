@@ -15,6 +15,7 @@ export const Footer = styled.footer`
   position: ${(props) => (props.isfixed === "true" ? "fixed" : "relative")};
   bottom: 0;
   margin-top: 100px;
+  z-index: 20;
 `;
 
 export const FooterLogo = styled.div`
