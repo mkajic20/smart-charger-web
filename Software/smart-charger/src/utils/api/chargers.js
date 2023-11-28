@@ -18,7 +18,6 @@ export const getChargerData = async (page, size, search) => {
   });
 
   const data = await res.json();
-  console.log("get chargers", data);
   return data;
 };
 
@@ -31,7 +30,6 @@ export const deleteCharger = async (chargerId) => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-  console.log(res);
 };
 
 export const createCharger = async (name, latitude, longitude) => {
