@@ -9,3 +9,5 @@ export const getAllUsersCards = async () => {
     { id: 4, name: "Kartica 5", active: true },
   ];
 };
+
+export const deleteCard = async (cardId, userId) => {};
