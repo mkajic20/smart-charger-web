@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import {
   CardManagementControl,
   CardManagementController,
@@ -20,11 +21,17 @@ import Button from "../../components/Button/Button";
 export const CardManagementUser = () => {
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState(null);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const asyncCall = async () => {
       const cardData = await getAllUsersCards();
-      setCards(cardData.cards);
+      if (cardData.success) {
+        setCards(cardData.cards);
+      } else {
+        setError(cardData.message);
+      }
     };
     asyncCall();
   }, []);
@@ -35,37 +42,41 @@ export const CardManagementUser = () => {
   };
   return (
     <>
-      <CardManagementTitle> My cards</CardManagementTitle>
-      <CardManagementController>
-        <CardManagementControl></CardManagementControl>
-      </CardManagementController>
-      <CardTable>
-        <CardTableHead>
-          <CardTableRow>
-            <CardTableHeader>Card Name</CardTableHeader>
-            <CardTableHeader>Active</CardTableHeader>
-            <CardTableHeader></CardTableHeader>
-          </CardTableRow>
-        </CardTableHead>
-        <CardTableBody>
-          {cards.map((card, index) => (
-            <CardTableRow key={index}>
-              <CardTableCell>{card.name}</CardTableCell>
-              <CardTableCell>
-                {card.active ? "Active" : "Inactive"}
-              </CardTableCell>
-              <CardTableCellDelete>
-                <CardTableCellDeleteIcon
-                  src={Icon}
-                  onClick={() => {
-                    setDeletedCard(card);
-                  }}
-                ></CardTableCellDeleteIcon>
-              </CardTableCellDelete>
-            </CardTableRow>
-          ))}
-        </CardTableBody>
-      </CardTable>
+      {error.length == 0 && cards.length > 0 && (
+        <>
+          <CardManagementTitle> My cards</CardManagementTitle>
+          <CardManagementController>
+            <CardManagementControl></CardManagementControl>
+          </CardManagementController>
+          <CardTable>
+            <CardTableHead>
+              <CardTableRow>
+                <CardTableHeader>Card Name</CardTableHeader>
+                <CardTableHeader>Active</CardTableHeader>
+                <CardTableHeader></CardTableHeader>
+              </CardTableRow>
+            </CardTableHead>
+            <CardTableBody>
+              {cards.map((card, index) => (
+                <CardTableRow key={index}>
+                  <CardTableCell>{card.name}</CardTableCell>
+                  <CardTableCell>
+                    {card.active ? "Active" : "Inactive"}
+                  </CardTableCell>
+                  <CardTableCellDelete>
+                    <CardTableCellDeleteIcon
+                      src={Icon}
+                      onClick={() => {
+                        setDeletedCard(card);
+                      }}
+                    ></CardTableCellDeleteIcon>
+                  </CardTableCellDelete>
+                </CardTableRow>
+              ))}
+            </CardTableBody>
+          </CardTable>
+        </>
+      )}
 
       {deletedCard !== null && (
         <PopupWindow
@@ -90,6 +101,23 @@ export const CardManagementUser = () => {
               }}
             />
           </PopupButtonWrapper>
+        </PopupWindow>
+      )}
+
+      {error.length > 0 && (
+        <PopupWindow
+          title={"User doesn't have RFID cards"}
+          onClose={async () => {
+            setError("");
+          }}
+        >
+          <Button
+            buttonText="Close"
+            onClick={async () => {
+              navigate("/");
+              setError("");
+            }}
+          />
         </PopupWindow>
       )}
     </>
