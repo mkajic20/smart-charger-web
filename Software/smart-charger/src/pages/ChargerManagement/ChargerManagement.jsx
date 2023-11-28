@@ -31,6 +31,8 @@ export const ChargerManagement = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [deletedCharger, setDeletedCharger] = useState(null);
+
   const [error, setError] = useState("");
 
   const fetchChargerData = async () => {
@@ -58,6 +60,13 @@ export const ChargerManagement = () => {
     const minutes = String(date.getMinutes()).padStart(2, "0");
 
     return `${day}.${month}.${year}. ${hours}:${minutes}`;
+  };
+
+  const removeCharger = async (chargerId) => {
+    await deleteCharger(chargerId);
+    setChargers((prevChargers) =>
+      prevChargers.filter((charger) => charger.id !== chargerId)
+    );
   };
 
   return (
@@ -131,12 +140,43 @@ export const ChargerManagement = () => {
                 {charger.lastSync ? formatDate(charger.lastSync) : "-"}
               </ChargerTableCell>
               <ChargerTableCellDelete>
-                <ChargerTableCellDeleteIcon src={Icon} onClick={() => {}} />
+                <ChargerTableCellDeleteIcon
+                  src={Icon}
+                  onClick={() => {
+                    setDeletedCharger(charger);
+                  }}
+                />
               </ChargerTableCellDelete>
             </ChargerTableRow>
           ))}
         </ChargerTableBody>
       </ChargerTable>
+
+      {deletedCharger !== null && (
+        <PopupWindow
+          title={"Delete Charger?"}
+          text={`Are you sure you want to delete charger ${deletedCharger.name}?`}
+          onClose={() => {
+            setDeletedCharger(null);
+          }}
+        >
+          <PopupButtonWrapper>
+            <Button
+              buttonText="Yes"
+              onClick={async () => {
+                await removeCharger(deletedCharger.id);
+                setDeletedCharger(null);
+              }}
+            />
+            <Button
+              buttonText="No"
+              onClick={() => {
+                setDeletedCharger(null);
+              }}
+            />
+          </PopupButtonWrapper>
+        </PopupWindow>
+      )}
 
       {error.length > 0 && (
         <PopupWindow
