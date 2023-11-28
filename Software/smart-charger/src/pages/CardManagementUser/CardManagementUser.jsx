@@ -24,14 +24,13 @@ export const CardManagementUser = () => {
   useEffect(() => {
     const asyncCall = async () => {
       const cardData = await getAllUsersCards();
-      setCards(cardData);
+      setCards(cardData.cards);
     };
     asyncCall();
   }, []);
 
-  var userId = 2; //need to get real userId from jwt, aswell as cardId
   const cardDelete = async (cardId) => {
-    await deleteCard(cardId, userId);
+    await deleteCard(cardId);
     setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
   };
   return (
@@ -53,7 +52,7 @@ export const CardManagementUser = () => {
             <CardTableRow key={index}>
               <CardTableCell>{card.name}</CardTableCell>
               <CardTableCell>
-                {card.active ? "Inactive" : "Active"}
+                {card.active ? "Active" : "Inactive"}
               </CardTableCell>
               <CardTableCellDelete>
                 <CardTableCellDeleteIcon
@@ -80,7 +79,7 @@ export const CardManagementUser = () => {
             <Button
               buttonText="Yes"
               onClick={async () => {
-                await cardDelete(deletedCard.id, userId);
+                await cardDelete(deletedCard.id);
                 setDeletedCard(null);
               }}
             />
