@@ -53,7 +53,8 @@ export const createCharger = async (name, latitude, longitude) => {
       },
       body: JSON.stringify(charger),
     });
-    console.log(res);
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.log(error);
   }

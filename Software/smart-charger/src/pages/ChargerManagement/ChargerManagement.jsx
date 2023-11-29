@@ -13,6 +13,7 @@ import {
   ChargerTableRow,
   PopupButtonWrapper,
   TextFieldLabel,
+  CreateError,
 } from "./ChargerManagementStyles";
 import {
   createCharger,
@@ -41,6 +42,8 @@ export const ChargerManagement = () => {
 
   const [chargerName, setChargerName] = useState("");
   const [chargerLocation, setChargerLocation] = useState(null);
+
+  const [createError, setCreateError] = useState("");
 
   const fetchChargerData = async () => {
     const chargerData = await getChargerData(currentPage, pageSize, searchTerm);
@@ -220,30 +223,59 @@ export const ChargerManagement = () => {
           text=""
           onClose={() => {
             setCreatingCharger(false);
+            setChargerName("");
+            setChargerLocation(null);
+            setCreateError("");
           }}
         >
           <TextFieldLabel>Charger name:</TextFieldLabel>
           <TextField
             placeholder="Charger name..."
-            changeValue={() => {}}
+            changeValue={setChargerName}
             validateInput={() => {}}
           />
           <MapComponent
             setMarkerLocation={(marker) => {
-              console.log(marker);
+              setChargerLocation(marker);
             }}
           />
+          {createError && <CreateError>{createError}</CreateError>}
           <PopupButtonWrapper>
             <Button
               buttonText="Create"
-              onClick={() => {
-                setCreatingCharger(false);
+              onClick={async () => {
+                if (
+                  chargerName.trim().length === 0 ||
+                  chargerLocation == null
+                ) {
+                  setCreateError("You must choose name and location!");
+                } else {
+                  setCreateError("");
+                  const data = await createCharger(
+                    chargerName,
+                    chargerLocation.lat,
+                    chargerLocation.lng
+                  );
+                  if (data.success) {
+                    setCreatingCharger(false);
+                    setCurrentPage(1);
+                    setSearchTerm("");
+                    setChargerName("");
+                    setChargerLocation(null);
+                    await fetchChargerData();
+                  } else {
+                    setCreateError(data.error);
+                  }
+                }
               }}
             />
             <Button
               buttonText="Cancel"
               onClick={() => {
                 setCreatingCharger(false);
+                setChargerName("");
+                setChargerLocation(null);
+                setCreateError("");
               }}
             />
           </PopupButtonWrapper>
