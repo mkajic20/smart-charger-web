@@ -11,6 +11,7 @@ import ProtectedRouteUser from "./components/ProtectedRoutes/ProtectedRouteUser"
 import { UserManagement } from "./pages/UserManagement/UserManagement";
 import { CardManagementAdmin } from "./pages/CardManagementAdmin/CardManagementAdmin";
 import { ChargerManagement } from "./pages/ChargerManagement/ChargerManagement";
+import { CardManagementUser } from "./pages/CardManagementUser/CardManagementUser";
 
 function App() {
   return (
@@ -62,6 +63,15 @@ function App() {
                 <ProtectedRouteAdmin>
                   <ChargerManagement />
                 </ProtectedRouteAdmin>
+              }
+            />
+
+            <Route
+              path="/card-management-user"
+              element={
+                <ProtectedRouteUser>
+                  <CardManagementUser />
+                </ProtectedRouteUser>
               }
             />
           </Routes>

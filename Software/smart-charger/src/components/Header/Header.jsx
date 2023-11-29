@@ -60,7 +60,15 @@ const Header = () => {
 
             {role == 2 && (
               //USER NAVIGATION
-              <></>
+              <>
+                <HeaderLink
+                  onClick={() => {
+                    navigate("/card-management-user");
+                  }}
+                >
+                  My cards
+                </HeaderLink>
+              </>
             )}
           </HeaderNav>
         </HeaderInner>
