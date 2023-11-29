@@ -39,13 +39,11 @@ export const CardManagementAdmin = () => {
 
   const fetchCardData = async () => {
     const cardData = await getCardData(currentPage, pageSize, searchTerm);
-    console.log("data", cardData);
     if (cardData.success) {
       setCards(cardData.cards);
       setPages(cardData.totalPages);
     } else {
       setError(cardData.message);
-      console.log(cardData.message);
     }
   };
 
@@ -102,9 +100,11 @@ export const CardManagementAdmin = () => {
           <Search
             placeholder="Search"
             onCancel={() => {
+              setCurrentPage(1);
               setSearchTerm("");
             }}
-            search={async (term) => {
+            search={(term) => {
+              setCurrentPage(1);
               setSearchTerm(term);
             }}
             showCancel={searchTerm.trim().length > 0}

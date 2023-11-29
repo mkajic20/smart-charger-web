@@ -16,7 +16,7 @@ export const Footer = () => {
       const contentHeight = document.body.scrollHeight;
       const screenHeight = window.innerHeight;
 
-      setIsFooterFixed(contentHeight + 137 <= screenHeight);
+      setIsFooterFixed(contentHeight + 200 <= screenHeight);
     });
   };
 

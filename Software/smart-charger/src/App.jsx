@@ -10,6 +10,7 @@ import ProtectedRouteAdmin from "./components/ProtectedRoutes/ProtectedRouteAdmi
 import ProtectedRouteUser from "./components/ProtectedRoutes/ProtectedRouteUser";
 import { UserManagement } from "./pages/UserManagement/UserManagement";
 import { CardManagementAdmin } from "./pages/CardManagementAdmin/CardManagementAdmin";
+import { ChargerManagement } from "./pages/ChargerManagement/ChargerManagement";
 import { CardManagementUser } from "./pages/CardManagementUser/CardManagementUser";
 
 function App() {
@@ -53,6 +54,14 @@ function App() {
               element={
                 <ProtectedRouteAdmin>
                   <CardManagementAdmin />
+                </ProtectedRouteAdmin>
+              }
+            />
+            <Route
+              path="/charger-management"
+              element={
+                <ProtectedRouteAdmin>
+                  <ChargerManagement />
                 </ProtectedRouteAdmin>
               }
             />
