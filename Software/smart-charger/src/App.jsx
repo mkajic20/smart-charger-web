@@ -12,6 +12,7 @@ import { UserManagement } from "./pages/UserManagement/UserManagement";
 import { CardManagementAdmin } from "./pages/CardManagementAdmin/CardManagementAdmin";
 import { ChargerManagement } from "./pages/ChargerManagement/ChargerManagement";
 import { CardManagementUser } from "./pages/CardManagementUser/CardManagementUser";
+import { Map } from "./pages/Map/Map";
 
 function App() {
   return (
@@ -72,6 +73,15 @@ function App() {
                 <ProtectedRouteUser>
                   <CardManagementUser />
                 </ProtectedRouteUser>
+              }
+            />
+
+            <Route
+              path="/map"
+              element={
+                <ProtectedRoute>
+                  <Map />
+                </ProtectedRoute>
               }
             />
           </Routes>
