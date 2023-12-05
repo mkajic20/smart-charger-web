@@ -1,6 +1,14 @@
-import React, { useRef, useState } from "react";
-import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  useMapEvents,
+  Tooltip,
+} from "react-leaflet";
 import PropTypes from "prop-types";
+import L from "leaflet";
+import apiKey from "../../utils/api/geocode";
 
 import "./MapComponent.css";
 import "leaflet/dist/leaflet.css";
@@ -9,7 +17,57 @@ const defaultCenter = [46.307834, 16.33836];
 const defaultZoom = 18;
 
 const AddMarkers = ({ markers }) => {
-  console.log(markers);
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      const addressesPromises = markers.map(async (marker) => {
+        const reverseGeocodingUrl = `https://api.geoapify.com/v1/geocode/reverse?lat=${marker.latitude}&lon=${marker.longitude}&apiKey=${apiKey}`;
+
+        const result = await fetch(reverseGeocodingUrl);
+        const featureCollection = await result.json();
+
+        return featureCollection.features[0]?.properties.formatted;
+      });
+
+      const addresses = await Promise.all(addressesPromises);
+      setAddresses(addresses);
+    };
+
+    fetchAddresses();
+  }, [markers]);
+
+  const redIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+  });
+
+  const greenIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+  });
+
+  return (
+    <>
+      {markers.map((marker, index) => (
+        <Marker
+          key={index}
+          position={[marker.latitude, marker.longitude]}
+          icon={marker.active ? redIcon : greenIcon}
+        >
+          <Tooltip>
+            {marker.name} <br /> {addresses[index] || "Address not available"}
+          </Tooltip>
+        </Marker>
+      ))}
+    </>
+  );
 };
 
 const ClickMarker = ({ setMarkerLocation }) => {
@@ -25,7 +83,7 @@ const ClickMarker = ({ setMarkerLocation }) => {
     click: handleMapClick,
   });
 
-  return marker ? <Marker position={marker}></Marker> : null;
+  return marker ? <Marker position={marker} /> : null;
 };
 
 const MapComponent = ({
@@ -48,6 +106,8 @@ const MapComponent = ({
         center={defaultCenter}
         zoom={defaultZoom}
         style={mapStyle}
+        maxZoom={18}
+        minZoom={5}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {clickMarker && <ClickMarker setMarkerLocation={setMarkerLocation} />}
