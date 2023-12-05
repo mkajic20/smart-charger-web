@@ -238,6 +238,7 @@ export const ChargerManagement = () => {
             setMarkerLocation={(marker) => {
               setChargerLocation(marker);
             }}
+            clickMarker
           />
           {createError && <CreateError>{createError}</CreateError>}
           <PopupButtonWrapper>
