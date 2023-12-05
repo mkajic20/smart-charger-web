@@ -8,7 +8,9 @@ import "leaflet/dist/leaflet.css";
 const defaultCenter = [46.307834, 16.33836];
 const defaultZoom = 18;
 
-const AddMarkers = ({ markers }) => {};
+const AddMarkers = ({ markers }) => {
+  console.log(markers);
+};
 
 const ClickMarker = ({ setMarkerLocation }) => {
   const [marker, setMarker] = useState(null);
@@ -49,7 +51,7 @@ const MapComponent = ({
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {clickMarker && <ClickMarker setMarkerLocation={setMarkerLocation} />}
-        {markers && <AddMarkers />}
+        {markers && <AddMarkers markers={markers} />}
       </MapContainer>
     </div>
   );
