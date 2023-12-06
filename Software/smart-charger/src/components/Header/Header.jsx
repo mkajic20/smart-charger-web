@@ -70,6 +70,13 @@ const Header = () => {
                 </HeaderLink>
               </>
             )}
+            <HeaderLink
+              onClick={() => {
+                navigate("/map");
+              }}
+            >
+              Map
+            </HeaderLink>
           </HeaderNav>
         </HeaderInner>
         <HeaderButtonWrapper>

@@ -59,3 +59,26 @@ export const createCharger = async (name, latitude, longitude) => {
     console.log(error);
   }
 };
+
+export const getAllChargers = async () => {
+  const page = 1;
+  const size = 999999;
+  const search = "";
+  const jwt = localStorage.getItem("jwt");
+  let path = `${apiPath}/api/admin/chargers?page=${page}&pageSize=${size}`;
+
+  if (search.trim().length > 0) {
+    path += `&search=${search}`;
+  }
+
+  const res = await fetch(path, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await res.json();
+  return data;
+};
