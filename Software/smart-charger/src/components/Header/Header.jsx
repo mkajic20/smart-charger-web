@@ -68,6 +68,13 @@ const Header = () => {
                 >
                   My cards
                 </HeaderLink>
+                <HeaderLink
+                  onClick={() => {
+                    navigate("/charging-history");
+                  }}
+                >
+                  Charging history
+                </HeaderLink>
               </>
             )}
             <HeaderLink
