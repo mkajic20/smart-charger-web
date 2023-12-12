@@ -1,7 +1,7 @@
 import apiPath from "./api";
 import { decodeToken } from "react-jwt";
 
-export const getUserCharges = async (size, page, search) => {
+export const getUserCharges = async (page, size, search) => {
   const jwt = localStorage.getItem("jwt");
   const jwtData = decodeToken(jwt);
   const userId = jwtData.userId;

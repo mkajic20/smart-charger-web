@@ -8,7 +8,7 @@ import {
 } from "react-leaflet";
 import PropTypes from "prop-types";
 import L from "leaflet";
-import apiKey from "../../utils/api/geocode";
+import { reverseGeocode } from "../../utils/api/geocode";
 
 import "./MapComponent.css";
 import "leaflet/dist/leaflet.css";
@@ -22,12 +22,7 @@ const AddMarkers = ({ markers }) => {
   useEffect(() => {
     const fetchAddresses = async () => {
       const addressesPromises = markers.map(async (marker) => {
-        const reverseGeocodingUrl = `https://api.geoapify.com/v1/geocode/reverse?lat=${marker.latitude}&lon=${marker.longitude}&apiKey=${apiKey}`;
-
-        const result = await fetch(reverseGeocodingUrl);
-        const featureCollection = await result.json();
-
-        return featureCollection.features[0]?.properties.formatted;
+        return await reverseGeocode(marker.latitude, marker.longitude);
       });
 
       const addresses = await Promise.all(addressesPromises);

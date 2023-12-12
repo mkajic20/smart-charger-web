@@ -27,6 +27,7 @@ import Button from "../../components/Button/Button";
 import Search from "../../components/Search/Search";
 import MapComponent from "../../components/MapComponent/MapComponent";
 import TextField from "../../components/TextField/TextField";
+import { formatDate } from "../../utils/date";
 
 export const ChargerManagement = () => {
   const [chargers, setChargers] = useState([]);
@@ -58,19 +59,6 @@ export const ChargerManagement = () => {
   useEffect(() => {
     fetchChargerData();
   }, [currentPage, pageSize, searchTerm]);
-
-  const formatDate = (inputDate) => {
-    const date = new Date(inputDate);
-
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    return `${day}.${month}.${year}. ${hours}:${minutes}`;
-  };
 
   const removeCharger = async (chargerId) => {
     await deleteCharger(chargerId);
@@ -149,8 +137,8 @@ export const ChargerManagement = () => {
           {chargers.map((charger, index) => (
             <ChargerTableRow key={index}>
               <ChargerTableCell>{charger.name}</ChargerTableCell>
-              <ChargerTableCell>{charger.longitude}</ChargerTableCell>
               <ChargerTableCell>{charger.latitude}</ChargerTableCell>
+              <ChargerTableCell>{charger.longitude}</ChargerTableCell>
               <ChargerTableCell>
                 {formatDate(charger.creationTime)}
               </ChargerTableCell>
