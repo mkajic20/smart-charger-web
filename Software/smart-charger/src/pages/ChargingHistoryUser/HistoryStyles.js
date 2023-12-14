@@ -9,6 +9,20 @@ export const HistoryTitle = styled.h1`
   color: white;
 `;
 
+export const HistoryController = styled.div`
+  width: 62vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 auto;
+  padding-top: 20px;
+`;
+
+export const HistoryControl = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const HistoryTable = styled.table`
   margin: 0 auto;
   margin-top: 30px;

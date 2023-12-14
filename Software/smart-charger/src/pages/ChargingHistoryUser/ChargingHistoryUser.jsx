@@ -9,16 +9,24 @@ import {
   HistoryTableHeader,
   HistoryTableRow,
   HistoryTableCell,
+  HistoryController,
+  HistoryControl,
 } from "./HistoryStyles";
-import { Button } from "../../components/Button/ButtonStyles";
+import Button from "../../components/Button/Button";
 import { formatDate } from "../../utils/date";
 import { reverseGeocode } from "../../utils/api/geocode";
+import Pagination from "../../components/Pagination/Pagination";
 
 export const ChargingHistoryUser = () => {
   const [history, setHistory] = useState([]);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
   const fetchHistory = async () => {
-    const historyData = await getUserCharges(1, 100, "");
+    const historyData = await getUserCharges(page, 10, "");
+    console.log(historyData);
+    //TODO: set total pages
 
     if (historyData.success) {
       const chargedEvents = historyData.events.map(async (item) => {
@@ -53,6 +61,36 @@ export const ChargingHistoryUser = () => {
       {error.length === 0 && (
         <>
           <HistoryTitle>Charging history</HistoryTitle>
+          <HistoryController>
+            <HistoryControl></HistoryControl>
+            <HistoryControl>
+              <Pagination
+                currentPage={page}
+                pages={totalPages}
+                firstCall={async () => {
+                  setPage(1);
+                  await fetchHistory();
+                }}
+                lastCall={async () => {
+                  setPage(totalPages);
+                  await fetchHistory();
+                }}
+                nextCall={async () => {
+                  if (page < totalPages) {
+                    page++;
+                    await fetchHistory();
+                  }
+                }}
+                prevCall={async () => {
+                  if (page > 1) {
+                    page--;
+                    await fetchHistory();
+                  }
+                }}
+              />
+            </HistoryControl>
+            <HistoryControl></HistoryControl>
+          </HistoryController>
           <HistoryTable>
             <HistoryTableHead>
               <HistoryTableRow>
