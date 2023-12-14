@@ -16,15 +16,17 @@ import Button from "../../components/Button/Button";
 import { formatDate } from "../../utils/date";
 import { reverseGeocode } from "../../utils/api/geocode";
 import Pagination from "../../components/Pagination/Pagination";
+import Search from "../../components/Search/Search";
 
 export const ChargingHistoryUser = () => {
   const [history, setHistory] = useState([]);
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchHistory = async () => {
-    const historyData = await getUserCharges(page, 10, "");
+    const historyData = await getUserCharges(page, 10, searchTerm);
     console.log(historyData);
     //TODO: set total pages
 
@@ -55,7 +57,7 @@ export const ChargingHistoryUser = () => {
 
   useEffect(() => {
     fetchHistory();
-  }, []);
+  }, [page, searchTerm]);
   return (
     <>
       {error.length === 0 && (
@@ -77,19 +79,32 @@ export const ChargingHistoryUser = () => {
                 }}
                 nextCall={async () => {
                   if (page < totalPages) {
-                    page++;
+                    setPage(page + 1);
                     await fetchHistory();
                   }
                 }}
                 prevCall={async () => {
                   if (page > 1) {
-                    page--;
+                    setPage(page - 1);
                     await fetchHistory();
                   }
                 }}
               />
             </HistoryControl>
-            <HistoryControl></HistoryControl>
+            <HistoryControl>
+              <Search
+                placeholder={"Search history"}
+                onCancel={() => {
+                  setCurrentPage(1);
+                  setSearchTerm("");
+                }}
+                search={(term) => {
+                  setCurrentPage(1);
+                  setSearchTerm(term);
+                }}
+                showCancel={searchTerm.trim().length > 0}
+              />
+            </HistoryControl>
           </HistoryController>
           <HistoryTable>
             <HistoryTableHead>
