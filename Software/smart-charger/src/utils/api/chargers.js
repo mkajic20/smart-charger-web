@@ -3,7 +3,7 @@ import { decodeToken } from "react-jwt";
 
 export const getChargerData = async (page, size, search) => {
   const jwt = localStorage.getItem("jwt");
-  let path = `${apiPath}/api/admin/chargers?page=${page}&pageSize=${size}`;
+  let path = `${apiPath}/api/chargers?page=${page}&pageSize=${size}`;
 
   if (search.trim().length > 0) {
     path += `&search=${search}`;
@@ -65,7 +65,7 @@ export const getAllChargers = async () => {
   const size = 999999;
   const search = "";
   const jwt = localStorage.getItem("jwt");
-  let path = `${apiPath}/api/admin/chargers?page=${page}&pageSize=${size}`;
+  let path = `${apiPath}/api/chargers?page=${page}&pageSize=${size}`;
 
   if (search.trim().length > 0) {
     path += `&search=${search}`;

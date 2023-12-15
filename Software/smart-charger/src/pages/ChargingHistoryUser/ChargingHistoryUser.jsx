@@ -28,7 +28,7 @@ export const ChargingHistoryUser = () => {
   const fetchHistory = async () => {
     const historyData = await getUserCharges(page, 10, searchTerm);
     console.log(historyData);
-    //TODO: set total pages
+    setTotalPages(historyData.totalPages);
 
     if (historyData.success) {
       const chargedEvents = historyData.events.map(async (item) => {
@@ -94,12 +94,12 @@ export const ChargingHistoryUser = () => {
             <HistoryControl>
               <Search
                 placeholder={"Search history"}
-                onCancel={() => {
-                  setCurrentPage(1);
+                onCancel={async () => {
+                  setPage(1);
                   setSearchTerm("");
                 }}
-                search={(term) => {
-                  setCurrentPage(1);
+                search={async (term) => {
+                  setPage(1);
                   setSearchTerm(term);
                 }}
                 showCancel={searchTerm.trim().length > 0}
