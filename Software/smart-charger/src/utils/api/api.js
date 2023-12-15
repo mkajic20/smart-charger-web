@@ -1,2 +1,2 @@
-const apiPath = "https://localhost:7024";
+const apiPath = "https://baccboysapi.onrender.com";
 export default apiPath;
