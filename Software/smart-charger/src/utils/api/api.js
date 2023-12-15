@@ -1,3 +1,2 @@
-const apiPath =
-  "http://smartcharger-dev.eba-gdmzsi2g.us-east-1.elasticbeanstalk.com";
+const apiPath = "https://baccboysapi.onrender.com";
 export default apiPath;
