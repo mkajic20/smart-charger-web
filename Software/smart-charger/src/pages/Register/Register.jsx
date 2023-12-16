@@ -127,13 +127,18 @@ export const Register = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await registerUser();
+  };
+
   return (
     <RegisterWrapper>
       <Section
         title="Create account"
         subtitle="Please fill in the following fields in order to register:"
       >
-        <RegisterForm>
+        <RegisterForm onSubmit={handleSubmit}>
           <RegisterFormField>
             <RegisterFormLabel>First name:</RegisterFormLabel>
             <TextField

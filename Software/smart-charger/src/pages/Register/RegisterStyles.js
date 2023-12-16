@@ -10,7 +10,7 @@ export const RegisterWrapper = styled.div`
   }
 `;
 
-export const RegisterForm = styled.div`
+export const RegisterForm = styled.form`
   max-width: 35vw;
   margin: 20px auto 0 auto;
   padding-bottom: 50px;
