@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Section from "../../components/Section/Section";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
@@ -37,13 +37,18 @@ export const Login = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await loginUser();
+  };
+
   return (
     <LoginWrapper>
       <Section
         title="Sign in"
         subtitle="Please fill in the following fields in order to sign in:"
       >
-        <LoginForm>
+        <LoginForm onSubmit={handleSubmit}>
           <LoginFormField>
             <LoginFormLabel>Email: </LoginFormLabel>
             <TextField

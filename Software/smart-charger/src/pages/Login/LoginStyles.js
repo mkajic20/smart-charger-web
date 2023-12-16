@@ -10,7 +10,7 @@ export const Login = styled.div`
   }
 `;
 
-export const LoginForm = styled.div`
+export const LoginForm = styled.form`
   max-width: 35vw;
   margin: 20px auto 0 auto;
   padding-bottom: 50px;
