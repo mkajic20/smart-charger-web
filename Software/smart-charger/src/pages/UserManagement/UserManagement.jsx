@@ -20,18 +20,31 @@ import {
 } from "../../utils/api/users";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
+import { decodeToken } from "react-jwt";
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [changedUser, setChangedUser] = useState(null);
+  const [loggedUserId, setLoggedUserId] = useState(0);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const userData = await getAllUsers();
+      setUsers(userData);
+    };
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const asyncCall = async () => {
-      const userData = await getAllUsers();
-      setUsers(userData);
       const roleData = await getAllRoles();
       setRoles(roleData);
+
+      const jwt = localStorage.getItem("jwt");
+      const data = decodeToken(jwt);
+      setLoggedUserId(data.userId);
     };
 
     asyncCall();
@@ -75,26 +88,40 @@ export const UserManagement = () => {
               </UserTableCell>
               <UserTableCell>{user.email}</UserTableCell>
               <UserTableCell>
-                <UserTableRole
-                  defaultValue={user.roleId}
-                  onChange={(e) =>
-                    handleRoleChange(user.id, parseInt(e.target.value))
-                  }
-                >
-                  {roles.map((role) => (
-                    <UserTableRoleOption key={role.id} value={role.id}>
-                      {role.name}
-                    </UserTableRoleOption>
-                  ))}
-                </UserTableRole>
+                {user.id == loggedUserId ? (
+                  <>{roles.find((role) => role.id === user.roleId)?.name}</>
+                ) : (
+                  <>
+                    <UserTableRole
+                      defaultValue={user.roleId}
+                      onChange={(e) =>
+                        handleRoleChange(user.id, parseInt(e.target.value))
+                      }
+                    >
+                      {roles.map((role) => (
+                        <UserTableRoleOption key={role.id} value={role.id}>
+                          {role.name}
+                        </UserTableRoleOption>
+                      ))}
+                    </UserTableRole>
+                  </>
+                )}
               </UserTableCell>
-              <UserTableCellButton
-                onClick={() => {
-                  setChangedUser(user.id);
-                }}
-              >
-                {user.active ? "Deactivate" : "Activate"}
-              </UserTableCellButton>
+              {user.id == loggedUserId ? (
+                <>
+                  <UserTableCell>Active</UserTableCell>
+                </>
+              ) : (
+                <>
+                  <UserTableCellButton
+                    onClick={() => {
+                      setChangedUser(user.id);
+                    }}
+                  >
+                    {user.active ? "Deactivate" : "Activate"}
+                  </UserTableCellButton>
+                </>
+              )}
             </UserTableRow>
           ))}
         </UserTableBody>
