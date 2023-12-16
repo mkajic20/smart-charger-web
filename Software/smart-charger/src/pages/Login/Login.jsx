@@ -48,12 +48,13 @@ export const Login = () => {
         title="Sign in"
         subtitle="Please fill in the following fields in order to sign in:"
       >
-        <LoginForm onSubmit={handleSubmit}>
+        <LoginForm onSubmit={handleSubmit} autoComplete="on">
           <LoginFormField>
             <LoginFormLabel>Email: </LoginFormLabel>
             <TextField
               placeholder="Your email address"
               changeValue={setEmail}
+              autoComplete="email-address"
             />
           </LoginFormField>
           <LoginFormField>
@@ -62,6 +63,7 @@ export const Login = () => {
               placeholder="Your password"
               changeValue={setPassword}
               isPassword
+              autoComplete="current-password"
             />
           </LoginFormField>
 
