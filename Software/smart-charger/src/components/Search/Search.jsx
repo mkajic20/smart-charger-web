@@ -26,6 +26,17 @@ const Search = ({ placeholder, search, showCancel, onCancel }) => {
     setInputValue("");
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+
+    if (e.key === "Escape") {
+      onCancel();
+      setInputValue("");
+    }
+  };
+
   return (
     <>
       <SearchWrapper>
@@ -34,6 +45,7 @@ const Search = ({ placeholder, search, showCancel, onCancel }) => {
           placeholder={placeholder}
           value={inputValue}
           onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
         />
         {showCancel ? (
           <SearchBarIcon src={SearchCancelIcon} onClick={handleCancel} />

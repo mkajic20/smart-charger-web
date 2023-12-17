@@ -77,21 +77,20 @@ const Header = () => {
                 </HeaderLink>
               </>
             )}
-            <HeaderLink
-              onClick={() => {
-                navigate("/map");
-              }}
-            >
-              Map
-            </HeaderLink>
+
+            {isLoggedIn && (
+              <HeaderLink
+                onClick={() => {
+                  navigate("/map");
+                }}
+              >
+                Map
+              </HeaderLink>
+            )}
           </HeaderNav>
         </HeaderInner>
         <HeaderButtonWrapper>
-          {isLoggedIn ? (
-            <Button buttonText="LOG OUT" onClick={logOut} />
-          ) : (
-            <></>
-          )}
+          {isLoggedIn && <Button buttonText="LOG OUT" onClick={logOut} />}
         </HeaderButtonWrapper>
       </HeaderWrapper>
     </>
