@@ -40,10 +40,16 @@ export const getAllUsers = async () => {
 };
 
 export const getAllRoles = async () => {
-  return [
-    { id: 1, name: "Admin" },
-    { id: 2, name: "Customer" },
-  ];
+  const jwt = localStorage.getItem("jwt");
+  const res = await fetch(`${apiPath}/api/admin/roles`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  const data = await res.json();
+  return data.roles;
 };
 
 export const changeUserRole = async (userId, newRoleId) => {
