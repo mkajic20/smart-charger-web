@@ -60,12 +60,16 @@ export const UserManagement = () => {
   }, []);
 
   const handleRoleChange = async (userId, newRoleId) => {
-    await changeUserRole(userId, newRoleId);
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === userId ? { ...user, roleId: newRoleId } : user
-      )
-    );
+    const currentUser = users.find((user) => user.id === userId);
+
+    if (currentUser.roleId != newRoleId) {
+      await changeUserRole(userId, newRoleId);
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, roleId: newRoleId } : user
+        )
+      );
+    }
   };
 
   const changeActivation = async (userId) => {
