@@ -26,9 +26,16 @@ export const loginUser = async (user) => {
   return data;
 };
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (page, pageSize, search) => {
   const jwt = localStorage.getItem("jwt");
-  const res = await fetch(`${apiPath}/api/admin/users`, {
+
+  let path = `${apiPath}/api/admin/users?page=${page}&pageSize=${pageSize}`;
+
+  if (search.trim().length > 0) {
+    path += `&search=${search}`;
+  }
+
+  const res = await fetch(path, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -36,25 +43,34 @@ export const getAllUsers = async () => {
     },
   });
   const data = await res.json();
-  return data.users;
+  return data;
 };
 
 export const getAllRoles = async () => {
-  return [
-    { id: 1, name: "Admin" },
-    { id: 2, name: "Customer" },
-  ];
-};
-
-export const changeUserRole = async (userId, newRoleId) => {
   const jwt = localStorage.getItem("jwt");
-  const res = await fetch(`${apiPath}/api/admin/users/${userId}/role`, {
-    method: "PATCH",
+  const res = await fetch(`${apiPath}/api/admin/roles`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt}`,
     },
   });
+  const data = await res.json();
+  return data.roles;
+};
+
+export const changeUserRole = async (userId, newRoleId) => {
+  const jwt = localStorage.getItem("jwt");
+  const res = await fetch(
+    `${apiPath}/api/admin/users/${userId}/role/${newRoleId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
 };
 
 export const changeUserActivation = async (userId) => {

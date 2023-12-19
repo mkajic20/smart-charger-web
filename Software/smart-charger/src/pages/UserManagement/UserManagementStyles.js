@@ -83,3 +83,17 @@ export const PopupButtonWrapper = styled.div`
   display: flex;
   gap: 20px;
 `;
+
+export const UserManagementController = styled.div`
+  width: 62vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 auto;
+  padding-top: 20px;
+`;
+
+export const UserManagementControl = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
