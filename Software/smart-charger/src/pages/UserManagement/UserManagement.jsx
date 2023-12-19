@@ -23,6 +23,7 @@ import {
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
 import Search from "../../components/Search/Search";
+import Pagination from "../../components/Pagination/Pagination";
 import { decodeToken } from "react-jwt";
 
 export const UserManagement = () => {
@@ -31,15 +32,19 @@ export const UserManagement = () => {
   const [changedUser, setChangedUser] = useState(null);
   const [loggedUserId, setLoggedUserId] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [pages, setPages] = useState(0);
+
+  const fetchUsers = async () => {
+    const userData = await getAllUsers(currentPage, pageSize, searchTerm);
+    setPages(userData.totalPages);
+    setUsers(userData.users);
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const userData = await getAllUsers(1, 100, searchTerm);
-      setUsers(userData);
-    };
-
     fetchUsers();
-  }, [searchTerm]);
+  }, [searchTerm, currentPage]);
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -77,14 +82,41 @@ export const UserManagement = () => {
       <UserManagementTitle>User Management</UserManagementTitle>
       <UserManagementController>
         <UserManagementControl></UserManagementControl>
-        <UserManagementControl></UserManagementControl>
+        <UserManagementControl>
+          <Pagination
+            pages={pages}
+            currentPage={currentPage}
+            prevCall={async () => {
+              if (currentPage > 1) {
+                setCurrentPage(currentPage - 1);
+                await fetchUsers();
+              }
+            }}
+            firstCall={async () => {
+              setCurrentPage(1);
+              await fetchUsers();
+            }}
+            nextCall={async () => {
+              if (currentPage < pages) {
+                setCurrentPage(currentPage + 1);
+                await fetchUsers();
+              }
+            }}
+            lastCall={async () => {
+              setCurrentPage(pages);
+              await fetchUsers();
+            }}
+          />
+        </UserManagementControl>
         <UserManagementControl>
           <Search
             placeholder="Search"
             onCancel={() => {
+              setCurrentPage(1);
               setSearchTerm("");
             }}
             search={(term) => {
+              setCurrentPage(1);
               setSearchTerm(term);
             }}
             showCancel={searchTerm.trim().length > 0}

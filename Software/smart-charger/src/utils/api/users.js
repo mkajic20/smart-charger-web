@@ -43,7 +43,7 @@ export const getAllUsers = async (page, pageSize, search) => {
     },
   });
   const data = await res.json();
-  return data.users;
+  return data;
 };
 
 export const getAllRoles = async () => {
