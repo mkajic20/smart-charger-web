@@ -11,6 +11,8 @@ import {
   UserTableRole,
   UserTableRoleOption,
   PopupButtonWrapper,
+  UserManagementController,
+  UserManagementControl,
 } from "./UserManagementStyles";
 import {
   changeUserActivation,
@@ -20,6 +22,7 @@ import {
 } from "../../utils/api/users";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
+import Search from "../../components/Search/Search";
 import { decodeToken } from "react-jwt";
 
 export const UserManagement = () => {
@@ -27,15 +30,16 @@ export const UserManagement = () => {
   const [roles, setRoles] = useState([]);
   const [changedUser, setChangedUser] = useState(null);
   const [loggedUserId, setLoggedUserId] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const userData = await getAllUsers();
+      const userData = await getAllUsers(1, 100, searchTerm);
       setUsers(userData);
     };
 
     fetchUsers();
-  }, []);
+  }, [searchTerm]);
 
   useEffect(() => {
     const asyncCall = async () => {
@@ -71,6 +75,22 @@ export const UserManagement = () => {
   return (
     <>
       <UserManagementTitle>User Management</UserManagementTitle>
+      <UserManagementController>
+        <UserManagementControl></UserManagementControl>
+        <UserManagementControl></UserManagementControl>
+        <UserManagementControl>
+          <Search
+            placeholder="Search"
+            onCancel={() => {
+              setSearchTerm("");
+            }}
+            search={(term) => {
+              setSearchTerm(term);
+            }}
+            showCancel={searchTerm.trim().length > 0}
+          />
+        </UserManagementControl>
+      </UserManagementController>
       <UserTable>
         <UserTableHead>
           <UserTableRow>

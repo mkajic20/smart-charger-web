@@ -26,9 +26,16 @@ export const loginUser = async (user) => {
   return data;
 };
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (page, pageSize, search) => {
   const jwt = localStorage.getItem("jwt");
-  const res = await fetch(`${apiPath}/api/admin/users`, {
+
+  let path = `${apiPath}/api/admin/users?page=${page}&pageSize=${pageSize}`;
+
+  if (search.trim().length > 0) {
+    path += `&search=${search}`;
+  }
+
+  const res = await fetch(path, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
