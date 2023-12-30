@@ -41,6 +41,7 @@ const Header = () => {
                 >
                   Users
                 </HeaderLink>
+
                 <HeaderLink
                   onClick={() => {
                     navigate("/card-management");
@@ -48,12 +49,21 @@ const Header = () => {
                 >
                   RFID cards
                 </HeaderLink>
+
                 <HeaderLink
                   onClick={() => {
                     navigate("/charger-management");
                   }}
                 >
                   Chargers
+                </HeaderLink>
+
+                <HeaderLink
+                  onClick={() => {
+                    navigate("/charging-history-admin");
+                  }}
+                >
+                  Charging history
                 </HeaderLink>
               </>
             )}
@@ -68,6 +78,7 @@ const Header = () => {
                 >
                   My cards
                 </HeaderLink>
+
                 <HeaderLink
                   onClick={() => {
                     navigate("/charging-history");
