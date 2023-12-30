@@ -15,15 +15,17 @@ import { formatDate } from "../../utils/date";
 import { reverseGeocode } from "../../utils/api/geocode";
 import { getCharges } from "../../utils/api/adminHistory";
 import Pagination from "../../components/Pagination/Pagination";
+import Search from "../../components/Search/Search";
 
 export const ChargingHistoryAdmin = () => {
   const [history, setHistory] = useState([]);
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchHistory = async () => {
-    const historyData = await getCharges(1, 10, "");
+    const historyData = await getCharges(page, 10, searchTerm);
     setTotalPages(historyData.totalPages);
 
     if (historyData.success) {
@@ -88,7 +90,20 @@ export const ChargingHistoryAdmin = () => {
                 }}
               />
             </HistoryControl>
-            <HistoryControl></HistoryControl>
+            <HistoryControl>
+              <Search
+                placeholder={"Search history"}
+                onCancel={async () => {
+                  setPage(1);
+                  setSearchTerm("");
+                }}
+                search={async (term) => {
+                  setPage(1);
+                  setSearchTerm(term);
+                }}
+                showCancel={searchTerm.trim().length > 0}
+              />
+            </HistoryControl>
           </HistoryController>
           <HistoryTable>
             <HistoryTableHead>
