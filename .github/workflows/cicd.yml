@@ -19,6 +19,9 @@ jobs:
       with:
         node-version: 16
 
+    - name: Set working directory
+      run: cd Software/smart-charger
+      
     - name: Install dependencies
       run: npm install
 
