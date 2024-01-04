@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set working directory
-      run: cd D:/a/smart-charger-web/Software/smart-charger
+      run: cd Software/smart-charger
 
     - name: List files in directory
       run: dir
