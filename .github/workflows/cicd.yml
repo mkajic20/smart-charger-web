@@ -34,33 +34,35 @@ jobs:
     #      cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger  
     #      npm run test
 
+ # deploy:
+  #  needs: build
+   # runs-on: ubuntu-latest
+#
+ #   steps:
+  #  - name: Checkout repository
+   #   uses: actions/checkout@v2
+
+    #- name: Set up Node.js
+     # uses: actions/setup-node@v3
+      #with:
+       # node-version: 16
+
+    #- name: Install dependencies
+     # run: npm install -g gh-pages
+
+    #- name: Deploy to GitHub Pages
+     # run: |
+      #  cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger\dist
+       # npx gh-pages -d ../../../../gh-pages
   deploy:
+    runs-on: windows-latest
     needs: build
-    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16
-
-    - name: Install dependencies
-      run: npm install -g gh-pages
-
     - name: Deploy to GitHub Pages
-      run: |
-        cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger\dist
-        npx gh-pages -d ../../../../gh-pages
-  #deploy:
-   # runs-on: windows-latest
-    #needs: build
-
-    #steps:
-    #- name: Deploy to GitHub Pages
-     # uses: peaceiris/actions-gh-pages@v3
-      #with:
-       # github_token: ${{ secrets.GITHUB_TOKEN }}
-        #publish_dir: ../../dist
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: |
+                    cd ../..
+                    ./dist
