@@ -21,15 +21,18 @@ jobs:
 
    # - name: Set working directory
    #   run: cd Software/smart-charger
+
+    - name: Set working directory
+      run: cd D:\a\smart-charger-web\smart-charger-web
       
     - name: Install dependencies
-      run: npm install --prefix Software/smart-charger
+      run: npm install #--prefix Software/smart-charger
 
     - name: Build
-      run: npm run build --prefix Software/smart-charger
+      run: npm run build #--prefix Software/smart-charger
 
     #- name: Test
-    #  run: npm run test --prefix Software/smart-charger
+    #  run: npm run test #--prefix Software/smart-charger
 
   deploy:
     runs-on: windows-latest
