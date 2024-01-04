@@ -14,6 +14,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Set working directory
+      run: cd D:/a/smart-charger-web/smart-charger-web
+
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
@@ -21,9 +24,6 @@ jobs:
 
    # - name: Set working directory
    #   run: cd Software/smart-charger
-
-    - name: Set working directory
-      run: cd D:/a/smart-charger-web/smart-charger-web
       
     - name: Install dependencies
       run: npm install #--prefix Software/smart-charger
