@@ -25,7 +25,7 @@ jobs:
       #run: cd ~\Software\smart-charger
 
     - name: List files in directory
-      run: dir
+      run: cd Software\smart-charger | dir
 
    # - name: Set working directory
    #   run: cd Software/smart-charger
