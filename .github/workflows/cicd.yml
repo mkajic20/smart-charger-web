@@ -17,6 +17,9 @@ jobs:
     - name: Set working directory
       run: cd D:/a/smart-charger-web/smart-charger-web
 
+    - name: List files in directory
+      run: dir
+
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
