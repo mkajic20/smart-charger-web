@@ -23,19 +23,13 @@ jobs:
    #   run: cd Software/smart-charger
       
     - name: Install dependencies
-      run: 
-        cd Software/smart-charger
-        npm install
+      run: npm install --prefix Software/smart-charger
 
     - name: Build
-      run: 
-        cd Software/smart-charger
-        npm run build
+      run: npm run build --prefix Software/smart-charger
 
     #- name: Test
-    #  run: 
-    #  cd Software/smart-charger
-    #  npm run test
+    #  run: npm run test --prefix Software/smart-charger
 
   deploy:
     runs-on: windows-latest
