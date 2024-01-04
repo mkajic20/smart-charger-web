@@ -20,7 +20,8 @@ jobs:
       #run: cd ~\Software\smart-charger
 
     - name: List files in directory
-      run: dir
+      run: | 
+          dir
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
