@@ -20,14 +20,12 @@ jobs:
         node-version: 16
 
     - name: Set working directory
-      run: cd Software\smart-charger
+      run: cd $GITHUB_WORKSPACE
       shell: cmd
       #run: cd ~\Software\smart-charger
 
     - name: List files in directory
-      run: | 
-           cd Software\smart-charger 
-           | dir
+      run: dir
 
    # - name: Set working directory
    #   run: cd Software/smart-charger
