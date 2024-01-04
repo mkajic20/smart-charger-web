@@ -20,7 +20,7 @@ jobs:
         node-version: 16
 
     - name: Set working directory
-      run: cd D:/a/smart-charger-web/smart-charger-web/Software
+      run: cd D:\a\smart-charger-web\smart-charger-web\Software
       #run: cd ~\Software\smart-charger
 
     - name: List files in directory
