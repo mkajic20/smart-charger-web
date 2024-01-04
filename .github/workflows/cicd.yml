@@ -20,8 +20,7 @@ jobs:
         node-version: 16
 
     - name: Set working directory
-      run: cd $GITHUB_WORKSPACE
-      shell: cmd
+      run: Echo $PWD
       #run: cd ~\Software\smart-charger
 
     - name: List files in directory
