@@ -19,17 +19,23 @@ jobs:
       with:
         node-version: 16
 
-    - name: Set working directory
-      run: cd Software/smart-charger
+   # - name: Set working directory
+   #   run: cd Software/smart-charger
       
     - name: Install dependencies
-      run: npm install
+      run: 
+        cd Software/smart-charger
+        npm install
 
     - name: Build
-      run: npm run build
+      run: 
+        cd Software/smart-charger
+        npm run build
 
     #- name: Test
-    #  run: npm run test
+    #  run: 
+    #  cd Software/smart-charger
+    #  npm run test
 
   deploy:
     runs-on: windows-latest
