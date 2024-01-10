@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:  
+  push:
+    branches: ["feature/*","develop","main","hotfix/*","improvement/*"]
+  pull_request:
+    branches: ["feature/*","develop","main","hotfix/*","improvement/*"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+      
+    - name: Install dependencies
+      run: | 
+          cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger
+          npm install
+
+    - name: Build
+      run: | 
+          cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger 
+          npm run build
+
+    #- name: Test
+    #  run: | 
+    #      cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger  
+    #      npm run test
