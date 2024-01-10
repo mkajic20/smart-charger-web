@@ -23,13 +23,14 @@ jobs:
       run: | 
           cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger
           npm install
+          npm install --save-dev jest
 
     - name: Build
       run: | 
           cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger 
           npm run build
 
-    #- name: Test
-    #  run: | 
-    #      cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger  
-    #      npm run test
+    - name: Test
+      run: | 
+          cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger  
+          npm test
