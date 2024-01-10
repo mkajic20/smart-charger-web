@@ -23,6 +23,7 @@ jobs:
       run: | 
           cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger
           npm install
+          npm install --save-dev jest
 
     - name: Build
       run: | 
@@ -32,4 +33,4 @@ jobs:
     - name: Test
       run: | 
           cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger  
-          npm jest --config jest.config.cjs
+          npm test
