@@ -11,11 +11,11 @@ const MonthPicker = ({ month, clickPrev, clickNext, enableNext }) => {
   return (
     <MonthPickerWrapper>
       <MonthPickerButtonWrapper>
-        <Button isSecondary buttonText="<" onClick={clickPrev} />
+        <Button buttonText="<" onClick={clickPrev} />
       </MonthPickerButtonWrapper>
       <MonthPickerDate>{month}</MonthPickerDate>
       <MonthPickerButtonWrapper>
-        <Button isSecondary buttonText=">" onClick={clickNext} />
+        <Button buttonText=">" onClick={clickNext} isDisabled={!enableNext} />
       </MonthPickerButtonWrapper>
     </MonthPickerWrapper>
   );

@@ -54,9 +54,9 @@ export const ChargerTableCell = styled.td`
   text-align: center;
 `;
 
-export const ChargerTableCellDelete = styled.td``;
+export const ChargerTableCellIconButton = styled.td``;
 
-export const ChargerTableCellDeleteIcon = styled.img`
+export const ChargerTableCellIcon = styled.img`
   width: 2vw;
   &:hover {
     cursor: pointer;

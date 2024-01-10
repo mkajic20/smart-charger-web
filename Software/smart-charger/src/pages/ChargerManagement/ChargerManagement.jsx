@@ -6,8 +6,8 @@ import {
   ChargerTable,
   ChargerTableBody,
   ChargerTableCell,
-  ChargerTableCellDelete,
-  ChargerTableCellDeleteIcon,
+  ChargerTableCellIconButton,
+  ChargerTableCellIcon,
   ChargerTableHead,
   ChargerTableHeader,
   ChargerTableRow,
@@ -20,7 +20,8 @@ import {
   deleteCharger,
   getChargerData,
 } from "../../utils/api/chargers";
-import Icon from "../../assets/trash-icon.png";
+import DeleteIcon from "../../assets/trash-icon.png";
+import StatisticsIcon from "../../assets/statistics-icon.png";
 import Pagination from "../../components/Pagination/Pagination";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
@@ -28,6 +29,7 @@ import Search from "../../components/Search/Search";
 import MapComponent from "../../components/MapComponent/MapComponent";
 import TextField from "../../components/TextField/TextField";
 import { formatDate } from "../../utils/date";
+import { useNavigate } from "react-router";
 
 export const ChargerManagement = () => {
   const [chargers, setChargers] = useState([]);
@@ -45,6 +47,8 @@ export const ChargerManagement = () => {
   const [chargerLocation, setChargerLocation] = useState(null);
 
   const [createError, setCreateError] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchChargerData = async () => {
     const chargerData = await getChargerData(currentPage, pageSize, searchTerm);
@@ -131,6 +135,7 @@ export const ChargerManagement = () => {
             <ChargerTableHeader>Creation time</ChargerTableHeader>
             <ChargerTableHeader>Last used</ChargerTableHeader>
             <ChargerTableHeader></ChargerTableHeader>
+            <ChargerTableHeader></ChargerTableHeader>
           </ChargerTableRow>
         </ChargerTableHead>
         <ChargerTableBody>
@@ -145,14 +150,22 @@ export const ChargerManagement = () => {
               <ChargerTableCell>
                 {charger.lastSync ? formatDate(charger.lastSync) : "-"}
               </ChargerTableCell>
-              <ChargerTableCellDelete>
-                <ChargerTableCellDeleteIcon
-                  src={Icon}
+              <ChargerTableCellIconButton>
+                <ChargerTableCellIcon
+                  src={StatisticsIcon}
+                  onClick={() => {
+                    navigate(`/statistics/${charger.id}`);
+                  }}
+                />
+              </ChargerTableCellIconButton>
+              <ChargerTableCellIconButton>
+                <ChargerTableCellIcon
+                  src={DeleteIcon}
                   onClick={() => {
                     setDeletedCharger(charger);
                   }}
                 />
-              </ChargerTableCellDelete>
+              </ChargerTableCellIconButton>
             </ChargerTableRow>
           ))}
         </ChargerTableBody>

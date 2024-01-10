@@ -65,14 +65,6 @@ const Header = () => {
                 >
                   Charging history
                 </HeaderLink>
-
-                <HeaderLink
-                  onClick={() => {
-                    navigate("/statistics");
-                  }}
-                >
-                  Statistics
-                </HeaderLink>
               </>
             )}
 

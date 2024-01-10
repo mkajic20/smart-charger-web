@@ -14,4 +14,6 @@ export const MonthPickerDate = styled.p`
   color: White;
   font-weight: bold;
   font-size: 20px;
+  width: 200px;
+  text-align: center;
 `;

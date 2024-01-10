@@ -108,7 +108,7 @@ function App() {
             />
 
             <Route
-              path="/statistics"
+              path="/statistics/:id"
               element={
                 <ProtectedRouteAdmin>
                   <Statistics />
