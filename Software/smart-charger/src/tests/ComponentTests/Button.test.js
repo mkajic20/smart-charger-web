@@ -1,6 +1,9 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
-import Button from "../components/Button/Button";
+import { render, fireEvent, screen } from "@testing-library/react";
+import Button from "../../components/Button/Button";
+
+const mockOnClick = jest.fn();
+const mockButtonText = "Click me";
 
 describe("Button Component", () => {
   it("renders without crashing", () => {
@@ -45,5 +48,35 @@ describe("Button Component", () => {
       <Button isDisabled={false} buttonText="Click me" />
     );
     expect(getByText("Click me")).not.toBeDisabled();
+  });
+
+  it("does not call onClick function when the button is disabled", () => {
+    render(
+      <Button
+        onClick={mockOnClick}
+        buttonText={mockButtonText}
+        isDisabled={true}
+      />
+    );
+
+    const button = screen.getByText(mockButtonText);
+    expect(button).toBeDisabled();
+    fireEvent.click(button);
+    expect(mockOnClick).not.toHaveBeenCalled();
+  });
+
+  it("calls onClick function when the button is not disabled", () => {
+    render(
+      <Button
+        onClick={mockOnClick}
+        buttonText={mockButtonText}
+        isDisabled={false}
+      />
+    );
+
+    const button = screen.getByText(mockButtonText);
+    expect(button).not.toBeDisabled();
+    fireEvent.click(button);
+    expect(mockOnClick).toHaveBeenCalled();
   });
 });
