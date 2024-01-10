@@ -15,6 +15,7 @@ import { CardManagementUser } from "./pages/CardManagementUser/CardManagementUse
 import { Map } from "./pages/Map/Map";
 import { ChargingHistoryUser } from "./pages/ChargingHistoryUser/ChargingHistoryUser";
 import { ChargingHistoryAdmin } from "./pages/ChargingHistoryAdmin/ChargingHistoryAdmin";
+import { Statistics } from "./pages/Statistics/Statistics";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
                 </ProtectedRouteAdmin>
               }
             />
+
             <Route
               path="/charger-management"
               element={
@@ -101,6 +103,15 @@ function App() {
               element={
                 <ProtectedRouteAdmin>
                   <ChargingHistoryAdmin />
+                </ProtectedRouteAdmin>
+              }
+            />
+
+            <Route
+              path="/statistics/:id"
+              element={
+                <ProtectedRouteAdmin>
+                  <Statistics />
                 </ProtectedRouteAdmin>
               }
             />

@@ -82,3 +82,17 @@ export const getAllChargers = async () => {
   const data = await res.json();
   return data;
 };
+
+export const getChargerById = async (chargerId) => {
+  const jwt = localStorage.getItem("jwt");
+  const res = await fetch(`${apiPath}/api/admin/chargers/${chargerId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+
+  const data = await res.json();
+  return data;
+};

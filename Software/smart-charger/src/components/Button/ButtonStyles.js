@@ -15,4 +15,11 @@ export const Button = styled.button`
     cursor: pointer;
     background-color: ${colors.hover};
   }
+
+  &:disabled {
+    background-color: gray;
+    &:hover {
+      cursor: default;
+    }
+  }
 `;

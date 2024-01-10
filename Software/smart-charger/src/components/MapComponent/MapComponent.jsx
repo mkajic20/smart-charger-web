@@ -86,6 +86,9 @@ const MapComponent = ({
   clickMarker,
   markers,
   biggerMap,
+  setCenter,
+  centerLongitude,
+  centerLatitude,
 }) => {
   const mapRef = useRef();
 
@@ -98,7 +101,7 @@ const MapComponent = ({
     <div>
       <MapContainer
         ref={mapRef}
-        center={defaultCenter}
+        center={setCenter ? [centerLatitude, centerLongitude] : defaultCenter}
         zoom={defaultZoom}
         style={mapStyle}
         maxZoom={18}
@@ -117,6 +120,9 @@ MapComponent.propTypes = {
   clickMarker: PropTypes.bool,
   markers: PropTypes.array,
   biggerMap: PropTypes.bool,
+  setCenter: PropTypes.bool,
+  centerLongitude: PropTypes.number,
+  centerLatitude: PropTypes.number,
 };
 
 export default MapComponent;
