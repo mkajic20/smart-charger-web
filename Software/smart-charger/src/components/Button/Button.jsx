@@ -3,9 +3,15 @@ import PropTypes from "prop-types";
 import { Button as ButtonWrapper } from "./ButtonStyles";
 
 const Button = ({ onClick, buttonText, isSecondary, isDisabled }) => {
+  const handleClick = () => {
+    if (!isDisabled && onClick) {
+      onClick();
+    }
+  };
+
   return (
     <ButtonWrapper
-      onClick={onClick}
+      onClick={handleClick}
       issecondary={isSecondary ? "true" : "false"}
       disabled={isDisabled}
     >

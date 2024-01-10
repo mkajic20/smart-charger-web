@@ -48,9 +48,17 @@ const Search = ({ placeholder, search, showCancel, onCancel }) => {
           onKeyDown={handleKeyPress}
         />
         {showCancel ? (
-          <SearchBarIcon src={SearchCancelIcon} onClick={handleCancel} />
+          <SearchBarIcon
+            src={SearchCancelIcon}
+            onClick={handleCancel}
+            alt="Cancel icon"
+          />
         ) : (
-          <SearchBarIcon src={SearchIcon} onClick={handleSearch} />
+          <SearchBarIcon
+            src={SearchIcon}
+            onClick={handleSearch}
+            alt="Search icon"
+          />
         )}
       </SearchWrapper>
     </>
