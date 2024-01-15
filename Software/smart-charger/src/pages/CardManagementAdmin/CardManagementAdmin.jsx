@@ -94,7 +94,13 @@ export const CardManagementAdmin = () => {
               setCurrentPage(pages);
               await fetchCardData();
             }}
-          ></Pagination>
+            withSelect
+            onSelectChange={async (size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+              await fetchCardData();
+            }}
+          />
         </Control>
         <Control>
           <Search

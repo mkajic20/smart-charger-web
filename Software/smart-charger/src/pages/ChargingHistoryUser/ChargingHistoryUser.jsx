@@ -24,9 +24,10 @@ export const ChargingHistoryUser = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [pageSize, setPageSize] = useState(10);
 
   const fetchHistory = async () => {
-    const historyData = await getUserCharges(page, 10, searchTerm);
+    const historyData = await getUserCharges(page, pageSize, searchTerm);
     setTotalPages(historyData.totalPages);
 
     if (historyData.success) {
@@ -87,6 +88,12 @@ export const ChargingHistoryUser = () => {
                     setPage(page - 1);
                     await fetchHistory();
                   }
+                }}
+                withSelect
+                onSelectChange={async (size) => {
+                  setPageSize(size);
+                  setPage(1);
+                  await fetchHistory();
                 }}
               />
             </Control>

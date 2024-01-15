@@ -107,7 +107,13 @@ export const ChargerManagement = () => {
               setCurrentPage(pages);
               await fetchChargerData();
             }}
-          ></Pagination>
+            withSelect
+            onSelectChange={async (size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+              await fetchChargerData();
+            }}
+          />
         </Control>
         <Control>
           <Search

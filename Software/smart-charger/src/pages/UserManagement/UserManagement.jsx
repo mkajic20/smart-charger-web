@@ -109,6 +109,12 @@ export const UserManagement = () => {
               setCurrentPage(pages);
               await fetchUsers();
             }}
+            withSelect
+            onSelectChange={async (size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+              await fetchUsers();
+            }}
           />
         </Control>
         <Control>
