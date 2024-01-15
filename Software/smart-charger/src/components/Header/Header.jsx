@@ -27,8 +27,19 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <HeaderInner>
-          <HeaderLogo src={Logo} />
-          <HeaderTitle>Smart Charger</HeaderTitle>
+          <HeaderLogo
+            src={Logo}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+          <HeaderTitle
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Smart Charger
+          </HeaderTitle>
           <HeaderNav>
             {role == 1 && (
               //ADMIN NAVIGATION
