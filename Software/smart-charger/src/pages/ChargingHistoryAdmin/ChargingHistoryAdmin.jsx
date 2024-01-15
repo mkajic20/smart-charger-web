@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import {
-  HistoryTitle,
-  HistoryTable,
-  HistoryTableHead,
-  HistoryTableBody,
-  HistoryTableHeader,
-  HistoryTableRow,
-  HistoryTableCell,
-  HistoryController,
-  HistoryControl,
-} from "./HistoryAdminStyles";
 import Button from "../../components/Button/Button";
 import { formatDate } from "../../utils/date";
 import { reverseGeocode } from "../../utils/api/geocode";
 import { getCharges } from "../../utils/api/adminHistory";
 import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search/Search";
+import {
+  Control,
+  Controller,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
+} from "../../utils/styles/generalStyles";
 
 export const ChargingHistoryAdmin = () => {
   const [history, setHistory] = useState([]);
@@ -61,10 +61,10 @@ export const ChargingHistoryAdmin = () => {
     <>
       {error.length === 0 && (
         <>
-          <HistoryTitle>Charging history</HistoryTitle>
-          <HistoryController>
-            <HistoryControl></HistoryControl>
-            <HistoryControl>
+          <Title>Charging history</Title>
+          <Controller>
+            <Control></Control>
+            <Control>
               <Pagination
                 currentPage={page}
                 pages={totalPages}
@@ -89,8 +89,8 @@ export const ChargingHistoryAdmin = () => {
                   }
                 }}
               />
-            </HistoryControl>
-            <HistoryControl>
+            </Control>
+            <Control>
               <Search
                 placeholder={"Search history"}
                 onCancel={async () => {
@@ -103,40 +103,36 @@ export const ChargingHistoryAdmin = () => {
                 }}
                 showCancel={searchTerm.trim().length > 0}
               />
-            </HistoryControl>
-          </HistoryController>
-          <HistoryTable>
-            <HistoryTableHead>
-              <HistoryTableRow>
-                <HistoryTableHeader>User</HistoryTableHeader>
-                <HistoryTableHeader>Start</HistoryTableHeader>
-                <HistoryTableHeader>End</HistoryTableHeader>
-                <HistoryTableHeader>Volume</HistoryTableHeader>
-                <HistoryTableHeader>Card</HistoryTableHeader>
-                <HistoryTableHeader>Charger</HistoryTableHeader>
-                <HistoryTableHeader>Location</HistoryTableHeader>
-              </HistoryTableRow>
-            </HistoryTableHead>
-            <HistoryTableBody>
+            </Control>
+          </Controller>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>User</TableHeader>
+                <TableHeader>Start</TableHeader>
+                <TableHeader>End</TableHeader>
+                <TableHeader>Volume</TableHeader>
+                <TableHeader>Card</TableHeader>
+                <TableHeader>Charger</TableHeader>
+                <TableHeader>Location</TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {history.map((item, index) => (
-                <HistoryTableRow key={index}>
-                  <HistoryTableCell>
+                <TableRow key={index}>
+                  <TableCell>
                     {item.user.firstName} {item.user.lastName}
-                  </HistoryTableCell>
-                  <HistoryTableCell>
-                    {formatDate(item.startTime)}
-                  </HistoryTableCell>
-                  <HistoryTableCell>
-                    {formatDate(item.endTime)}
-                  </HistoryTableCell>
-                  <HistoryTableCell>{item.volume}</HistoryTableCell>
-                  <HistoryTableCell>{item.card.name}</HistoryTableCell>
-                  <HistoryTableCell>{item.charger.name}</HistoryTableCell>
-                  <HistoryTableCell>{item.address}</HistoryTableCell>
-                </HistoryTableRow>
+                  </TableCell>
+                  <TableCell>{formatDate(item.startTime)}</TableCell>
+                  <TableCell>{formatDate(item.endTime)}</TableCell>
+                  <TableCell>{item.volume}</TableCell>
+                  <TableCell>{item.card.name}</TableCell>
+                  <TableCell>{item.charger.name}</TableCell>
+                  <TableCell>{item.address}</TableCell>
+                </TableRow>
               ))}
-            </HistoryTableBody>
-          </HistoryTable>
+            </TableBody>
+          </Table>
         </>
       )}
 

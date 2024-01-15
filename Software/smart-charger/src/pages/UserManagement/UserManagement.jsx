@@ -1,19 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  UserManagementTitle,
-  UserTable,
-  UserTableRow,
-  UserTableHeader,
-  UserTableCell,
-  UserTableBody,
-  UserTableHead,
-  UserTableCellButton,
-  UserTableRole,
-  UserTableRoleOption,
-  PopupButtonWrapper,
-  UserManagementController,
-  UserManagementControl,
-} from "./UserManagementStyles";
+import { UserTableRole, UserTableRoleOption } from "./UserManagementStyles";
 import {
   changeUserActivation,
   changeUserRole,
@@ -25,6 +11,19 @@ import Button from "../../components/Button/Button";
 import Search from "../../components/Search/Search";
 import Pagination from "../../components/Pagination/Pagination";
 import { decodeToken } from "react-jwt";
+import {
+  Control,
+  Controller,
+  Table,
+  TableBody,
+  TableCell,
+  TableCellButton,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
+  PopupButtonWrapper,
+} from "../../utils/styles/generalStyles";
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -83,10 +82,10 @@ export const UserManagement = () => {
 
   return (
     <>
-      <UserManagementTitle>User Management</UserManagementTitle>
-      <UserManagementController>
-        <UserManagementControl></UserManagementControl>
-        <UserManagementControl>
+      <Title>User Management</Title>
+      <Controller>
+        <Control></Control>
+        <Control>
           <Pagination
             pages={pages}
             currentPage={currentPage}
@@ -111,8 +110,8 @@ export const UserManagement = () => {
               await fetchUsers();
             }}
           />
-        </UserManagementControl>
-        <UserManagementControl>
+        </Control>
+        <Control>
           <Search
             placeholder="Search"
             onCancel={() => {
@@ -125,25 +124,25 @@ export const UserManagement = () => {
             }}
             showCancel={searchTerm.trim().length > 0}
           />
-        </UserManagementControl>
-      </UserManagementController>
-      <UserTable>
-        <UserTableHead>
-          <UserTableRow>
-            <UserTableHeader>Full name</UserTableHeader>
-            <UserTableHeader>Email</UserTableHeader>
-            <UserTableHeader>Role</UserTableHeader>
-            <UserTableHeader>Active</UserTableHeader>
-          </UserTableRow>
-        </UserTableHead>
-        <UserTableBody>
+        </Control>
+      </Controller>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Full name</TableHeader>
+            <TableHeader>Email</TableHeader>
+            <TableHeader>Role</TableHeader>
+            <TableHeader>Active</TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {users.map((user, index) => (
-            <UserTableRow key={index}>
-              <UserTableCell>
+            <TableRow key={index}>
+              <TableCell>
                 {user.firstName} {user.lastName}
-              </UserTableCell>
-              <UserTableCell>{user.email}</UserTableCell>
-              <UserTableCell>
+              </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>
                 {user.id == loggedUserId ? (
                   <>{roles.find((role) => role.id === user.roleId)?.name}</>
                 ) : (
@@ -162,26 +161,26 @@ export const UserManagement = () => {
                     </UserTableRole>
                   </>
                 )}
-              </UserTableCell>
+              </TableCell>
               {user.id == loggedUserId ? (
                 <>
-                  <UserTableCell>Active</UserTableCell>
+                  <TableCell>Active</TableCell>
                 </>
               ) : (
                 <>
-                  <UserTableCellButton
+                  <TableCellButton
                     onClick={() => {
                       setChangedUser(user.id);
                     }}
                   >
                     {user.active ? "Deactivate" : "Activate"}
-                  </UserTableCellButton>
+                  </TableCellButton>
                 </>
               )}
-            </UserTableRow>
+            </TableRow>
           ))}
-        </UserTableBody>
-      </UserTable>
+        </TableBody>
+      </Table>
       {changedUser !== null && (
         <PopupWindow
           title={

@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
 import {
-  CardManagementController,
-  CardManagementControl,
-  CardManagementTitle,
-  CardTable,
-  CardTableBody,
-  CardTableCell,
-  CardTableCellButton,
-  CardTableCellDelete,
-  CardTableCellDeleteIcon,
-  CardTableHead,
-  CardTableHeader,
-  CardTableRow,
-  PopupButtonWrapper,
-} from "./CardManagementAdminStyles";
-import {
   changeCardActivation,
   deleteCard,
   getCardData,
 } from "../../utils/api/cards";
-import Icon from "../../assets/trash-icon.png";
+import DeleteIcon from "../../assets/trash-icon.png";
 import Pagination from "../../components/Pagination/Pagination";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
 import Search from "../../components/Search/Search";
+import {
+  Control,
+  Controller,
+  Table,
+  TableBody,
+  TableCell,
+  TableCellButton,
+  TableCellDelete,
+  TableCellIcon,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
+  PopupButtonWrapper,
+} from "../../utils/styles/generalStyles";
 
 export const CardManagementAdmin = () => {
   const [cards, setCards] = useState([]);
@@ -67,10 +67,10 @@ export const CardManagementAdmin = () => {
 
   return (
     <>
-      <CardManagementTitle>RFID card management</CardManagementTitle>
-      <CardManagementController>
-        <CardManagementControl></CardManagementControl>
-        <CardManagementControl>
+      <Title>RFID card management</Title>
+      <Controller>
+        <Control></Control>
+        <Control>
           <Pagination
             pages={pages}
             currentPage={currentPage}
@@ -95,8 +95,8 @@ export const CardManagementAdmin = () => {
               await fetchCardData();
             }}
           ></Pagination>
-        </CardManagementControl>
-        <CardManagementControl>
+        </Control>
+        <Control>
           <Search
             placeholder="Search"
             onCancel={() => {
@@ -109,44 +109,44 @@ export const CardManagementAdmin = () => {
             }}
             showCancel={searchTerm.trim().length > 0}
           />
-        </CardManagementControl>
-      </CardManagementController>
+        </Control>
+      </Controller>
 
-      <CardTable>
-        <CardTableHead>
-          <CardTableRow>
-            <CardTableHeader>Owner</CardTableHeader>
-            <CardTableHeader>Card Name</CardTableHeader>
-            <CardTableHeader>Active</CardTableHeader>
-            <CardTableHeader></CardTableHeader>
-          </CardTableRow>
-        </CardTableHead>
-        <CardTableBody>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Owner</TableHeader>
+            <TableHeader>Card Name</TableHeader>
+            <TableHeader>Active</TableHeader>
+            <TableHeader></TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {cards.map((card, index) => (
-            <CardTableRow key={index}>
-              <CardTableCell>
+            <TableRow key={index}>
+              <TableCell>
                 {card.user.firstName} {card.user.lastName}
-              </CardTableCell>
-              <CardTableCell>{card.name}</CardTableCell>
-              <CardTableCellButton
+              </TableCell>
+              <TableCell>{card.name}</TableCell>
+              <TableCellButton
                 onClick={() => {
                   setChangedCard(card);
                 }}
               >
                 {card.active ? "Deactivate" : "Activate"}
-              </CardTableCellButton>
-              <CardTableCellDelete>
-                <CardTableCellDeleteIcon
-                  src={Icon}
+              </TableCellButton>
+              <TableCellDelete>
+                <TableCellIcon
+                  src={DeleteIcon}
                   onClick={() => {
                     setDeletedCard(card);
                   }}
                 />
-              </CardTableCellDelete>
-            </CardTableRow>
+              </TableCellDelete>
+            </TableRow>
           ))}
-        </CardTableBody>
-      </CardTable>
+        </TableBody>
+      </Table>
 
       {changedCard !== null && (
         <PopupWindow

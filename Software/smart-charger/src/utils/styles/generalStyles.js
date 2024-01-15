@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../../utils/styles/theme";
 
-export const CardManagementTitle = styled.h1`
+export const Title = styled.h1`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +9,7 @@ export const CardManagementTitle = styled.h1`
   color: white;
 `;
 
-export const CardManagementController = styled.div`
+export const Controller = styled.div`
   width: 62vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -17,28 +17,29 @@ export const CardManagementController = styled.div`
   padding-top: 20px;
 `;
 
-export const CardManagementControl = styled.div`
+export const Control = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-export const CardTable = styled.table`
+export const Table = styled.table`
   margin: 0 auto;
   margin-top: 30px;
+  max-width: 80vw;
 `;
 
-export const CardTableHead = styled.thead``;
+export const TableHead = styled.thead``;
 
-export const CardTableBody = styled.tbody``;
+export const TableBody = styled.tbody``;
 
-export const CardTableHeader = styled.th`
+export const TableHeader = styled.th`
   padding: 5px;
   background-color: ${colors.tableHeader};
   font-size: 18px;
 `;
 
-export const CardTableRow = styled.tr`
+export const TableRow = styled.tr`
   &:nth-child(even) {
     background-color: ${colors.tableBackgroundSecondary};
   }
@@ -47,14 +48,14 @@ export const CardTableRow = styled.tr`
   }
 `;
 
-export const CardTableCell = styled.td`
+export const TableCell = styled.td`
   color: white;
   padding: 5px;
-  width: 20vw;
+  width: 15vw;
   text-align: center;
 `;
 
-export const CardTableCellButton = styled.td`
+export const TableCellButton = styled.td`
   color: white;
   padding: 7px;
   width: 20vw;
@@ -65,9 +66,9 @@ export const CardTableCellButton = styled.td`
   }
 `;
 
-export const CardTableCellDelete = styled.td``;
+export const TableCellDelete = styled.td``;
 
-export const CardTableCellDeleteIcon = styled.img`
+export const TableCellIcon = styled.img`
   width: 2vw;
   &:hover {
     cursor: pointer;
