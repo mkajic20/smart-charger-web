@@ -30,5 +30,4 @@ export const deleteCard = async (cardId) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.success);
 };

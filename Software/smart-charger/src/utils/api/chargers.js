@@ -34,30 +34,26 @@ export const deleteCharger = async (chargerId) => {
 
 export const createCharger = async (name, latitude, longitude) => {
   const jwt = localStorage.getItem("jwt");
-  try {
-    const jwtData = decodeToken(jwt);
-    const userId = jwtData.userId;
+  const jwtData = decodeToken(jwt);
+  const userId = jwtData.userId;
 
-    const charger = {
-      Name: name,
-      Latitude: latitude,
-      Longitude: longitude,
-      CreatorId: userId,
-    };
+  const charger = {
+    Name: name,
+    Latitude: latitude,
+    Longitude: longitude,
+    CreatorId: userId,
+  };
 
-    const res = await fetch(`${apiPath}/api/admin/chargers`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-      body: JSON.stringify(charger),
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  const res = await fetch(`${apiPath}/api/admin/chargers`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify(charger),
+  });
+  const data = await res.json();
+  return data;
 };
 
 export const getAllChargers = async () => {

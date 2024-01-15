@@ -27,7 +27,6 @@ export const ChargingHistoryUser = () => {
 
   const fetchHistory = async () => {
     const historyData = await getUserCharges(page, 10, searchTerm);
-    console.log(historyData);
     setTotalPages(historyData.totalPages);
 
     if (historyData.success) {
