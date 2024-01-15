@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
 import { AuthContext } from "../../context/AuthContext";
 import {
   HeaderInner,
@@ -107,7 +106,5 @@ const Header = () => {
     </>
   );
 };
-
-Header.propTypes = {};
 
 export default Header;

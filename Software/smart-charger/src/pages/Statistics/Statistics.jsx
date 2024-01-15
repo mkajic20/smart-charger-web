@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getStatistics } from "../../utils/api/statistics";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { getChargerById } from "../../utils/api/chargers";
 import MonthPicker from "../../components/MonthPicker/MonthPicker";
-import PopupWindow from "../../components/PopupWindow/PopupWindow";
-import Button from "../../components/Button/Button";
 import {
   StatisticsSectionWrapper,
   StatisticsWrapper,
