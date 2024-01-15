@@ -21,6 +21,11 @@ const MonthPicker = ({ month, clickPrev, clickNext, enableNext }) => {
   );
 };
 
-MonthPicker.propTypes = {};
+MonthPicker.propTypes = {
+  month: PropTypes.string,
+  clickNext: PropTypes.func,
+  clickPrev: PropTypes.func,
+  enableNext: PropTypes.bool,
+};
 
 export default MonthPicker;
