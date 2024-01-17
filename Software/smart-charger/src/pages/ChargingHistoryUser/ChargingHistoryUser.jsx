@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getUserCharges } from "../../utils/api/userHistory";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
-import {
-  HistoryTitle,
-  HistoryTable,
-  HistoryTableHead,
-  HistoryTableBody,
-  HistoryTableHeader,
-  HistoryTableRow,
-  HistoryTableCell,
-  HistoryController,
-  HistoryControl,
-} from "./HistoryStyles";
 import Button from "../../components/Button/Button";
 import { formatDate } from "../../utils/date";
 import { reverseGeocode } from "../../utils/api/geocode";
 import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search/Search";
+import {
+  Control,
+  Controller,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
+} from "../../utils/styles/generalStyles";
 
 export const ChargingHistoryUser = () => {
   const [history, setHistory] = useState([]);
@@ -24,10 +24,10 @@ export const ChargingHistoryUser = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [pageSize, setPageSize] = useState(10);
 
   const fetchHistory = async () => {
-    const historyData = await getUserCharges(page, 10, searchTerm);
-    console.log(historyData);
+    const historyData = await getUserCharges(page, pageSize, searchTerm);
     setTotalPages(historyData.totalPages);
 
     if (historyData.success) {
@@ -62,10 +62,10 @@ export const ChargingHistoryUser = () => {
     <>
       {error.length === 0 && (
         <>
-          <HistoryTitle>Charging history</HistoryTitle>
-          <HistoryController>
-            <HistoryControl></HistoryControl>
-            <HistoryControl>
+          <Title>Charging history</Title>
+          <Controller>
+            <Control></Control>
+            <Control>
               <Pagination
                 currentPage={page}
                 pages={totalPages}
@@ -89,9 +89,15 @@ export const ChargingHistoryUser = () => {
                     await fetchHistory();
                   }
                 }}
+                withSelect
+                onSelectChange={async (size) => {
+                  setPageSize(size);
+                  setPage(1);
+                  await fetchHistory();
+                }}
               />
-            </HistoryControl>
-            <HistoryControl>
+            </Control>
+            <Control>
               <Search
                 placeholder={"Search history"}
                 onCancel={async () => {
@@ -104,36 +110,32 @@ export const ChargingHistoryUser = () => {
                 }}
                 showCancel={searchTerm.trim().length > 0}
               />
-            </HistoryControl>
-          </HistoryController>
-          <HistoryTable>
-            <HistoryTableHead>
-              <HistoryTableRow>
-                <HistoryTableHeader>Start</HistoryTableHeader>
-                <HistoryTableHeader>End</HistoryTableHeader>
-                <HistoryTableHeader>Volume</HistoryTableHeader>
-                <HistoryTableHeader>Card</HistoryTableHeader>
-                <HistoryTableHeader>Charger</HistoryTableHeader>
-                <HistoryTableHeader>Location</HistoryTableHeader>
-              </HistoryTableRow>
-            </HistoryTableHead>
-            <HistoryTableBody>
+            </Control>
+          </Controller>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>Start</TableHeader>
+                <TableHeader>End</TableHeader>
+                <TableHeader>Volume</TableHeader>
+                <TableHeader>Card</TableHeader>
+                <TableHeader>Charger</TableHeader>
+                <TableHeader>Location</TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {history.map((item, index) => (
-                <HistoryTableRow key={index}>
-                  <HistoryTableCell>
-                    {formatDate(item.startTime)}
-                  </HistoryTableCell>
-                  <HistoryTableCell>
-                    {formatDate(item.endTime)}
-                  </HistoryTableCell>
-                  <HistoryTableCell>{item.volume}</HistoryTableCell>
-                  <HistoryTableCell>{item.card.name}</HistoryTableCell>
-                  <HistoryTableCell>{item.charger.name}</HistoryTableCell>
-                  <HistoryTableCell>{item.address}</HistoryTableCell>
-                </HistoryTableRow>
+                <TableRow key={index}>
+                  <TableCell>{formatDate(item.startTime)}</TableCell>
+                  <TableCell>{formatDate(item.endTime)}</TableCell>
+                  <TableCell>{item.volume}</TableCell>
+                  <TableCell>{item.card.name}</TableCell>
+                  <TableCell>{item.charger.name}</TableCell>
+                  <TableCell>{item.address}</TableCell>
+                </TableRow>
               ))}
-            </HistoryTableBody>
-          </HistoryTable>
+            </TableBody>
+          </Table>
         </>
       )}
 

@@ -16,10 +16,16 @@ export const HeaderInner = styled.div`
 
 export const HeaderLogo = styled.img`
   height: 70px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const HeaderTitle = styled.h2`
   color: ${colors.textPrimary};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const HeaderButtonWrapper = styled.div`

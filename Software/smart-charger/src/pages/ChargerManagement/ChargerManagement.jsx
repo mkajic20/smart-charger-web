@@ -1,20 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
+import { TextFieldLabel, CreateError } from "./ChargerManagementStyles";
 import {
-  ChargerManagementController,
-  ChargerManagementControl,
-  ChargerManagementTitle,
-  ChargerTable,
-  ChargerTableBody,
-  ChargerTableCell,
-  ChargerTableCellIconButton,
-  ChargerTableCellIcon,
-  ChargerTableHead,
-  ChargerTableHeader,
-  ChargerTableRow,
+  Control,
+  Controller,
+  Table,
+  TableBody,
+  TableCell,
+  TableCellDelete,
+  TableCellIcon,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
   PopupButtonWrapper,
-  TextFieldLabel,
-  CreateError,
-} from "./ChargerManagementStyles";
+} from "../../utils/styles/generalStyles";
 import {
   createCharger,
   deleteCharger,
@@ -73,9 +72,9 @@ export const ChargerManagement = () => {
 
   return (
     <>
-      <ChargerManagementTitle>Charger management</ChargerManagementTitle>
-      <ChargerManagementController>
-        <ChargerManagementControl>
+      <Title>Charger management</Title>
+      <Controller>
+        <Control>
           <Button
             buttonText="Create charger"
             isSecondary
@@ -83,8 +82,8 @@ export const ChargerManagement = () => {
               setCreatingCharger(true);
             }}
           />
-        </ChargerManagementControl>
-        <ChargerManagementControl>
+        </Control>
+        <Control>
           <Pagination
             pages={pages}
             currentPage={currentPage}
@@ -108,9 +107,15 @@ export const ChargerManagement = () => {
               setCurrentPage(pages);
               await fetchChargerData();
             }}
-          ></Pagination>
-        </ChargerManagementControl>
-        <ChargerManagementControl>
+            withSelect
+            onSelectChange={async (size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+              await fetchChargerData();
+            }}
+          />
+        </Control>
+        <Control>
           <Search
             placeholder="Search"
             onCancel={() => {
@@ -123,53 +128,51 @@ export const ChargerManagement = () => {
             }}
             showCancel={searchTerm.trim().length > 0}
           />
-        </ChargerManagementControl>
-      </ChargerManagementController>
+        </Control>
+      </Controller>
 
-      <ChargerTable>
-        <ChargerTableHead>
-          <ChargerTableRow>
-            <ChargerTableHeader>Name</ChargerTableHeader>
-            <ChargerTableHeader>Latitude</ChargerTableHeader>
-            <ChargerTableHeader>Longitude</ChargerTableHeader>
-            <ChargerTableHeader>Creation time</ChargerTableHeader>
-            <ChargerTableHeader>Last used</ChargerTableHeader>
-            <ChargerTableHeader></ChargerTableHeader>
-            <ChargerTableHeader></ChargerTableHeader>
-          </ChargerTableRow>
-        </ChargerTableHead>
-        <ChargerTableBody>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Name</TableHeader>
+            <TableHeader>Latitude</TableHeader>
+            <TableHeader>Longitude</TableHeader>
+            <TableHeader>Creation time</TableHeader>
+            <TableHeader>Last used</TableHeader>
+            <TableHeader></TableHeader>
+            <TableHeader></TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {chargers.map((charger, index) => (
-            <ChargerTableRow key={index}>
-              <ChargerTableCell>{charger.name}</ChargerTableCell>
-              <ChargerTableCell>{charger.latitude}</ChargerTableCell>
-              <ChargerTableCell>{charger.longitude}</ChargerTableCell>
-              <ChargerTableCell>
-                {formatDate(charger.creationTime)}
-              </ChargerTableCell>
-              <ChargerTableCell>
+            <TableRow key={index}>
+              <TableCell>{charger.name}</TableCell>
+              <TableCell>{charger.latitude}</TableCell>
+              <TableCell>{charger.longitude}</TableCell>
+              <TableCell>{formatDate(charger.creationTime)}</TableCell>
+              <TableCell>
                 {charger.lastSync ? formatDate(charger.lastSync) : "-"}
-              </ChargerTableCell>
-              <ChargerTableCellIconButton>
-                <ChargerTableCellIcon
+              </TableCell>
+              <TableCellDelete>
+                <TableCellIcon
                   src={StatisticsIcon}
                   onClick={() => {
                     navigate(`/statistics/${charger.id}`);
                   }}
                 />
-              </ChargerTableCellIconButton>
-              <ChargerTableCellIconButton>
-                <ChargerTableCellIcon
+              </TableCellDelete>
+              <TableCellDelete>
+                <TableCellIcon
                   src={DeleteIcon}
                   onClick={() => {
                     setDeletedCharger(charger);
                   }}
                 />
-              </ChargerTableCellIconButton>
-            </ChargerTableRow>
+              </TableCellDelete>
+            </TableRow>
           ))}
-        </ChargerTableBody>
-      </ChargerTable>
+        </TableBody>
+      </Table>
 
       {deletedCharger !== null && (
         <PopupWindow

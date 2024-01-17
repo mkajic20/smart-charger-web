@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
 import { AuthContext } from "../../context/AuthContext";
 import {
   HeaderInner,
@@ -28,8 +27,19 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <HeaderInner>
-          <HeaderLogo src={Logo} />
-          <HeaderTitle>Smart Charger</HeaderTitle>
+          <HeaderLogo
+            src={Logo}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+          <HeaderTitle
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Smart Charger
+          </HeaderTitle>
           <HeaderNav>
             {role == 1 && (
               //ADMIN NAVIGATION
@@ -107,7 +117,5 @@ const Header = () => {
     </>
   );
 };
-
-Header.propTypes = {};
 
 export default Header;

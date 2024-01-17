@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getStatistics } from "../../utils/api/statistics";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { getChargerById } from "../../utils/api/chargers";
 import MonthPicker from "../../components/MonthPicker/MonthPicker";
-import PopupWindow from "../../components/PopupWindow/PopupWindow";
-import Button from "../../components/Button/Button";
 import {
-  StatisticsTitle,
   StatisticsSectionWrapper,
   StatisticsWrapper,
   StatisticsText,
@@ -18,6 +15,7 @@ import Section from "../../components/Section/Section";
 import { reverseGeocode } from "../../utils/api/geocode";
 import { formatDate } from "../../utils/date";
 import MapComponent from "../../components/MapComponent/MapComponent";
+import { Title } from "../../utils/styles/generalStyles";
 
 export const Statistics = () => {
   const { id } = useParams();
@@ -120,7 +118,7 @@ export const Statistics = () => {
 
   return (
     <>
-      <StatisticsTitle>Charger statistics</StatisticsTitle>
+      <Title>Charger statistics</Title>
       <StatisticsSectionWrapper>
         <Section title={`Charger ${charger.name}`}>
           <StatisticsWrapper>

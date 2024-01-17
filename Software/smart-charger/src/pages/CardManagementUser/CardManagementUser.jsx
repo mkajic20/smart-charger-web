@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import {
-  CardManagementControl,
-  CardManagementController,
-  CardManagementTitle,
-  CardTable,
-  CardTableBody,
-  CardTableHead,
-  CardTableHeader,
-  CardTableRow,
-  CardTableCell,
-  CardTableCellDelete,
-  CardTableCellDeleteIcon,
-  PopupButtonWrapper,
-} from "./CardManagementUserStyles";
-import Icon from "../../assets/trash-icon.png";
+import DeleteIcon from "../../assets/trash-icon.png";
 import { getAllUsersCards, deleteCard } from "../../utils/api/userCards";
 import PopupWindow from "../../components/PopupWindow/PopupWindow";
 import Button from "../../components/Button/Button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableCellDelete,
+  TableCellIcon,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
+  PopupButtonWrapper,
+} from "../../utils/styles/generalStyles";
+
 export const CardManagementUser = () => {
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState(null);
@@ -44,37 +43,32 @@ export const CardManagementUser = () => {
     <>
       {error.length == 0 && cards.length > 0 && (
         <>
-          <CardManagementTitle> My cards</CardManagementTitle>
-          <CardManagementController>
-            <CardManagementControl></CardManagementControl>
-          </CardManagementController>
-          <CardTable>
-            <CardTableHead>
-              <CardTableRow>
-                <CardTableHeader>Card Name</CardTableHeader>
-                <CardTableHeader>Active</CardTableHeader>
-                <CardTableHeader></CardTableHeader>
-              </CardTableRow>
-            </CardTableHead>
-            <CardTableBody>
+          <Title> My cards</Title>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>Card Name</TableHeader>
+                <TableHeader>Active</TableHeader>
+                <TableHeader></TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {cards.map((card, index) => (
-                <CardTableRow key={index}>
-                  <CardTableCell>{card.name}</CardTableCell>
-                  <CardTableCell>
-                    {card.active ? "Active" : "Inactive"}
-                  </CardTableCell>
-                  <CardTableCellDelete>
-                    <CardTableCellDeleteIcon
-                      src={Icon}
+                <TableRow key={index}>
+                  <TableCell>{card.name}</TableCell>
+                  <TableCell>{card.active ? "Active" : "Inactive"}</TableCell>
+                  <TableCellDelete>
+                    <TableCellIcon
+                      src={DeleteIcon}
                       onClick={() => {
                         setDeletedCard(card);
                       }}
-                    ></CardTableCellDeleteIcon>
-                  </CardTableCellDelete>
-                </CardTableRow>
+                    />
+                  </TableCellDelete>
+                </TableRow>
               ))}
-            </CardTableBody>
-          </CardTable>
+            </TableBody>
+          </Table>
         </>
       )}
 

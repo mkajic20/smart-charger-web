@@ -18,6 +18,11 @@ const Pagination = ({
   withSelect,
   onSelectChange,
 }) => {
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    onSelectChange(selectedValue);
+  };
+
   return (
     <>
       <PaginationWrapper>
@@ -29,7 +34,7 @@ const Pagination = ({
         <PaginationButton onClick={nextCall}>&gt;</PaginationButton>
         <PaginationButton onClick={lastCall}>&gt;&gt;&gt;</PaginationButton>
         {withSelect && (
-          <PaginationSelect onChange={onSelectChange}>
+          <PaginationSelect onChange={handleSelectChange}>
             <PaginationSelectOption>10</PaginationSelectOption>
             <PaginationSelectOption>25</PaginationSelectOption>
             <PaginationSelectOption>50</PaginationSelectOption>
