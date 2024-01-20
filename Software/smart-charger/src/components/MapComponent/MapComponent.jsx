@@ -9,9 +9,10 @@ import {
 import PropTypes from "prop-types";
 import L from "leaflet";
 import { reverseGeocode } from "../../utils/api/geocode";
-
 import "./MapComponent.css";
 import "leaflet/dist/leaflet.css";
+import chargerTakenIcon from "../../assets/charger-taken.png";
+import chargerFreeIcon from "../../assets/charger-free.png";
 
 const defaultCenter = [46.307834, 16.33836];
 const defaultZoom = 18;
@@ -33,17 +34,15 @@ const AddMarkers = ({ markers }) => {
   }, [markers]);
 
   const redIcon = new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-    iconSize: [25, 41],
+    iconUrl: chargerTakenIcon,
+    iconSize: [28, 32],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
 
   const greenIcon = new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-    iconSize: [25, 41],
+    iconUrl: chargerFreeIcon,
+    iconSize: [28, 32],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
