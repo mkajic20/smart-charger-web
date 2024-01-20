@@ -138,7 +138,6 @@ export const ChargerManagement = () => {
             <TableHeader>Latitude</TableHeader>
             <TableHeader>Longitude</TableHeader>
             <TableHeader>Creation time</TableHeader>
-            <TableHeader>Last used</TableHeader>
             <TableHeader></TableHeader>
             <TableHeader></TableHeader>
           </TableRow>
@@ -150,9 +149,6 @@ export const ChargerManagement = () => {
               <TableCell>{charger.latitude}</TableCell>
               <TableCell>{charger.longitude}</TableCell>
               <TableCell>{formatDate(charger.creationTime)}</TableCell>
-              <TableCell>
-                {charger.lastSync ? formatDate(charger.lastSync) : "-"}
-              </TableCell>
               <TableCellDelete>
                 <TableCellIcon
                   src={StatisticsIcon}
