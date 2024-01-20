@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextFieldLabel, CreateError } from "./ChargerManagementStyles";
 import {
   Control,
@@ -29,6 +29,7 @@ import MapComponent from "../../components/MapComponent/MapComponent";
 import TextField from "../../components/TextField/TextField";
 import { formatDate } from "../../utils/date";
 import { useNavigate } from "react-router";
+import { reverseGeocode } from "../../utils/api/geocode";
 
 export const ChargerManagement = () => {
   const [chargers, setChargers] = useState([]);
@@ -52,7 +53,16 @@ export const ChargerManagement = () => {
   const fetchChargerData = async () => {
     const chargerData = await getChargerData(currentPage, pageSize, searchTerm);
     if (chargerData.success) {
-      setChargers(chargerData.chargers);
+      const chargersWithAddress = await Promise.all(
+        chargerData.chargers.map(async (charger) => {
+          const address = await reverseGeocode(
+            charger.latitude,
+            charger.longitude
+          );
+          return { ...charger, address };
+        })
+      );
+      setChargers(chargersWithAddress);
       setPages(chargerData.totalPages);
     } else {
       setError(chargerData.message);
@@ -135,8 +145,7 @@ export const ChargerManagement = () => {
         <TableHead>
           <TableRow>
             <TableHeader>Name</TableHeader>
-            <TableHeader>Latitude</TableHeader>
-            <TableHeader>Longitude</TableHeader>
+            <TableHeader>Location</TableHeader>
             <TableHeader>Creation time</TableHeader>
             <TableHeader></TableHeader>
             <TableHeader></TableHeader>
@@ -146,8 +155,7 @@ export const ChargerManagement = () => {
           {chargers.map((charger, index) => (
             <TableRow key={index}>
               <TableCell>{charger.name}</TableCell>
-              <TableCell>{charger.latitude}</TableCell>
-              <TableCell>{charger.longitude}</TableCell>
+              <TableCell>{charger.address}</TableCell>
               <TableCell>{formatDate(charger.creationTime)}</TableCell>
               <TableCellDelete>
                 <TableCellIcon
