@@ -79,3 +79,10 @@ export const PopupButtonWrapper = styled.div`
   display: flex;
   gap: 20px;
 `;
+
+export const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40vh;
+`;

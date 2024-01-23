@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextFieldLabel, CreateError } from "./ChargerManagementStyles";
 import {
   Control,
@@ -13,6 +13,7 @@ import {
   TableRow,
   Title,
   PopupButtonWrapper,
+  LoaderWrapper,
 } from "../../utils/styles/generalStyles";
 import {
   createCharger,
@@ -29,10 +30,12 @@ import MapComponent from "../../components/MapComponent/MapComponent";
 import TextField from "../../components/TextField/TextField";
 import { formatDate } from "../../utils/date";
 import { useNavigate } from "react-router";
+import { reverseGeocode } from "../../utils/api/geocode";
+import { Blocks } from "react-loader-spinner";
 
 export const ChargerManagement = () => {
   const [chargers, setChargers] = useState([]);
-  const [pages, setPages] = useState(null);
+  const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,15 +50,38 @@ export const ChargerManagement = () => {
 
   const [createError, setCreateError] = useState("");
 
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const fetchChargerData = async () => {
-    const chargerData = await getChargerData(currentPage, pageSize, searchTerm);
-    if (chargerData.success) {
-      setChargers(chargerData.chargers);
-      setPages(chargerData.totalPages);
-    } else {
-      setError(chargerData.message);
+    setLoading(true);
+    setChargers([]);
+    try {
+      const chargerData = await getChargerData(
+        currentPage,
+        pageSize,
+        searchTerm
+      );
+      if (chargerData.success) {
+        const chargersWithAddress = await Promise.all(
+          chargerData.chargers.map(async (charger) => {
+            const address = await reverseGeocode(
+              charger.latitude,
+              charger.longitude
+            );
+            return { ...charger, address };
+          })
+        );
+        setChargers(chargersWithAddress);
+        setPages(chargerData.totalPages);
+      } else {
+        setError(chargerData.message);
+      }
+    } catch (error) {
+      setError(error.message || "An error occurred while fetching data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,28 +116,23 @@ export const ChargerManagement = () => {
             prevCall={async () => {
               if (currentPage > 1) {
                 setCurrentPage(currentPage - 1);
-                await fetchChargerData();
               }
             }}
             firstCall={async () => {
               setCurrentPage(1);
-              await fetchChargerData();
             }}
             nextCall={async () => {
               if (currentPage < pages) {
                 setCurrentPage(currentPage + 1);
-                await fetchChargerData();
               }
             }}
             lastCall={async () => {
               setCurrentPage(pages);
-              await fetchChargerData();
             }}
             withSelect
             onSelectChange={async (size) => {
               setPageSize(size);
               setCurrentPage(1);
-              await fetchChargerData();
             }}
           />
         </Control>
@@ -131,48 +152,62 @@ export const ChargerManagement = () => {
         </Control>
       </Controller>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeader>Name</TableHeader>
-            <TableHeader>Latitude</TableHeader>
-            <TableHeader>Longitude</TableHeader>
-            <TableHeader>Creation time</TableHeader>
-            <TableHeader>Last used</TableHeader>
-            <TableHeader></TableHeader>
-            <TableHeader></TableHeader>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {chargers.map((charger, index) => (
-            <TableRow key={index}>
-              <TableCell>{charger.name}</TableCell>
-              <TableCell>{charger.latitude}</TableCell>
-              <TableCell>{charger.longitude}</TableCell>
-              <TableCell>{formatDate(charger.creationTime)}</TableCell>
-              <TableCell>
-                {charger.lastSync ? formatDate(charger.lastSync) : "-"}
-              </TableCell>
-              <TableCellDelete>
-                <TableCellIcon
-                  src={StatisticsIcon}
-                  onClick={() => {
-                    navigate(`/statistics/${charger.id}`);
-                  }}
-                />
-              </TableCellDelete>
-              <TableCellDelete>
-                <TableCellIcon
-                  src={DeleteIcon}
-                  onClick={() => {
-                    setDeletedCharger(charger);
-                  }}
-                />
-              </TableCellDelete>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      {error.length === 0 && (
+        <>
+          {loading ? (
+            <LoaderWrapper>
+              <Blocks
+                height="150"
+                width="150"
+                color="#4fa94d"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                visible={true}
+              />
+            </LoaderWrapper>
+          ) : (
+            <>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>Name</TableHeader>
+                    <TableHeader>Location</TableHeader>
+                    <TableHeader>Creation time</TableHeader>
+                    <TableHeader></TableHeader>
+                    <TableHeader></TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {chargers.map((charger, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{charger.name}</TableCell>
+                      <TableCell>{charger.address}</TableCell>
+                      <TableCell>{formatDate(charger.creationTime)}</TableCell>
+                      <TableCellDelete>
+                        <TableCellIcon
+                          src={StatisticsIcon}
+                          onClick={() => {
+                            navigate(`/statistics/${charger.id}`);
+                          }}
+                        />
+                      </TableCellDelete>
+                      <TableCellDelete>
+                        <TableCellIcon
+                          src={DeleteIcon}
+                          onClick={() => {
+                            setDeletedCharger(charger);
+                          }}
+                        />
+                      </TableCellDelete>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          )}
+        </>
+      )}
 
       {deletedCharger !== null && (
         <PopupWindow
@@ -206,7 +241,6 @@ export const ChargerManagement = () => {
           text={error}
           onClose={async () => {
             setSearchTerm("");
-            await fetchChargerData();
             setError("");
           }}
         >
@@ -214,7 +248,6 @@ export const ChargerManagement = () => {
             buttonText="Close"
             onClick={async () => {
               setSearchTerm("");
-              await fetchChargerData();
               setError("");
             }}
           />
@@ -267,7 +300,6 @@ export const ChargerManagement = () => {
                     setSearchTerm("");
                     setChargerName("");
                     setChargerLocation(null);
-                    await fetchChargerData();
                   } else {
                     setCreateError(data.error);
                   }
