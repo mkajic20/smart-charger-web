@@ -8,6 +8,7 @@ import Search from "../../components/Search/Search";
 import {
   Control,
   Controller,
+  LoaderWrapper,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +17,7 @@ import {
   TableRow,
   Title,
 } from "../../utils/styles/generalStyles";
+import { Blocks } from "react-loader-spinner";
 
 export const ChargingHistoryAdmin = () => {
   const [history, setHistory] = useState([]);
@@ -24,28 +26,35 @@ export const ChargingHistoryAdmin = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [pageSize, setPageSize] = useState(10);
+  const [loading, setLoading] = useState(true);
 
   const fetchHistory = async () => {
-    const historyData = await getCharges(page, pageSize, searchTerm);
-    setTotalPages(historyData.totalPages);
+    setLoading(true);
 
-    if (historyData.success) {
-      const chargedEvents = historyData.events.map(async (item) => {
-        const address = await getAddress(
-          item.charger.latitude,
-          item.charger.longitude
-        );
+    try {
+      const historyData = await getCharges(page, pageSize, searchTerm);
+      setTotalPages(historyData.totalPages);
 
-        return {
-          ...item,
-          address: address,
-        };
-      });
+      if (historyData.success) {
+        const chargedEvents = historyData.events.map(async (item) => {
+          const address = await getAddress(
+            item.charger.latitude,
+            item.charger.longitude
+          );
 
-      const updatedHistory = await Promise.all(chargedEvents);
-      setHistory(updatedHistory);
-    } else {
-      setError(historyData.message);
+          return {
+            ...item,
+            address: address,
+          };
+        });
+
+        const updatedHistory = await Promise.all(chargedEvents);
+        setHistory(updatedHistory);
+      }
+    } catch (error) {
+      setError(error.message || "An error occurred while fetching data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +65,7 @@ export const ChargingHistoryAdmin = () => {
 
   useEffect(() => {
     fetchHistory();
-  });
+  }, [page, pageSize, searchTerm]);
 
   return (
     <>
@@ -71,29 +80,24 @@ export const ChargingHistoryAdmin = () => {
                 pages={totalPages}
                 firstCall={async () => {
                   setPage(1);
-                  await fetchHistory();
                 }}
                 lastCall={async () => {
                   setPage(totalPages);
-                  await fetchHistory();
                 }}
                 nextCall={async () => {
                   if (page < totalPages) {
                     setPage(page + 1);
-                    await fetchHistory();
                   }
                 }}
                 prevCall={async () => {
                   if (page > 1) {
                     setPage(page - 1);
-                    await fetchHistory();
                   }
                 }}
                 withSelect
                 onSelectChange={async (size) => {
                   setPageSize(size);
                   setPage(1);
-                  await fetchHistory();
                 }}
               />
             </Control>
@@ -112,34 +116,51 @@ export const ChargingHistoryAdmin = () => {
               />
             </Control>
           </Controller>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>User</TableHeader>
-                <TableHeader>Start</TableHeader>
-                <TableHeader>End</TableHeader>
-                <TableHeader>Volume</TableHeader>
-                <TableHeader>Card</TableHeader>
-                <TableHeader>Charger</TableHeader>
-                <TableHeader>Location</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {history.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    {item.user.firstName} {item.user.lastName}
-                  </TableCell>
-                  <TableCell>{formatDate(item.startTime)}</TableCell>
-                  <TableCell>{formatDate(item.endTime)}</TableCell>
-                  <TableCell>{item.volume}</TableCell>
-                  <TableCell>{item.card.name}</TableCell>
-                  <TableCell>{item.charger.name}</TableCell>
-                  <TableCell>{item.address}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+
+          {loading ? (
+            <LoaderWrapper>
+              <Blocks
+                height="150"
+                width="150"
+                color="#4fa94d"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                visible={true}
+              />
+            </LoaderWrapper>
+          ) : (
+            <>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>User</TableHeader>
+                    <TableHeader>Start</TableHeader>
+                    <TableHeader>End</TableHeader>
+                    <TableHeader>Volume</TableHeader>
+                    <TableHeader>Card</TableHeader>
+                    <TableHeader>Charger</TableHeader>
+                    <TableHeader>Location</TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {history.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        {item.user.firstName} {item.user.lastName}
+                      </TableCell>
+                      <TableCell>{formatDate(item.startTime)}</TableCell>
+                      <TableCell>{formatDate(item.endTime)}</TableCell>
+                      <TableCell>{item.volume}</TableCell>
+                      <TableCell>{item.card.name}</TableCell>
+                      <TableCell>{item.charger.name}</TableCell>
+                      <TableCell>{item.address}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          )}
         </>
       )}
 
@@ -148,15 +169,17 @@ export const ChargingHistoryAdmin = () => {
           title={"There was an error"}
           text={error}
           onClose={async () => {
-            await fetchHistory();
             setError("");
+            setSearchTerm("");
+            setPage(1);
           }}
         >
           <Button
             buttonText="Close"
             onClick={async () => {
-              await fetchHistory();
               setError("");
+              setSearchTerm("");
+              setPage(1);
             }}
           />
         </PopupWindow>
