@@ -108,28 +108,23 @@ export const UserManagement = () => {
                 prevCall={async () => {
                   if (currentPage > 1) {
                     setCurrentPage(currentPage - 1);
-                    // await fetchUsers();
                   }
                 }}
                 firstCall={async () => {
                   setCurrentPage(1);
-                  // await fetchUsers();
                 }}
                 nextCall={async () => {
                   if (currentPage < pages) {
                     setCurrentPage(currentPage + 1);
-                    // await fetchUsers();
                   }
                 }}
                 lastCall={async () => {
                   setCurrentPage(pages);
-                  // await fetchUsers();
                 }}
                 withSelect
                 onSelectChange={async (size) => {
                   setPageSize(size);
                   setCurrentPage(1);
-                  // await fetchUsers();
                 }}
               />
             </Control>
