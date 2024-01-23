@@ -15,19 +15,26 @@ import {
   TableRow,
   Title,
   PopupButtonWrapper,
+  LoaderWrapper,
 } from "../../utils/styles/generalStyles";
+import { Blocks } from "react-loader-spinner";
 
 export const CardManagementUser = () => {
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const asyncCall = async () => {
+      setLoading(true);
+
       const cardData = await getAllUsersCards();
       if (cardData.success) {
         setCards(cardData.cards);
+        setLoading(false);
       } else {
         setError(cardData.message);
       }
@@ -41,34 +48,53 @@ export const CardManagementUser = () => {
   };
   return (
     <>
-      {error.length == 0 && cards.length > 0 && (
+      {error.length === 0 && (
         <>
           <Title> My cards</Title>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Card Name</TableHeader>
-                <TableHeader>Active</TableHeader>
-                <TableHeader></TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {cards.map((card, index) => (
-                <TableRow key={index}>
-                  <TableCell>{card.name}</TableCell>
-                  <TableCell>{card.active ? "Active" : "Inactive"}</TableCell>
-                  <TableCellDelete>
-                    <TableCellIcon
-                      src={DeleteIcon}
-                      onClick={() => {
-                        setDeletedCard(card);
-                      }}
-                    />
-                  </TableCellDelete>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+
+          {loading ? (
+            <LoaderWrapper>
+              <Blocks
+                height="150"
+                width="150"
+                color="#4fa94d"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                visible={true}
+              />
+            </LoaderWrapper>
+          ) : (
+            <>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>Card Name</TableHeader>
+                    <TableHeader>Active</TableHeader>
+                    <TableHeader></TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cards.map((card, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{card.name}</TableCell>
+                      <TableCell>
+                        {card.active ? "Active" : "Inactive"}
+                      </TableCell>
+                      <TableCellDelete>
+                        <TableCellIcon
+                          src={DeleteIcon}
+                          onClick={() => {
+                            setDeletedCard(card);
+                          }}
+                        />
+                      </TableCellDelete>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          )}
         </>
       )}
 
