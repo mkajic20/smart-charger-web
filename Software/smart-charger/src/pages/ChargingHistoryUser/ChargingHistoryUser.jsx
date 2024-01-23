@@ -9,6 +9,7 @@ import Search from "../../components/Search/Search";
 import {
   Control,
   Controller,
+  LoaderWrapper,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +18,7 @@ import {
   TableRow,
   Title,
 } from "../../utils/styles/generalStyles";
+import { Blocks } from "react-loader-spinner";
 
 export const ChargingHistoryUser = () => {
   const [history, setHistory] = useState([]);
@@ -25,28 +27,35 @@ export const ChargingHistoryUser = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [pageSize, setPageSize] = useState(10);
+  const [loading, setLoading] = useState(true);
 
   const fetchHistory = async () => {
+    setLoading(true);
+
     const historyData = await getUserCharges(page, pageSize, searchTerm);
     setTotalPages(historyData.totalPages);
 
-    if (historyData.success) {
-      const chargedEvents = historyData.events.map(async (item) => {
-        const address = await getAddress(
-          item.charger.latitude,
-          item.charger.longitude
-        );
+    try {
+      if (historyData.success) {
+        const chargedEvents = historyData.events.map(async (item) => {
+          const address = await getAddress(
+            item.charger.latitude,
+            item.charger.longitude
+          );
 
-        return {
-          ...item,
-          address: address,
-        };
-      });
+          return {
+            ...item,
+            address: address,
+          };
+        });
 
-      const updatedHistory = await Promise.all(chargedEvents);
-      setHistory(updatedHistory);
-    } else {
-      setError(historyData.message);
+        const updatedHistory = await Promise.all(chargedEvents);
+        setHistory(updatedHistory);
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,7 +66,7 @@ export const ChargingHistoryUser = () => {
 
   useEffect(() => {
     fetchHistory();
-  }, [page, searchTerm]);
+  }, [page, searchTerm, pageSize]);
   return (
     <>
       {error.length === 0 && (
@@ -71,29 +80,24 @@ export const ChargingHistoryUser = () => {
                 pages={totalPages}
                 firstCall={async () => {
                   setPage(1);
-                  await fetchHistory();
                 }}
                 lastCall={async () => {
                   setPage(totalPages);
-                  await fetchHistory();
                 }}
                 nextCall={async () => {
                   if (page < totalPages) {
                     setPage(page + 1);
-                    await fetchHistory();
                   }
                 }}
                 prevCall={async () => {
                   if (page > 1) {
                     setPage(page - 1);
-                    await fetchHistory();
                   }
                 }}
                 withSelect
                 onSelectChange={async (size) => {
                   setPageSize(size);
                   setPage(1);
-                  await fetchHistory();
                 }}
               />
             </Control>
@@ -112,30 +116,47 @@ export const ChargingHistoryUser = () => {
               />
             </Control>
           </Controller>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Start</TableHeader>
-                <TableHeader>End</TableHeader>
-                <TableHeader>Volume</TableHeader>
-                <TableHeader>Card</TableHeader>
-                <TableHeader>Charger</TableHeader>
-                <TableHeader>Location</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {history.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{formatDate(item.startTime)}</TableCell>
-                  <TableCell>{formatDate(item.endTime)}</TableCell>
-                  <TableCell>{item.volume}</TableCell>
-                  <TableCell>{item.card.name}</TableCell>
-                  <TableCell>{item.charger.name}</TableCell>
-                  <TableCell>{item.address}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+
+          {loading ? (
+            <LoaderWrapper>
+              <Blocks
+                height="150"
+                width="150"
+                color="#4fa94d"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                visible={true}
+              />
+            </LoaderWrapper>
+          ) : (
+            <>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>Start</TableHeader>
+                    <TableHeader>End</TableHeader>
+                    <TableHeader>Volume</TableHeader>
+                    <TableHeader>Card</TableHeader>
+                    <TableHeader>Charger</TableHeader>
+                    <TableHeader>Location</TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {history.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{formatDate(item.startTime)}</TableCell>
+                      <TableCell>{formatDate(item.endTime)}</TableCell>
+                      <TableCell>{item.volume}</TableCell>
+                      <TableCell>{item.card.name}</TableCell>
+                      <TableCell>{item.charger.name}</TableCell>
+                      <TableCell>{item.address}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          )}
         </>
       )}
 
@@ -144,15 +165,17 @@ export const ChargingHistoryUser = () => {
           title={"There was an error"}
           text={error}
           onClose={async () => {
-            await fetchHistory();
             setError("");
+            setSearchTerm("");
+            setPage(1);
           }}
         >
           <Button
             buttonText="Close"
             onClick={async () => {
-              await fetchHistory();
               setError("");
+              setSearchTerm("");
+              setPage(1);
             }}
           />
         </PopupWindow>
