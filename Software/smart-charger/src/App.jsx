@@ -16,109 +16,112 @@ import { Map } from "./pages/Map/Map";
 import { ChargingHistoryUser } from "./pages/ChargingHistoryUser/ChargingHistoryUser";
 import { ChargingHistoryAdmin } from "./pages/ChargingHistoryAdmin/ChargingHistoryAdmin";
 import { Statistics } from "./pages/Statistics/Statistics";
+import { Main, PageContainer } from "./utils/styles/generalStyles";
 
 function App() {
   return (
     <>
       <AuthProvider>
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<ProtectedRoute></ProtectedRoute>} />
+        <PageContainer>
+          <Header />
+          <Main>
+            <Routes>
+              <Route path="/" element={<ProtectedRoute></ProtectedRoute>} />
 
-            <Route
-              path="/register"
-              element={
-                <ProtectedRouteLogin>
-                  <Register />
-                </ProtectedRouteLogin>
-              }
-            />
+              <Route
+                path="/register"
+                element={
+                  <ProtectedRouteLogin>
+                    <Register />
+                  </ProtectedRouteLogin>
+                }
+              />
 
-            <Route
-              path="/login"
-              element={
-                <ProtectedRouteLogin>
-                  <Login />
-                </ProtectedRouteLogin>
-              }
-            />
+              <Route
+                path="/login"
+                element={
+                  <ProtectedRouteLogin>
+                    <Login />
+                  </ProtectedRouteLogin>
+                }
+              />
 
-            <Route
-              path="/user-management"
-              element={
-                <ProtectedRouteAdmin>
-                  <UserManagement />
-                </ProtectedRouteAdmin>
-              }
-            />
+              <Route
+                path="/user-management"
+                element={
+                  <ProtectedRouteAdmin>
+                    <UserManagement />
+                  </ProtectedRouteAdmin>
+                }
+              />
 
-            <Route
-              path="/card-management"
-              element={
-                <ProtectedRouteAdmin>
-                  <CardManagementAdmin />
-                </ProtectedRouteAdmin>
-              }
-            />
+              <Route
+                path="/card-management"
+                element={
+                  <ProtectedRouteAdmin>
+                    <CardManagementAdmin />
+                  </ProtectedRouteAdmin>
+                }
+              />
 
-            <Route
-              path="/charger-management"
-              element={
-                <ProtectedRouteAdmin>
-                  <ChargerManagement />
-                </ProtectedRouteAdmin>
-              }
-            />
+              <Route
+                path="/charger-management"
+                element={
+                  <ProtectedRouteAdmin>
+                    <ChargerManagement />
+                  </ProtectedRouteAdmin>
+                }
+              />
 
-            <Route
-              path="/card-management-user"
-              element={
-                <ProtectedRouteUser>
-                  <CardManagementUser />
-                </ProtectedRouteUser>
-              }
-            />
+              <Route
+                path="/card-management-user"
+                element={
+                  <ProtectedRouteUser>
+                    <CardManagementUser />
+                  </ProtectedRouteUser>
+                }
+              />
 
-            <Route
-              path="/charging-history"
-              element={
-                <ProtectedRouteUser>
-                  <ChargingHistoryUser />
-                </ProtectedRouteUser>
-              }
-            />
+              <Route
+                path="/charging-history"
+                element={
+                  <ProtectedRouteUser>
+                    <ChargingHistoryUser />
+                  </ProtectedRouteUser>
+                }
+              />
 
-            <Route
-              path="/map"
-              element={
-                <ProtectedRoute>
-                  <Map />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/map"
+                element={
+                  <ProtectedRoute>
+                    <Map />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="/charging-history-admin"
-              element={
-                <ProtectedRouteAdmin>
-                  <ChargingHistoryAdmin />
-                </ProtectedRouteAdmin>
-              }
-            />
+              <Route
+                path="/charging-history-admin"
+                element={
+                  <ProtectedRouteAdmin>
+                    <ChargingHistoryAdmin />
+                  </ProtectedRouteAdmin>
+                }
+              />
 
-            <Route
-              path="/statistics/:id"
-              element={
-                <ProtectedRouteAdmin>
-                  <Statistics />
-                </ProtectedRouteAdmin>
-              }
-            />
-          </Routes>
-        </main>
+              <Route
+                path="/statistics/:id"
+                element={
+                  <ProtectedRouteAdmin>
+                    <Statistics />
+                  </ProtectedRouteAdmin>
+                }
+              />
+            </Routes>
+          </Main>
 
-        <Footer />
+          <Footer />
+        </PageContainer>
       </AuthProvider>
     </>
   );

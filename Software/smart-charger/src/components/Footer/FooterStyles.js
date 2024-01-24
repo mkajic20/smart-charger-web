@@ -2,8 +2,11 @@ import styled from "styled-components";
 import { colors } from "../../utils/styles/theme";
 
 export const Footer = styled.footer`
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  min-height: 30px;
+  height: 137px;
+
   background-color: ${colors.bgSecondary};
   text-align: center;
   display: flex;
@@ -12,8 +15,7 @@ export const Footer = styled.footer`
   align-items: center;
   gap: 10px;
   padding: 15px 0;
-  position: ${(props) => (props.isfixed === "true" ? "fixed" : "relative")};
-  bottom: 0;
+
   margin-top: 100px;
   z-index: 20;
 `;
