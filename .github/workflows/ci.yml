@@ -25,6 +25,11 @@ jobs:
           npm install
           npm install --save-dev jest
 
+    - name: Install dependencies
+      run: | 
+          cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger
+          npm run lint
+
     - name: Build
       run: | 
           cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger 
