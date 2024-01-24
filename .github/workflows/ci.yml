@@ -25,7 +25,7 @@ jobs:
           npm install
           npm install --save-dev jest
 
-    - name: Install dependencies
+    - name: Run code analysis
       run: | 
           cd D:\a\smart-charger-web\smart-charger-web\Software\smart-charger
           npm run lint
