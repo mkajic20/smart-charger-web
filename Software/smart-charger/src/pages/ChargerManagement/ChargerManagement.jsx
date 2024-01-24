@@ -174,6 +174,7 @@ export const ChargerManagement = () => {
                     <TableHeader>Name</TableHeader>
                     <TableHeader>Location</TableHeader>
                     <TableHeader>Creation time</TableHeader>
+                    <TableHeader>Last used</TableHeader>
                     <TableHeader></TableHeader>
                     <TableHeader></TableHeader>
                   </TableRow>
@@ -184,6 +185,9 @@ export const ChargerManagement = () => {
                       <TableCell>{charger.name}</TableCell>
                       <TableCell>{charger.address}</TableCell>
                       <TableCell>{formatDate(charger.creationTime)}</TableCell>
+                      <TableCell>
+                        {charger.lastSync ? formatDate(charger.lastSync) : '-'}
+                      </TableCell>
                       <TableCellDelete>
                         <TableCellIcon
                           src={StatisticsIcon}
