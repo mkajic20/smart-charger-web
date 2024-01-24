@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
-import { formatDate } from "../../utils/date";
-import { reverseGeocode } from "../../utils/api/geocode";
-import { getCharges } from "../../utils/api/adminHistory";
-import Pagination from "../../components/Pagination/Pagination";
-import Search from "../../components/Search/Search";
+import React, { useEffect, useState } from 'react'
+import Button from '../../components/Button/Button'
+import { formatDate } from '../../utils/date'
+import { reverseGeocode } from '../../utils/api/geocode'
+import { getCharges } from '../../utils/api/adminHistory'
+import Pagination from '../../components/Pagination/Pagination'
+import Search from '../../components/Search/Search'
 import {
   Control,
   Controller,
@@ -16,56 +16,57 @@ import {
   TableHeader,
   TableRow,
   Title,
-} from "../../utils/styles/generalStyles";
-import { Blocks } from "react-loader-spinner";
+} from '../../utils/styles/generalStyles'
+import { Blocks } from 'react-loader-spinner'
+import PopupWindow from '../../components/PopupWindow/PopupWindow'
 
 export const ChargingHistoryAdmin = () => {
-  const [history, setHistory] = useState([]);
-  const [error, setError] = useState("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [pageSize, setPageSize] = useState(10);
-  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState([])
+  const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [pageSize, setPageSize] = useState(10)
+  const [loading, setLoading] = useState(true)
 
   const fetchHistory = async () => {
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const historyData = await getCharges(page, pageSize, searchTerm);
-      setTotalPages(historyData.totalPages);
+      const historyData = await getCharges(page, pageSize, searchTerm)
+      setTotalPages(historyData.totalPages)
 
       if (historyData.success) {
         const chargedEvents = historyData.events.map(async (item) => {
           const address = await getAddress(
             item.charger.latitude,
-            item.charger.longitude
-          );
+            item.charger.longitude,
+          )
 
           return {
             ...item,
             address: address,
-          };
-        });
+          }
+        })
 
-        const updatedHistory = await Promise.all(chargedEvents);
-        setHistory(updatedHistory);
+        const updatedHistory = await Promise.all(chargedEvents)
+        setHistory(updatedHistory)
       }
     } catch (error) {
-      setError(error.message || "An error occurred while fetching data.");
+      setError(error.message || 'An error occurred while fetching data.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const getAddress = async (lat, lng) => {
-    const address = await reverseGeocode(lat, lng);
-    return address;
-  };
+    const address = await reverseGeocode(lat, lng)
+    return address
+  }
 
   useEffect(() => {
-    fetchHistory();
-  }, [page, pageSize, searchTerm]);
+    fetchHistory()
+  }, [page, pageSize, searchTerm])
 
   return (
     <>
@@ -79,38 +80,38 @@ export const ChargingHistoryAdmin = () => {
                 currentPage={page}
                 pages={totalPages}
                 firstCall={async () => {
-                  setPage(1);
+                  setPage(1)
                 }}
                 lastCall={async () => {
-                  setPage(totalPages);
+                  setPage(totalPages)
                 }}
                 nextCall={async () => {
                   if (page < totalPages) {
-                    setPage(page + 1);
+                    setPage(page + 1)
                   }
                 }}
                 prevCall={async () => {
                   if (page > 1) {
-                    setPage(page - 1);
+                    setPage(page - 1)
                   }
                 }}
                 withSelect
                 onSelectChange={async (size) => {
-                  setPageSize(size);
-                  setPage(1);
+                  setPageSize(size)
+                  setPage(1)
                 }}
               />
             </Control>
             <Control>
               <Search
-                placeholder={"Search history"}
+                placeholder={'Search history'}
                 onCancel={async () => {
-                  setPage(1);
-                  setSearchTerm("");
+                  setPage(1)
+                  setSearchTerm('')
                 }}
                 search={async (term) => {
-                  setPage(1);
-                  setSearchTerm(term);
+                  setPage(1)
+                  setSearchTerm(term)
                 }}
                 showCancel={searchTerm.trim().length > 0}
               />
@@ -166,24 +167,24 @@ export const ChargingHistoryAdmin = () => {
 
       {error.length > 0 && (
         <PopupWindow
-          title={"There was an error"}
+          title={'There was an error'}
           text={error}
           onClose={async () => {
-            setError("");
-            setSearchTerm("");
-            setPage(1);
+            setError('')
+            setSearchTerm('')
+            setPage(1)
           }}
         >
           <Button
             buttonText="Close"
             onClick={async () => {
-              setError("");
-              setSearchTerm("");
-              setPage(1);
+              setError('')
+              setSearchTerm('')
+              setPage(1)
             }}
           />
         </PopupWindow>
       )}
     </>
-  );
-};
+  )
+}

@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Button from "../Button/Button";
+import React from 'react'
+import PropTypes from 'prop-types'
+import Button from '../Button/Button'
 import {
   MonthPickerButtonWrapper,
   MonthPickerDate,
   MonthPicker as MonthPickerWrapper,
-} from "./MonthPickerStyles";
+} from './MonthPickerStyles'
 
 const MonthPicker = ({ month, clickPrev, clickNext, enableNext }) => {
   return (
@@ -18,14 +18,14 @@ const MonthPicker = ({ month, clickPrev, clickNext, enableNext }) => {
         <Button buttonText=">" onClick={clickNext} isDisabled={!enableNext} />
       </MonthPickerButtonWrapper>
     </MonthPickerWrapper>
-  );
-};
+  )
+}
 
 MonthPicker.propTypes = {
   month: PropTypes.string,
   clickNext: PropTypes.func,
   clickPrev: PropTypes.func,
   enableNext: PropTypes.bool,
-};
+}
 
-export default MonthPicker;
+export default MonthPicker

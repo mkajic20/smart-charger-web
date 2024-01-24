@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { colors } from "../../utils/styles/theme";
+import styled from 'styled-components'
+import { colors } from '../../utils/styles/theme'
 
 export const TextFieldWrapper = styled.div`
   width: 100%;
@@ -8,7 +8,7 @@ export const TextFieldWrapper = styled.div`
   border: 1px solid ${colors.formPrimary};
   padding: 5px;
   display: flex;
-`;
+`
 
 export const TextFieldInput = styled.input`
   width: 100%;
@@ -19,10 +19,10 @@ export const TextFieldInput = styled.input`
   &:focus {
     outline: none;
   }
-`;
+`
 
 export const TextFieldIcon = styled.img`
   &:hover {
     cursor: pointer;
   }
-`;
+`

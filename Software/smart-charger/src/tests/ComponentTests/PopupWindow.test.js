@@ -1,46 +1,46 @@
-import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
-import PopupWindow from "../../components/PopupWindow/PopupWindow";
+import React from 'react'
+import { render, fireEvent, screen } from '@testing-library/react'
+import PopupWindow from '../../components/PopupWindow/PopupWindow'
 
-describe("PopupWindow", () => {
-  const mockTitle = "Popup Title";
-  const mockText = "Popup Text";
-  const mockChildren = <div>Popup Children</div>;
-  const mockOnClose = jest.fn();
+describe('PopupWindow', () => {
+  const mockTitle = 'Popup Title'
+  const mockText = 'Popup Text'
+  const mockChildren = <div>Popup Children</div>
+  const mockOnClose = jest.fn()
 
-  it("renders PopupWindow component correctly", () => {
+  it('renders PopupWindow component correctly', () => {
     render(
       <PopupWindow title={mockTitle} text={mockText} onClose={mockOnClose}>
         {mockChildren}
-      </PopupWindow>
-    );
+      </PopupWindow>,
+    )
 
-    expect(screen.getByText(mockTitle)).toBeInTheDocument();
-    expect(screen.getByText(mockText)).toBeInTheDocument();
-    expect(screen.getByText("Popup Children")).toBeInTheDocument();
-  });
+    expect(screen.getByText(mockTitle)).toBeInTheDocument()
+    expect(screen.getByText(mockText)).toBeInTheDocument()
+    expect(screen.getByText('Popup Children')).toBeInTheDocument()
+  })
 
-  it("does not call onClose function when children inside PopupWindowContent are clicked", () => {
+  it('does not call onClose function when children inside PopupWindowContent are clicked', () => {
     render(
       <PopupWindow title={mockTitle} text={mockText} onClose={mockOnClose}>
         {mockChildren}
-      </PopupWindow>
-    );
+      </PopupWindow>,
+    )
 
-    const children = screen.getByText("Popup Children");
-    fireEvent.click(children);
+    const children = screen.getByText('Popup Children')
+    fireEvent.click(children)
 
-    expect(mockOnClose).not.toHaveBeenCalled();
-  });
+    expect(mockOnClose).not.toHaveBeenCalled()
+  })
 
-  it("renders PopupWindowContent when title or text are provided", () => {
+  it('renders PopupWindowContent when title or text are provided', () => {
     render(
       <PopupWindow text={mockText} onClose={mockOnClose}>
         {mockChildren}
-      </PopupWindow>
-    );
+      </PopupWindow>,
+    )
 
-    const content = screen.getByText("Popup Children");
-    expect(content).toBeInTheDocument();
-  });
-});
+    const content = screen.getByText('Popup Children')
+    expect(content).toBeInTheDocument()
+  })
+})

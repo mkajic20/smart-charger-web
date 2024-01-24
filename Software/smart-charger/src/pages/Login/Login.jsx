@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import Section from "../../components/Section/Section";
-import TextField from "../../components/TextField/TextField";
-import Button from "../../components/Button/Button";
+import React, { useContext, useState } from 'react'
+import Section from '../../components/Section/Section'
+import TextField from '../../components/TextField/TextField'
+import Button from '../../components/Button/Button'
 import {
   Login as LoginWrapper,
   LoginError,
@@ -11,36 +11,36 @@ import {
   LoginFormLink,
   LoginFormText,
   ButtonWrapper,
-} from "./LoginStyles";
-import { useNavigate } from "react-router";
-import { loginUser as login } from "../../utils/api/users";
-import { AuthContext } from "../../context/AuthContext";
-import { decodeToken } from "react-jwt";
+} from './LoginStyles'
+import { useNavigate } from 'react-router'
+import { loginUser as login } from '../../utils/api/users'
+import { AuthContext } from '../../context/AuthContext'
+import { decodeToken } from 'react-jwt'
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const { setIsLoggedIn, setRole } = useContext(AuthContext);
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const { setIsLoggedIn, setRole } = useContext(AuthContext)
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const loginUser = async () => {
-    const res = await login({ email: email, password: password });
+    const res = await login({ email: email, password: password })
     if (res.success) {
-      localStorage.setItem("jwt", res.token);
-      const jwtData = decodeToken(res.token);
-      setRole(jwtData.roleId);
-      setIsLoggedIn(true);
+      localStorage.setItem('jwt', res.token)
+      const jwtData = decodeToken(res.token)
+      setRole(jwtData.roleId)
+      setIsLoggedIn(true)
     } else {
-      setError(res.error);
+      setError(res.error)
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    await loginUser();
-  };
+    e.preventDefault()
+    await loginUser()
+  }
 
   return (
     <LoginWrapper>
@@ -72,10 +72,10 @@ export const Login = () => {
             <Button buttonText="SIGN IN" onClick={loginUser} />
           </ButtonWrapper>
           <LoginFormText>
-            Don't have an account? &nbsp;
+            Don&apos;t have an account? &nbsp;
             <LoginFormLink
               onClick={() => {
-                navigate("/register");
+                navigate('/register')
               }}
             >
               -&gt; REGISTER
@@ -84,7 +84,7 @@ export const Login = () => {
         </LoginForm>
       </Section>
     </LoginWrapper>
-  );
-};
+  )
+}
 
 // export default Login;

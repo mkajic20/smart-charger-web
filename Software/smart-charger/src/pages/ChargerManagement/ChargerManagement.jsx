@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { TextFieldLabel, CreateError } from "./ChargerManagementStyles";
+import React, { useEffect, useState } from 'react'
+import { TextFieldLabel, CreateError } from './ChargerManagementStyles'
 import {
   Control,
   Controller,
@@ -14,87 +14,87 @@ import {
   Title,
   PopupButtonWrapper,
   LoaderWrapper,
-} from "../../utils/styles/generalStyles";
+} from '../../utils/styles/generalStyles'
 import {
   createCharger,
   deleteCharger,
   getChargerData,
-} from "../../utils/api/chargers";
-import DeleteIcon from "../../assets/trash-icon.png";
-import StatisticsIcon from "../../assets/statistics-icon.png";
-import Pagination from "../../components/Pagination/Pagination";
-import PopupWindow from "../../components/PopupWindow/PopupWindow";
-import Button from "../../components/Button/Button";
-import Search from "../../components/Search/Search";
-import MapComponent from "../../components/MapComponent/MapComponent";
-import TextField from "../../components/TextField/TextField";
-import { formatDate } from "../../utils/date";
-import { useNavigate } from "react-router";
-import { reverseGeocode } from "../../utils/api/geocode";
-import { Blocks } from "react-loader-spinner";
+} from '../../utils/api/chargers'
+import DeleteIcon from '../../assets/trash-icon.png'
+import StatisticsIcon from '../../assets/statistics-icon.png'
+import Pagination from '../../components/Pagination/Pagination'
+import PopupWindow from '../../components/PopupWindow/PopupWindow'
+import Button from '../../components/Button/Button'
+import Search from '../../components/Search/Search'
+import MapComponent from '../../components/MapComponent/MapComponent'
+import TextField from '../../components/TextField/TextField'
+import { formatDate } from '../../utils/date'
+import { useNavigate } from 'react-router'
+import { reverseGeocode } from '../../utils/api/geocode'
+import { Blocks } from 'react-loader-spinner'
 
 export const ChargerManagement = () => {
-  const [chargers, setChargers] = useState([]);
-  const [pages, setPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [chargers, setChargers] = useState([])
+  const [pages, setPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const [deletedCharger, setDeletedCharger] = useState(null);
-  const [creatingCharger, setCreatingCharger] = useState(false);
+  const [deletedCharger, setDeletedCharger] = useState(null)
+  const [creatingCharger, setCreatingCharger] = useState(false)
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('')
 
-  const [chargerName, setChargerName] = useState("");
-  const [chargerLocation, setChargerLocation] = useState(null);
+  const [chargerName, setChargerName] = useState('')
+  const [chargerLocation, setChargerLocation] = useState(null)
 
-  const [createError, setCreateError] = useState("");
+  const [createError, setCreateError] = useState('')
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const fetchChargerData = async () => {
-    setLoading(true);
-    setChargers([]);
+    setLoading(true)
+    setChargers([])
     try {
       const chargerData = await getChargerData(
         currentPage,
         pageSize,
-        searchTerm
-      );
+        searchTerm,
+      )
       if (chargerData.success) {
         const chargersWithAddress = await Promise.all(
           chargerData.chargers.map(async (charger) => {
             const address = await reverseGeocode(
               charger.latitude,
-              charger.longitude
-            );
-            return { ...charger, address };
-          })
-        );
-        setChargers(chargersWithAddress);
-        setPages(chargerData.totalPages);
+              charger.longitude,
+            )
+            return { ...charger, address }
+          }),
+        )
+        setChargers(chargersWithAddress)
+        setPages(chargerData.totalPages)
       } else {
-        setError(chargerData.message);
+        setError(chargerData.message)
       }
     } catch (error) {
-      setError(error.message || "An error occurred while fetching data.");
+      setError(error.message || 'An error occurred while fetching data.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchChargerData();
-  }, [currentPage, pageSize, searchTerm]);
+    fetchChargerData()
+  }, [currentPage, pageSize, searchTerm])
 
   const removeCharger = async (chargerId) => {
-    await deleteCharger(chargerId);
+    await deleteCharger(chargerId)
     setChargers((prevChargers) =>
-      prevChargers.filter((charger) => charger.id !== chargerId)
-    );
-  };
+      prevChargers.filter((charger) => charger.id !== chargerId),
+    )
+  }
 
   return (
     <>
@@ -105,7 +105,7 @@ export const ChargerManagement = () => {
             buttonText="Create charger"
             isSecondary
             onClick={() => {
-              setCreatingCharger(true);
+              setCreatingCharger(true)
             }}
           />
         </Control>
@@ -115,24 +115,24 @@ export const ChargerManagement = () => {
             currentPage={currentPage}
             prevCall={async () => {
               if (currentPage > 1) {
-                setCurrentPage(currentPage - 1);
+                setCurrentPage(currentPage - 1)
               }
             }}
             firstCall={async () => {
-              setCurrentPage(1);
+              setCurrentPage(1)
             }}
             nextCall={async () => {
               if (currentPage < pages) {
-                setCurrentPage(currentPage + 1);
+                setCurrentPage(currentPage + 1)
               }
             }}
             lastCall={async () => {
-              setCurrentPage(pages);
+              setCurrentPage(pages)
             }}
             withSelect
             onSelectChange={async (size) => {
-              setPageSize(size);
-              setCurrentPage(1);
+              setPageSize(size)
+              setCurrentPage(1)
             }}
           />
         </Control>
@@ -140,12 +140,12 @@ export const ChargerManagement = () => {
           <Search
             placeholder="Search"
             onCancel={() => {
-              setCurrentPage(1);
-              setSearchTerm("");
+              setCurrentPage(1)
+              setSearchTerm('')
             }}
             search={async (term) => {
-              setCurrentPage(1);
-              setSearchTerm(term);
+              setCurrentPage(1)
+              setSearchTerm(term)
             }}
             showCancel={searchTerm.trim().length > 0}
           />
@@ -188,7 +188,7 @@ export const ChargerManagement = () => {
                         <TableCellIcon
                           src={StatisticsIcon}
                           onClick={() => {
-                            navigate(`/statistics/${charger.id}`);
+                            navigate(`/statistics/${charger.id}`)
                           }}
                         />
                       </TableCellDelete>
@@ -196,7 +196,7 @@ export const ChargerManagement = () => {
                         <TableCellIcon
                           src={DeleteIcon}
                           onClick={() => {
-                            setDeletedCharger(charger);
+                            setDeletedCharger(charger)
                           }}
                         />
                       </TableCellDelete>
@@ -211,24 +211,24 @@ export const ChargerManagement = () => {
 
       {deletedCharger !== null && (
         <PopupWindow
-          title={"Delete Charger?"}
+          title={'Delete Charger?'}
           text={`Are you sure you want to delete charger ${deletedCharger.name}?`}
           onClose={() => {
-            setDeletedCharger(null);
+            setDeletedCharger(null)
           }}
         >
           <PopupButtonWrapper>
             <Button
               buttonText="Yes"
               onClick={async () => {
-                await removeCharger(deletedCharger.id);
-                setDeletedCharger(null);
+                await removeCharger(deletedCharger.id)
+                setDeletedCharger(null)
               }}
             />
             <Button
               buttonText="No"
               onClick={() => {
-                setDeletedCharger(null);
+                setDeletedCharger(null)
               }}
             />
           </PopupButtonWrapper>
@@ -237,18 +237,18 @@ export const ChargerManagement = () => {
 
       {error.length > 0 && (
         <PopupWindow
-          title={"There was an error"}
+          title={'There was an error'}
           text={error}
           onClose={async () => {
-            setSearchTerm("");
-            setError("");
+            setSearchTerm('')
+            setError('')
           }}
         >
           <Button
             buttonText="Close"
             onClick={async () => {
-              setSearchTerm("");
-              setError("");
+              setSearchTerm('')
+              setError('')
             }}
           />
         </PopupWindow>
@@ -256,13 +256,13 @@ export const ChargerManagement = () => {
 
       {creatingCharger && (
         <PopupWindow
-          title={"Create charger"}
+          title={'Create charger'}
           text=""
           onClose={() => {
-            setCreatingCharger(false);
-            setChargerName("");
-            setChargerLocation(null);
-            setCreateError("");
+            setCreatingCharger(false)
+            setChargerName('')
+            setChargerLocation(null)
+            setCreateError('')
           }}
         >
           <TextFieldLabel>Charger name:</TextFieldLabel>
@@ -273,7 +273,7 @@ export const ChargerManagement = () => {
           />
           <MapComponent
             setMarkerLocation={(marker) => {
-              setChargerLocation(marker);
+              setChargerLocation(marker)
             }}
             clickMarker
           />
@@ -286,23 +286,23 @@ export const ChargerManagement = () => {
                   chargerName.trim().length === 0 ||
                   chargerLocation == null
                 ) {
-                  setCreateError("You must choose name and location!");
+                  setCreateError('You must choose name and location!')
                 } else {
-                  setCreateError("");
+                  setCreateError('')
                   const data = await createCharger(
                     chargerName,
                     chargerLocation.lat,
-                    chargerLocation.lng
-                  );
+                    chargerLocation.lng,
+                  )
                   if (data.success) {
-                    setCreatingCharger(false);
-                    setCurrentPage(1);
-                    setSearchTerm("");
-                    setChargerName("");
-                    setChargerLocation(null);
-                    await fetchChargerData();
+                    setCreatingCharger(false)
+                    setCurrentPage(1)
+                    setSearchTerm('')
+                    setChargerName('')
+                    setChargerLocation(null)
+                    await fetchChargerData()
                   } else {
-                    setCreateError(data.error);
+                    setCreateError(data.error)
                   }
                 }
               }}
@@ -310,15 +310,15 @@ export const ChargerManagement = () => {
             <Button
               buttonText="Cancel"
               onClick={() => {
-                setCreatingCharger(false);
-                setChargerName("");
-                setChargerLocation(null);
-                setCreateError("");
+                setCreatingCharger(false)
+                setChargerName('')
+                setChargerLocation(null)
+                setCreateError('')
               }}
             />
           </PopupButtonWrapper>
         </PopupWindow>
       )}
     </>
-  );
-};
+  )
+}

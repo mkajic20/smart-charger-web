@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   PopupWindowBackground,
   PopupWindowContent,
   PopupWindowText,
   PopupWindowTitle,
   PopupWindowWrapper,
-} from "./PopupWindowStyles";
+} from './PopupWindowStyles'
 
 const PopupWindow = ({ title, text, children, onClose }) => {
   return (
@@ -18,14 +18,14 @@ const PopupWindow = ({ title, text, children, onClose }) => {
         {children}
       </PopupWindowContent>
     </PopupWindowWrapper>
-  );
-};
+  )
+}
 
 PopupWindow.propTypes = {
   title: PropTypes.string,
   text: PropTypes.string,
   children: PropTypes.node,
   onClose: PropTypes.func,
-};
+}
 
-export default PopupWindow;
+export default PopupWindow

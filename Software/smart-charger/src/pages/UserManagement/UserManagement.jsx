@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { UserTableRole, UserTableRoleOption } from "./UserManagementStyles";
+import React, { useEffect, useState } from 'react'
+import { UserTableRole, UserTableRoleOption } from './UserManagementStyles'
 import {
   changeUserActivation,
   changeUserRole,
   getAllRoles,
   getAllUsers,
-} from "../../utils/api/users";
-import PopupWindow from "../../components/PopupWindow/PopupWindow";
-import Button from "../../components/Button/Button";
-import Search from "../../components/Search/Search";
-import Pagination from "../../components/Pagination/Pagination";
-import { decodeToken } from "react-jwt";
+} from '../../utils/api/users'
+import PopupWindow from '../../components/PopupWindow/PopupWindow'
+import Button from '../../components/Button/Button'
+import Search from '../../components/Search/Search'
+import Pagination from '../../components/Pagination/Pagination'
+import { decodeToken } from 'react-jwt'
 import {
   Control,
   Controller,
@@ -24,75 +24,75 @@ import {
   Title,
   PopupButtonWrapper,
   LoaderWrapper,
-} from "../../utils/styles/generalStyles";
-import { Blocks } from "react-loader-spinner";
+} from '../../utils/styles/generalStyles'
+import { Blocks } from 'react-loader-spinner'
 
 export const UserManagement = () => {
-  const [users, setUsers] = useState([]);
-  const [roles, setRoles] = useState([]);
-  const [changedUser, setChangedUser] = useState(null);
-  const [loggedUserId, setLoggedUserId] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [pages, setPages] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [users, setUsers] = useState([])
+  const [roles, setRoles] = useState([])
+  const [changedUser, setChangedUser] = useState(null)
+  const [loggedUserId, setLoggedUserId] = useState(0)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [pages, setPages] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   const fetchUsers = async () => {
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const userData = await getAllUsers(currentPage, pageSize, searchTerm);
+      const userData = await getAllUsers(currentPage, pageSize, searchTerm)
       if (userData.success) {
-        setPages(userData.totalPages);
-        setUsers(userData.users);
+        setPages(userData.totalPages)
+        setUsers(userData.users)
       }
     } catch (error) {
-      setError(error.message || "An error occurred while fetching data.");
+      setError(error.message || 'An error occurred while fetching data.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchUsers();
-  }, [searchTerm, currentPage, pageSize]);
+    fetchUsers()
+  }, [searchTerm, currentPage, pageSize])
 
   useEffect(() => {
     const asyncCall = async () => {
-      const roleData = await getAllRoles();
-      setRoles(roleData);
+      const roleData = await getAllRoles()
+      setRoles(roleData)
 
-      const jwt = localStorage.getItem("jwt");
-      const data = decodeToken(jwt);
-      setLoggedUserId(data.userId);
-    };
+      const jwt = localStorage.getItem('jwt')
+      const data = decodeToken(jwt)
+      setLoggedUserId(data.userId)
+    }
 
-    asyncCall();
-  }, []);
+    asyncCall()
+  }, [])
 
   const handleRoleChange = async (userId, newRoleId) => {
-    const currentUser = users.find((user) => user.id === userId);
+    const currentUser = users.find((user) => user.id === userId)
 
     if (currentUser.roleId != newRoleId) {
-      await changeUserRole(userId, newRoleId);
+      await changeUserRole(userId, newRoleId)
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === userId ? { ...user, roleId: newRoleId } : user
-        )
-      );
+          user.id === userId ? { ...user, roleId: newRoleId } : user,
+        ),
+      )
     }
-  };
+  }
 
   const changeActivation = async (userId) => {
-    await changeUserActivation(userId);
+    await changeUserActivation(userId)
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
-        user.id === userId ? { ...user, active: !user.active } : user
-      )
-    );
-  };
+        user.id === userId ? { ...user, active: !user.active } : user,
+      ),
+    )
+  }
 
   return (
     <>
@@ -107,24 +107,24 @@ export const UserManagement = () => {
                 currentPage={currentPage}
                 prevCall={async () => {
                   if (currentPage > 1) {
-                    setCurrentPage(currentPage - 1);
+                    setCurrentPage(currentPage - 1)
                   }
                 }}
                 firstCall={async () => {
-                  setCurrentPage(1);
+                  setCurrentPage(1)
                 }}
                 nextCall={async () => {
                   if (currentPage < pages) {
-                    setCurrentPage(currentPage + 1);
+                    setCurrentPage(currentPage + 1)
                   }
                 }}
                 lastCall={async () => {
-                  setCurrentPage(pages);
+                  setCurrentPage(pages)
                 }}
                 withSelect
                 onSelectChange={async (size) => {
-                  setPageSize(size);
-                  setCurrentPage(1);
+                  setPageSize(size)
+                  setCurrentPage(1)
                 }}
               />
             </Control>
@@ -132,12 +132,12 @@ export const UserManagement = () => {
               <Search
                 placeholder="Search"
                 onCancel={() => {
-                  setCurrentPage(1);
-                  setSearchTerm("");
+                  setCurrentPage(1)
+                  setSearchTerm('')
                 }}
                 search={(term) => {
-                  setCurrentPage(1);
-                  setSearchTerm(term);
+                  setCurrentPage(1)
+                  setSearchTerm(term)
                 }}
                 showCancel={searchTerm.trim().length > 0}
               />
@@ -189,7 +189,7 @@ export const UserManagement = () => {
                               onChange={(e) =>
                                 handleRoleChange(
                                   user.id,
-                                  parseInt(e.target.value)
+                                  parseInt(e.target.value),
                                 )
                               }
                             >
@@ -213,10 +213,10 @@ export const UserManagement = () => {
                         <>
                           <TableCellButton
                             onClick={() => {
-                              setChangedUser(user.id);
+                              setChangedUser(user.id)
                             }}
                           >
-                            {user.active ? "Deactivate" : "Activate"}
+                            {user.active ? 'Deactivate' : 'Activate'}
                           </TableCellButton>
                         </>
                       )}
@@ -231,32 +231,32 @@ export const UserManagement = () => {
             <PopupWindow
               title={
                 users.find((user) => user.id === changedUser).active
-                  ? "Deactivate User?"
-                  : "Activate User?"
+                  ? 'Deactivate User?'
+                  : 'Activate User?'
               }
               text={`Are you sure you want to ${
                 users.find((user) => user.id === changedUser).active
-                  ? "deactivate"
-                  : "activate"
+                  ? 'deactivate'
+                  : 'activate'
               } user ${
                 users.find((user) => user.id === changedUser).firstName
               } ${users.find((user) => user.id === changedUser).lastName}?`}
               onClose={() => {
-                setChangedUser(null);
+                setChangedUser(null)
               }}
             >
               <PopupButtonWrapper>
                 <Button
                   buttonText="Yes"
                   onClick={async () => {
-                    await changeActivation(changedUser);
-                    setChangedUser(null);
+                    await changeActivation(changedUser)
+                    setChangedUser(null)
                   }}
                 />
                 <Button
                   buttonText="No"
                   onClick={() => {
-                    setChangedUser(null);
+                    setChangedUser(null)
                   }}
                 />
               </PopupButtonWrapper>
@@ -267,24 +267,24 @@ export const UserManagement = () => {
 
       {error.length > 0 && (
         <PopupWindow
-          title={"There was an error"}
+          title={'There was an error'}
           text={error}
           onClose={async () => {
-            setError("");
-            setSearchTerm("");
-            setCurrentPage(1);
+            setError('')
+            setSearchTerm('')
+            setCurrentPage(1)
           }}
         >
           <Button
             buttonText="Close"
             onClick={async () => {
-              setError("");
-              setSearchTerm("");
-              setCurrentPage(1);
+              setError('')
+              setSearchTerm('')
+              setCurrentPage(1)
             }}
           />
         </PopupWindow>
       )}
     </>
-  );
-};
+  )
+}

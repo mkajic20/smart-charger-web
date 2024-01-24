@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { colors } from "../../utils/styles/theme";
+import styled from 'styled-components'
+import { colors } from '../../utils/styles/theme'
 
 export const PopupWindowWrapper = styled.div`
   position: fixed;
@@ -12,7 +12,7 @@ export const PopupWindowWrapper = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 100;
-`;
+`
 
 export const PopupWindowBackground = styled.a`
   position: absolute;
@@ -21,7 +21,7 @@ export const PopupWindowBackground = styled.a`
   width: 100%;
   height: 100%;
   z-index: 101;
-`;
+`
 
 export const PopupWindowContent = styled.div`
   background-color: ${colors.bgSecondary};
@@ -35,8 +35,8 @@ export const PopupWindowContent = styled.div`
   text-align: center;
   padding: 30px;
   border: 1px solid black;
-`;
+`
 
-export const PopupWindowTitle = styled.h3``;
+export const PopupWindowTitle = styled.h3``
 
-export const PopupWindowText = styled.p``;
+export const PopupWindowText = styled.p``

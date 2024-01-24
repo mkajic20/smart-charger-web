@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import Section from "../../components/Section/Section";
+import React, { useContext, useState } from 'react'
+import Section from '../../components/Section/Section'
 import {
   ButtonWrapper,
   RegisterError,
@@ -10,33 +10,33 @@ import {
   RegisterFormLink,
   RegisterFormText,
   RegisterWrapper,
-} from "./RegisterStyles";
-import TextField from "../../components/TextField/TextField";
-import Button from "../../components/Button/Button";
-import { useNavigate } from "react-router";
+} from './RegisterStyles'
+import TextField from '../../components/TextField/TextField'
+import Button from '../../components/Button/Button'
+import { useNavigate } from 'react-router'
 import {
   loginUser as login,
   registerUser as register,
-} from "../../utils/api/users";
-import { AuthContext } from "../../context/AuthContext";
-import { decodeToken } from "react-jwt";
+} from '../../utils/api/users'
+import { AuthContext } from '../../context/AuthContext'
+import { decodeToken } from 'react-jwt'
 
 export const Register = () => {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const { setIsLoggedIn, setRole } = useContext(AuthContext);
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const { setIsLoggedIn, setRole } = useContext(AuthContext)
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [firstNameError, setFirstNameError] = useState('')
+  const [lastNameError, setLastNameError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
 
   const registerUser = async () => {
     if (
@@ -51,86 +51,86 @@ export const Register = () => {
         lastName: lastName,
         email: email,
         password: password,
-      });
+      })
       if (!res.success) {
-        setError(res.error);
+        setError(res.error)
       } else {
         await loginUser({
           email: email,
           password: password,
-        });
+        })
       }
     }
-  };
+  }
 
   const loginUser = async (user) => {
-    const res = await login(user);
+    const res = await login(user)
     if (res.success) {
-      localStorage.setItem("jwt", res.token);
-      const jwtData = decodeToken(res.token);
-      setRole(jwtData.roleId);
-      setIsLoggedIn(true);
+      localStorage.setItem('jwt', res.token)
+      const jwtData = decodeToken(res.token)
+      setRole(jwtData.roleId)
+      setIsLoggedIn(true)
     } else {
-      setError(res.error);
+      setError(res.error)
     }
-  };
+  }
 
   const validateFirstName = () => {
     if (firstName.trim().length === 0) {
-      setFirstNameError("First name can't be empty!");
-      return false;
+      setFirstNameError("First name can't be empty!")
+      return false
     } else {
-      setFirstNameError("");
-      return true;
+      setFirstNameError('')
+      return true
     }
-  };
+  }
 
   const validateLastName = () => {
     if (lastName.trim().length === 0) {
-      setLastNameError("Last name can't be empty!");
-      return false;
+      setLastNameError("Last name can't be empty!")
+      return false
     } else {
-      setLastNameError("");
-      return true;
+      setLastNameError('')
+      return true
     }
-  };
+  }
 
   const validateEmail = () => {
     // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/i;
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/i
     if (!emailRegex.test(email)) {
-      setEmailError("Email is invalid!");
-      return false;
+      setEmailError('Email is invalid!')
+      return false
     } else {
-      setEmailError("");
-      return true;
+      setEmailError('')
+      return true
     }
-  };
+  }
 
   const validatePassword = () => {
     if (password.trim().length < 6) {
-      setPasswordError("Password must be at least 6 characters long!");
-      return false;
+      setPasswordError('Password must be at least 6 characters long!')
+      return false
     } else {
-      setPasswordError("");
-      return true;
+      setPasswordError('')
+      return true
     }
-  };
+  }
 
   const validateConfirmPassword = () => {
     if (password !== confirmPassword) {
-      setConfirmPasswordError("Passwords must match!");
-      return false;
+      setConfirmPasswordError('Passwords must match!')
+      return false
     } else {
-      setConfirmPasswordError("");
-      return true;
+      setConfirmPasswordError('')
+      return true
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    await registerUser();
-  };
+    e.preventDefault()
+    await registerUser()
+  }
 
   return (
     <RegisterWrapper>
@@ -145,7 +145,7 @@ export const Register = () => {
               placeholder="Your first name"
               changeValue={setFirstName}
               validateInput={() => {
-                validateFirstName();
+                validateFirstName()
               }}
             />
             <RegisterFormError>{firstNameError}</RegisterFormError>
@@ -167,7 +167,7 @@ export const Register = () => {
               placeholder="Your email"
               changeValue={setEmail}
               validateInput={() => {
-                validateEmail();
+                validateEmail()
               }}
             />
             <RegisterFormError>{emailError}</RegisterFormError>
@@ -204,7 +204,7 @@ export const Register = () => {
             Already have an account? &nbsp;
             <RegisterFormLink
               onClick={() => {
-                navigate("/login");
+                navigate('/login')
               }}
             >
               -&gt; LOGIN
@@ -213,5 +213,5 @@ export const Register = () => {
         </RegisterForm>
       </Section>
     </RegisterWrapper>
-  );
-};
+  )
+}

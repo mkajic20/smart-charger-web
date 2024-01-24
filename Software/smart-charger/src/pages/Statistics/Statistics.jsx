@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { getStatistics } from "../../utils/api/statistics";
-import { useParams } from "react-router";
-import { getChargerById } from "../../utils/api/chargers";
-import MonthPicker from "../../components/MonthPicker/MonthPicker";
+import React, { useEffect, useState } from 'react'
+import { getStatistics } from '../../utils/api/statistics'
+import { useParams } from 'react-router'
+import { getChargerById } from '../../utils/api/chargers'
+import MonthPicker from '../../components/MonthPicker/MonthPicker'
 import {
   StatisticsSectionWrapper,
   StatisticsWrapper,
@@ -10,111 +10,111 @@ import {
   StatisticsLayout,
   StatisticDescription,
   StatisticValue,
-} from "./StatisticsStyles";
-import Section from "../../components/Section/Section";
-import { reverseGeocode } from "../../utils/api/geocode";
-import { formatDate } from "../../utils/date";
-import MapComponent from "../../components/MapComponent/MapComponent";
-import { Title } from "../../utils/styles/generalStyles";
+} from './StatisticsStyles'
+import Section from '../../components/Section/Section'
+import { reverseGeocode } from '../../utils/api/geocode'
+import { formatDate } from '../../utils/date'
+import MapComponent from '../../components/MapComponent/MapComponent'
+import { Title } from '../../utils/styles/generalStyles'
 
 export const Statistics = () => {
-  const { id } = useParams();
+  const { id } = useParams()
 
-  const [error, setError] = useState("");
-  const [charger, setCharger] = useState({});
+  const [error, setError] = useState('')
+  const [charger, setCharger] = useState({})
 
-  const [currentmonth, setCurrentMonth] = useState(0);
-  const [currentyear, setCurrentYear] = useState(0);
+  const [currentmonth, setCurrentMonth] = useState(0)
+  const [currentyear, setCurrentYear] = useState(0)
 
-  const [month, setMonth] = useState(0);
-  const [year, setYear] = useState(0);
+  const [month, setMonth] = useState(0)
+  const [year, setYear] = useState(0)
 
-  const [location, setLocation] = useState("");
-  const [created, setCreated] = useState("");
+  const [location, setLocation] = useState('')
+  const [created, setCreated] = useState('')
 
-  const [volume, setVolume] = useState(100);
-  const [charges, setCharges] = useState(100);
+  const [volume, setVolume] = useState(100)
+  const [charges, setCharges] = useState(100)
 
   const getMonth = (monthNumber) => {
     switch (monthNumber) {
       case 1:
-        return "January";
+        return 'January'
       case 2:
-        return "February";
+        return 'February'
       case 3:
-        return "March";
+        return 'March'
       case 4:
-        return "April";
+        return 'April'
       case 5:
-        return "May";
+        return 'May'
       case 6:
-        return "June";
+        return 'June'
       case 7:
-        return "July";
+        return 'July'
       case 8:
-        return "August";
+        return 'August'
       case 9:
-        return "September";
+        return 'September'
       case 10:
-        return "October";
+        return 'October'
       case 11:
-        return "November";
+        return 'November'
       case 12:
-        return "December";
+        return 'December'
       default:
-        return "Invalid month number";
+        return 'Invalid month number'
     }
-  };
+  }
 
   const setCurrentDate = async () => {
-    const currentDate = new Date();
-    setMonth(currentDate.getMonth() + 1);
-    setCurrentMonth(currentDate.getMonth() + 1);
-    setYear(currentDate.getFullYear());
-    setCurrentYear(currentDate.getFullYear());
-  };
+    const currentDate = new Date()
+    setMonth(currentDate.getMonth() + 1)
+    setCurrentMonth(currentDate.getMonth() + 1)
+    setYear(currentDate.getFullYear())
+    setCurrentYear(currentDate.getFullYear())
+  }
 
   const fetchCharger = async () => {
-    const data = await getChargerById(id);
+    const data = await getChargerById(id)
     if (data.success) {
-      const charger = data.charger;
-      setCreated(formatDate(charger.creationTime));
-      setLocation(await reverseGeocode(charger.latitude, charger.longitude));
-      setCharger(charger);
+      const charger = data.charger
+      setCreated(formatDate(charger.creationTime))
+      setLocation(await reverseGeocode(charger.latitude, charger.longitude))
+      setCharger(charger)
     } else {
-      setError(data.message);
+      setError(data.message)
     }
-  };
+  }
 
   const fetchStatistics = async () => {
-    if (month === 0 || year === 0) return;
-    const data = await getStatistics(id, year, month);
+    if (month === 0 || year === 0) return
+    const data = await getStatistics(id, year, month)
     if (data.success) {
       const totalVolume = data.events.reduce(
         (sum, event) => sum + event.volume,
-        0
-      );
-      const roundedVolume = parseFloat(totalVolume.toFixed(5));
-      setCharges(data.events.length);
-      setVolume(roundedVolume);
+        0,
+      )
+      const roundedVolume = parseFloat(totalVolume.toFixed(5))
+      setCharges(data.events.length)
+      setVolume(roundedVolume)
     } else {
-      setError(data.message);
+      setError(data.message)
     }
-  };
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      await setCurrentDate();
-      await fetchCharger();
-      await fetchStatistics();
-    };
+      await setCurrentDate()
+      await fetchCharger()
+      await fetchStatistics()
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   useEffect(() => {
-    fetchStatistics();
-  }, [month, year]);
+    fetchStatistics()
+  }, [month, year])
 
   return (
     <>
@@ -126,23 +126,23 @@ export const Statistics = () => {
               month={`${getMonth(month)} ${year}`}
               enableNext={!(month === currentmonth && year === currentyear)}
               clickNext={() => {
-                setError("");
+                setError('')
                 if (!(month === currentmonth && year === currentyear)) {
                   if (month === 12) {
-                    setMonth(1);
-                    setYear(year + 1);
+                    setMonth(1)
+                    setYear(year + 1)
                   } else {
-                    setMonth(month + 1);
+                    setMonth(month + 1)
                   }
                 }
               }}
               clickPrev={() => {
-                setError("");
+                setError('')
                 if (month === 1) {
-                  setMonth(12);
-                  setYear(year - 1);
+                  setMonth(12)
+                  setYear(year - 1)
                 } else {
-                  setMonth(month - 1);
+                  setMonth(month - 1)
                 }
               }}
             />
@@ -179,5 +179,5 @@ export const Statistics = () => {
         </Section>
       </StatisticsSectionWrapper>
     </>
-  );
-};
+  )
+}

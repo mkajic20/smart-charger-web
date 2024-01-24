@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { colors } from "../../utils/styles/theme";
+import styled from 'styled-components'
+import { colors } from '../../utils/styles/theme'
 
 export const Footer = styled.footer`
   position: absolute;
@@ -18,26 +18,26 @@ export const Footer = styled.footer`
 
   margin-top: 100px;
   z-index: 20;
-`;
+`
 
 export const FooterLogo = styled.div`
   display: flex;
   align-items: center;
   color: white;
   font-size: 20px;
-`;
+`
 
 export const FooterLogoImage = styled.img`
   width: 55px;
-`;
+`
 
 export const FooterText = styled.div`
   color: white;
   font-size: 13px;
-`;
+`
 
 export const FooterLink = styled.a`
   &:hover {
     cursor: pointer;
   }
-`;
+`

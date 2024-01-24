@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   changeCardActivation,
   deleteCard,
   getCardData,
-} from "../../utils/api/cards";
-import DeleteIcon from "../../assets/trash-icon.png";
-import Pagination from "../../components/Pagination/Pagination";
-import PopupWindow from "../../components/PopupWindow/PopupWindow";
-import Button from "../../components/Button/Button";
-import Search from "../../components/Search/Search";
+} from '../../utils/api/cards'
+import DeleteIcon from '../../assets/trash-icon.png'
+import Pagination from '../../components/Pagination/Pagination'
+import PopupWindow from '../../components/PopupWindow/PopupWindow'
+import Button from '../../components/Button/Button'
+import Search from '../../components/Search/Search'
 import {
   Control,
   Controller,
@@ -24,56 +24,56 @@ import {
   Title,
   PopupButtonWrapper,
   LoaderWrapper,
-} from "../../utils/styles/generalStyles";
-import { Blocks } from "react-loader-spinner";
+} from '../../utils/styles/generalStyles'
+import { Blocks } from 'react-loader-spinner'
 
 export const CardManagementAdmin = () => {
-  const [cards, setCards] = useState([]);
-  const [pages, setPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [cards, setCards] = useState([])
+  const [pages, setPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const [changedCard, setChangedCard] = useState(null);
-  const [deletedCard, setDeletedCard] = useState(null);
+  const [changedCard, setChangedCard] = useState(null)
+  const [deletedCard, setDeletedCard] = useState(null)
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('')
 
   const fetchCardData = async () => {
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const cardData = await getCardData(currentPage, pageSize, searchTerm);
+      const cardData = await getCardData(currentPage, pageSize, searchTerm)
       if (cardData.success) {
-        setCards(cardData.cards);
-        setPages(cardData.totalPages);
+        setCards(cardData.cards)
+        setPages(cardData.totalPages)
       }
     } catch (error) {
-      setError(error.message || "An error occurred while fetching data.");
+      setError(error.message || 'An error occurred while fetching data.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchCardData();
-  }, [currentPage, pageSize, searchTerm]);
+    fetchCardData()
+  }, [currentPage, pageSize, searchTerm])
 
   const changeActivation = async (cardId) => {
-    await changeCardActivation(cardId);
+    await changeCardActivation(cardId)
     setCards((prevCards) =>
       prevCards.map((card) =>
-        card.id === cardId ? { ...card, active: !card.active } : card
-      )
-    );
-  };
+        card.id === cardId ? { ...card, active: !card.active } : card,
+      ),
+    )
+  }
 
   const cardDelete = async (cardId) => {
-    await deleteCard(cardId);
-    setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
-  };
+    await deleteCard(cardId)
+    setCards((prevCards) => prevCards.filter((card) => card.id !== cardId))
+  }
 
   return (
     <>
@@ -88,24 +88,24 @@ export const CardManagementAdmin = () => {
                 currentPage={currentPage}
                 prevCall={async () => {
                   if (currentPage > 1) {
-                    setCurrentPage(currentPage - 1);
+                    setCurrentPage(currentPage - 1)
                   }
                 }}
                 firstCall={async () => {
-                  setCurrentPage(1);
+                  setCurrentPage(1)
                 }}
                 nextCall={async () => {
                   if (currentPage < pages) {
-                    setCurrentPage(currentPage + 1);
+                    setCurrentPage(currentPage + 1)
                   }
                 }}
                 lastCall={async () => {
-                  setCurrentPage(pages);
+                  setCurrentPage(pages)
                 }}
                 withSelect
                 onSelectChange={async (size) => {
-                  setPageSize(size);
-                  setCurrentPage(1);
+                  setPageSize(size)
+                  setCurrentPage(1)
                 }}
               />
             </Control>
@@ -113,12 +113,12 @@ export const CardManagementAdmin = () => {
               <Search
                 placeholder="Search"
                 onCancel={() => {
-                  setCurrentPage(1);
-                  setSearchTerm("");
+                  setCurrentPage(1)
+                  setSearchTerm('')
                 }}
                 search={(term) => {
-                  setCurrentPage(1);
-                  setSearchTerm(term);
+                  setCurrentPage(1)
+                  setSearchTerm(term)
                 }}
                 showCancel={searchTerm.trim().length > 0}
               />
@@ -157,16 +157,16 @@ export const CardManagementAdmin = () => {
                       <TableCell>{card.name}</TableCell>
                       <TableCellButton
                         onClick={() => {
-                          setChangedCard(card);
+                          setChangedCard(card)
                         }}
                       >
-                        {card.active ? "Deactivate" : "Activate"}
+                        {card.active ? 'Deactivate' : 'Activate'}
                       </TableCellButton>
                       <TableCellDelete>
                         <TableCellIcon
                           src={DeleteIcon}
                           onClick={() => {
-                            setDeletedCard(card);
+                            setDeletedCard(card)
                           }}
                         />
                       </TableCellDelete>
@@ -181,26 +181,26 @@ export const CardManagementAdmin = () => {
 
       {changedCard !== null && (
         <PopupWindow
-          title={changedCard.active ? "Deactivate Card?" : "Activate Card?"}
+          title={changedCard.active ? 'Deactivate Card?' : 'Activate Card?'}
           text={`Are you sure you want to ${
-            changedCard.active ? "deactivate" : "activate"
+            changedCard.active ? 'deactivate' : 'activate'
           } card ${changedCard.name}?`}
           onClose={() => {
-            setChangedCard(null);
+            setChangedCard(null)
           }}
         >
           <PopupButtonWrapper>
             <Button
               buttonText="Yes"
               onClick={async () => {
-                await changeActivation(changedCard.id);
-                setChangedCard(null);
+                await changeActivation(changedCard.id)
+                setChangedCard(null)
               }}
             />
             <Button
               buttonText="No"
               onClick={() => {
-                setChangedCard(null);
+                setChangedCard(null)
               }}
             />
           </PopupButtonWrapper>
@@ -209,24 +209,24 @@ export const CardManagementAdmin = () => {
 
       {deletedCard !== null && (
         <PopupWindow
-          title={"Delete Card?"}
+          title={'Delete Card?'}
           text={`Are you sure you want to delete card ${deletedCard.name}?`}
           onClose={() => {
-            setDeletedCard(null);
+            setDeletedCard(null)
           }}
         >
           <PopupButtonWrapper>
             <Button
               buttonText="Yes"
               onClick={async () => {
-                await cardDelete(deletedCard.id);
-                setDeletedCard(null);
+                await cardDelete(deletedCard.id)
+                setDeletedCard(null)
               }}
             />
             <Button
               buttonText="No"
               onClick={() => {
-                setDeletedCard(null);
+                setDeletedCard(null)
               }}
             />
           </PopupButtonWrapper>
@@ -235,24 +235,24 @@ export const CardManagementAdmin = () => {
 
       {error.length > 0 && (
         <PopupWindow
-          title={"There was an error"}
+          title={'There was an error'}
           text={error}
           onClose={async () => {
-            setError("");
-            setSearchTerm("");
-            setCurrentPage(1);
+            setError('')
+            setSearchTerm('')
+            setCurrentPage(1)
           }}
         >
           <Button
             buttonText="Close"
             onClick={async () => {
-              setError("");
-              setSearchTerm("");
-              setCurrentPage(1);
+              setError('')
+              setSearchTerm('')
+              setCurrentPage(1)
             }}
           />
         </PopupWindow>
       )}
     </>
-  );
-};
+  )
+}

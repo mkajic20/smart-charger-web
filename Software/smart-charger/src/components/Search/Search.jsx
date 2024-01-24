@@ -1,41 +1,41 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import {
   SearchBar,
   SearchBarIcon,
   Search as SearchWrapper,
-} from "./SearchStyles";
-import SearchIcon from "../../assets/search-icon.png";
-import SearchCancelIcon from "../../assets/search-cancel.png";
+} from './SearchStyles'
+import SearchIcon from '../../assets/search-icon.png'
+import SearchCancelIcon from '../../assets/search-cancel.png'
 
 const Search = ({ placeholder, search, showCancel, onCancel }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('')
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+    setInputValue(e.target.value)
+  }
 
   const handleSearch = () => {
     if (inputValue.trim().length > 0) {
-      search(inputValue.trim());
+      search(inputValue.trim())
     }
-  };
+  }
 
   const handleCancel = () => {
-    onCancel();
-    setInputValue("");
-  };
+    onCancel()
+    setInputValue('')
+  }
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
+    if (e.key === 'Enter') {
+      handleSearch()
     }
 
-    if (e.key === "Escape") {
-      onCancel();
-      setInputValue("");
+    if (e.key === 'Escape') {
+      onCancel()
+      setInputValue('')
     }
-  };
+  }
 
   return (
     <>
@@ -62,14 +62,14 @@ const Search = ({ placeholder, search, showCancel, onCancel }) => {
         )}
       </SearchWrapper>
     </>
-  );
-};
+  )
+}
 
 Search.propTypes = {
   placeholder: PropTypes.string,
   search: PropTypes.func,
   showCancel: PropTypes.bool,
   onCancel: PropTypes.func,
-};
+}
 
-export default Search;
+export default Search

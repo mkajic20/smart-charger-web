@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
 import {
   HeaderInner,
   HeaderLogo,
@@ -8,20 +8,20 @@ import {
   HeaderButtonWrapper,
   HeaderNav,
   HeaderLink,
-} from "./HeaderStyles";
-import Logo from "../../assets/logo.png";
-import Button from "../../components/Button/Button";
-import { useNavigate } from "react-router";
+} from './HeaderStyles'
+import Logo from '../../assets/logo.png'
+import Button from '../../components/Button/Button'
+import { useNavigate } from 'react-router'
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn, role, setRole } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn, role, setRole } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const logOut = async () => {
-    setIsLoggedIn(!isLoggedIn);
-    setRole(null);
-    localStorage.removeItem("jwt");
-  };
+    setIsLoggedIn(!isLoggedIn)
+    setRole(null)
+    localStorage.removeItem('jwt')
+  }
 
   return (
     <>
@@ -30,12 +30,12 @@ const Header = () => {
           <HeaderLogo
             src={Logo}
             onClick={() => {
-              navigate("/");
+              navigate('/')
             }}
           />
           <HeaderTitle
             onClick={() => {
-              navigate("/");
+              navigate('/')
             }}
           >
             Smart Charger
@@ -46,7 +46,7 @@ const Header = () => {
               <>
                 <HeaderLink
                   onClick={() => {
-                    navigate("/user-management");
+                    navigate('/user-management')
                   }}
                 >
                   Users
@@ -54,7 +54,7 @@ const Header = () => {
 
                 <HeaderLink
                   onClick={() => {
-                    navigate("/card-management");
+                    navigate('/card-management')
                   }}
                 >
                   RFID cards
@@ -62,7 +62,7 @@ const Header = () => {
 
                 <HeaderLink
                   onClick={() => {
-                    navigate("/charger-management");
+                    navigate('/charger-management')
                   }}
                 >
                   Chargers
@@ -70,7 +70,7 @@ const Header = () => {
 
                 <HeaderLink
                   onClick={() => {
-                    navigate("/charging-history-admin");
+                    navigate('/charging-history-admin')
                   }}
                 >
                   Charging history
@@ -83,7 +83,7 @@ const Header = () => {
               <>
                 <HeaderLink
                   onClick={() => {
-                    navigate("/card-management-user");
+                    navigate('/card-management-user')
                   }}
                 >
                   My cards
@@ -91,7 +91,7 @@ const Header = () => {
 
                 <HeaderLink
                   onClick={() => {
-                    navigate("/charging-history");
+                    navigate('/charging-history')
                   }}
                 >
                   Charging history
@@ -102,7 +102,7 @@ const Header = () => {
             {isLoggedIn && (
               <HeaderLink
                 onClick={() => {
-                  navigate("/map");
+                  navigate('/map')
                 }}
               >
                 Map
@@ -115,7 +115,7 @@ const Header = () => {
         </HeaderButtonWrapper>
       </HeaderWrapper>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

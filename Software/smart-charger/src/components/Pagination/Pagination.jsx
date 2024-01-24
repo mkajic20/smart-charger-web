@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   PaginationButton,
   PaginationPage,
   PaginationSelect,
   PaginationSelectOption,
   Pagination as PaginationWrapper,
-} from "./PaginationStyles";
+} from './PaginationStyles'
 
 const Pagination = ({
   firstCall,
@@ -19,9 +19,9 @@ const Pagination = ({
   onSelectChange,
 }) => {
   const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    onSelectChange(selectedValue);
-  };
+    const selectedValue = event.target.value
+    onSelectChange(selectedValue)
+  }
 
   return (
     <>
@@ -44,8 +44,8 @@ const Pagination = ({
         )}
       </PaginationWrapper>
     </>
-  );
-};
+  )
+}
 
 Pagination.propTypes = {
   firstCall: PropTypes.func,
@@ -56,6 +56,6 @@ Pagination.propTypes = {
   lastCall: PropTypes.func,
   withSelect: PropTypes.bool,
   onSelectChange: PropTypes.func,
-};
+}
 
-export default Pagination;
+export default Pagination
