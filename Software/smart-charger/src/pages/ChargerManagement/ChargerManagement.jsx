@@ -300,6 +300,7 @@ export const ChargerManagement = () => {
                     setSearchTerm("");
                     setChargerName("");
                     setChargerLocation(null);
+                    await fetchChargerData();
                   } else {
                     setCreateError(data.error);
                   }
