@@ -1,6 +1,15 @@
 import styled from "styled-components";
 import { colors } from "../../utils/styles/theme";
 
+export const PageContainer = styled.div`
+  position: relative;
+  min-height: 100vh;
+`;
+
+export const Main = styled.main`
+  padding-bottom: 237px;
+`;
+
 export const Title = styled.h1`
   display: flex;
   justify-content: center;

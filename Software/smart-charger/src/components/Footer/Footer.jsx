@@ -9,37 +9,37 @@ import {
 import Logo from "../../assets/logo.png";
 
 export const Footer = () => {
-  const [isFooterFixed, setIsFooterFixed] = useState(false);
+  // const [isFooterFixed, setIsFooterFixed] = useState(false);
 
-  const handleResize = () => {
-    requestAnimationFrame(() => {
-      const contentHeight = document.body.scrollHeight;
-      const screenHeight = window.innerHeight;
+  // const handleResize = () => {
+  //   requestAnimationFrame(() => {
+  //     const contentHeight = document.body.scrollHeight;
+  //     const screenHeight = window.innerHeight;
 
-      setIsFooterFixed(contentHeight + 200 <= screenHeight);
-    });
-  };
+  //     setIsFooterFixed(contentHeight + 200 <= screenHeight);
+  //   });
+  // };
 
-  const handleContentChange = () => {
-    handleResize();
-  };
+  // const handleContentChange = () => {
+  //   handleResize();
+  // };
 
-  useLayoutEffect(() => {
-    window.addEventListener("resize", handleResize);
+  // useLayoutEffect(() => {
+  //   window.addEventListener("resize", handleResize);
 
-    const observer = new MutationObserver(handleContentChange);
-    observer.observe(document.body, { subtree: true, childList: true });
+  //   const observer = new MutationObserver(handleContentChange);
+  //   observer.observe(document.body, { subtree: true, childList: true });
 
-    handleResize();
+  //   handleResize();
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      observer.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //     observer.disconnect();
+  //   };
+  // }, []);
 
   return (
-    <FooterWrapper isfixed={isFooterFixed ? "true" : "false"}>
+    <FooterWrapper>
       <FooterLogo>
         <FooterLogoImage src={Logo} />
         Smart Charger
