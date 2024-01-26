@@ -37,6 +37,8 @@ export const UserManagement = () => {
   const [pageSize, setPageSize] = useState(10)
   const [pages, setPages] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [loadingRoles, setLoadingRoles] = useState(true)
+
   const [error, setError] = useState('')
 
   const fetchUsers = async () => {
@@ -57,19 +59,28 @@ export const UserManagement = () => {
 
   useEffect(() => {
     fetchUsers()
-  }, [searchTerm, currentPage, pageSize])
+  }, [searchTerm, currentPage])
 
   useEffect(() => {
-    const asyncCall = async () => {
-      const roleData = await getAllRoles()
-      setRoles(roleData)
+    const fetchRoles = async () => {
+      setLoadingRoles(true)
 
-      const jwt = localStorage.getItem('jwt')
-      const data = decodeToken(jwt)
-      setLoggedUserId(data.userId)
+      try {
+        const roleData = await getAllRoles()
+        roleData.sort((a, b) => a.roleId - b.roleId)
+        setRoles(roleData)
+      } catch (error) {
+        setError(error.message || 'An error occurred while fetching role data.')
+      } finally {
+        setLoadingRoles(false)
+      }
     }
 
-    asyncCall()
+    fetchRoles()
+
+    const jwt = localStorage.getItem('jwt')
+    const data = decodeToken(jwt)
+    setLoggedUserId(data.userId)
   }, [])
 
   const handleRoleChange = async (userId, newRoleId) => {
@@ -168,60 +179,66 @@ export const UserManagement = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        {user.firstName} {user.lastName}
-                      </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
+                  {users.map((user, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>
+                          {user.firstName} {user.lastName}
+                        </TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                          {user.id == loggedUserId ? (
+                            <>
+                              {
+                                roles.find((role) => role.id === user.roleId)
+                                  ?.name
+                              }
+                            </>
+                          ) : (
+                            <>
+                              {!loadingRoles && (
+                                <UserTableRole
+                                  defaultValue={user.roleId}
+                                  onChange={(e) =>
+                                    handleRoleChange(
+                                      user.id,
+                                      parseInt(e.target.value),
+                                    )
+                                  }
+                                >
+                                  {roles.map((role) => {
+                                    return (
+                                      <UserTableRoleOption
+                                        key={role.id}
+                                        value={role.id}
+                                      >
+                                        {role.name}
+                                      </UserTableRoleOption>
+                                    )
+                                  })}
+                                </UserTableRole>
+                              )}
+                            </>
+                          )}
+                        </TableCell>
                         {user.id == loggedUserId ? (
                           <>
-                            {
-                              roles.find((role) => role.id === user.roleId)
-                                ?.name
-                            }
+                            <TableCell>Active</TableCell>
                           </>
                         ) : (
                           <>
-                            <UserTableRole
-                              defaultValue={user.roleId}
-                              onChange={(e) =>
-                                handleRoleChange(
-                                  user.id,
-                                  parseInt(e.target.value),
-                                )
-                              }
+                            <TableCellButton
+                              onClick={() => {
+                                setChangedUser(user.id)
+                              }}
                             >
-                              {roles.map((role) => (
-                                <UserTableRoleOption
-                                  key={role.id}
-                                  value={role.id}
-                                >
-                                  {role.name}
-                                </UserTableRoleOption>
-                              ))}
-                            </UserTableRole>
+                              {user.active ? 'Deactivate' : 'Activate'}
+                            </TableCellButton>
                           </>
                         )}
-                      </TableCell>
-                      {user.id == loggedUserId ? (
-                        <>
-                          <TableCell>Active</TableCell>
-                        </>
-                      ) : (
-                        <>
-                          <TableCellButton
-                            onClick={() => {
-                              setChangedUser(user.id)
-                            }}
-                          >
-                            {user.active ? 'Deactivate' : 'Activate'}
-                          </TableCellButton>
-                        </>
-                      )}
-                    </TableRow>
-                  ))}
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             </>
