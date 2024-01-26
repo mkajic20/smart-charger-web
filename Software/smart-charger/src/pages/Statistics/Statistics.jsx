@@ -10,6 +10,7 @@ import {
   StatisticsLayout,
   StatisticDescription,
   StatisticValue,
+  StatisticsLayoutRow,
 } from './StatisticsStyles'
 import Section from '../../components/Section/Section'
 import { reverseGeocode } from '../../utils/api/geocode'
@@ -20,7 +21,7 @@ import { Title } from '../../utils/styles/generalStyles'
 export const Statistics = () => {
   const { id } = useParams()
 
-  const [error, setError] = useState('')
+  const [error, setError] = useState('.')
   const [charger, setCharger] = useState({})
 
   const [currentmonth, setCurrentMonth] = useState(0)
@@ -79,7 +80,9 @@ export const Statistics = () => {
     if (data.success) {
       const charger = data.charger
       setCreated(formatDate(charger.creationTime))
-      setLocation(await reverseGeocode(charger.latitude, charger.longitude))
+      let location = await reverseGeocode(charger.latitude, charger.longitude)
+      location = location.split(',')[0]
+      setLocation(location)
       setCharger(charger)
     } else {
       setError(data.message)
@@ -97,6 +100,7 @@ export const Statistics = () => {
       const roundedVolume = parseFloat(totalVolume.toFixed(5))
       setCharges(data.events.length)
       setVolume(roundedVolume)
+      setError('')
     } else {
       setError(data.message)
     }
@@ -126,7 +130,7 @@ export const Statistics = () => {
               month={`${getMonth(month)} ${year}`}
               enableNext={!(month === currentmonth && year === currentyear)}
               clickNext={() => {
-                setError('')
+                setError('.')
                 if (!(month === currentmonth && year === currentyear)) {
                   if (month === 12) {
                     setMonth(1)
@@ -137,7 +141,7 @@ export const Statistics = () => {
                 }
               }}
               clickPrev={() => {
-                setError('')
+                setError('.')
                 if (month === 1) {
                   setMonth(12)
                   setYear(year - 1)
@@ -149,16 +153,33 @@ export const Statistics = () => {
             {!error.length && (
               <>
                 <StatisticsLayout>
-                  <StatisticDescription>Location: </StatisticDescription>
-                  <StatisticValue>{location}</StatisticValue>
-                  <StatisticDescription>Charger created: </StatisticDescription>
-                  <StatisticValue>{created}</StatisticValue>
-                  <StatisticDescription>Total volume: </StatisticDescription>
-                  <StatisticValue>{volume}</StatisticValue>
-                  <StatisticDescription>
-                    Number of charges:
-                  </StatisticDescription>
-                  <StatisticValue>{charges}</StatisticValue>
+                  <tbody>
+                    <StatisticsLayoutRow>
+                      <StatisticDescription>Location: </StatisticDescription>
+                      <StatisticValue>{location}</StatisticValue>
+                    </StatisticsLayoutRow>
+
+                    <StatisticsLayoutRow>
+                      <StatisticDescription>
+                        Charger created:{' '}
+                      </StatisticDescription>
+                      <StatisticValue>{created}</StatisticValue>
+                    </StatisticsLayoutRow>
+
+                    <StatisticsLayoutRow>
+                      <StatisticDescription>
+                        Total volume:{' '}
+                      </StatisticDescription>
+                      <StatisticValue>{volume} kW</StatisticValue>
+                    </StatisticsLayoutRow>
+
+                    <StatisticsLayoutRow>
+                      <StatisticDescription>
+                        Number of charges:
+                      </StatisticDescription>
+                      <StatisticValue>{charges}</StatisticValue>
+                    </StatisticsLayoutRow>
+                  </tbody>
                 </StatisticsLayout>
                 {Object.keys(charger).length > 0 && (
                   <MapComponent
@@ -170,7 +191,7 @@ export const Statistics = () => {
                 )}
               </>
             )}
-            {error.length > 0 && (
+            {error.length > 0 && error !== '.' && (
               <>
                 <StatisticsText>{error}</StatisticsText>
               </>
