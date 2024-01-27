@@ -198,7 +198,7 @@ export const Register = () => {
           <RegisterError>{error}</RegisterError>
 
           <ButtonWrapper>
-            <Button buttonText="REGISTER" onClick={registerUser} />
+            <Button buttonText="REGISTER" onClick={handleSubmit} />
           </ButtonWrapper>
           <RegisterFormText>
             Already have an account? &nbsp;
